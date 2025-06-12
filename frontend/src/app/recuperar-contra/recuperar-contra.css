@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Orbitron', Arial, sans-serif;
-  background: #f7f1e3; /* Fondo crema */
+  background: #181e21; /* fondo oscuro */
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -22,22 +22,39 @@ body {
 .back-btn {
   position: absolute;
   top: 32px;
-  left: 32px;
-  background: rgba(255,198,73,0.12);
+  left: 44px;
+  background: rgba(0,225,231,0.09);
   border: none;
   border-radius: 50%;
   width: 48px;
   height: 48px;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
   transition: background .2s;
+  outline: none;
+  padding: 0;
 }
 .back-btn:hover {
-  background: rgba(255,198,73,0.24);
+  background: rgba(0,225,231,0.18);
 }
 .back-icon {
   font-size: 2rem;
-  color: #d1bb8a;
+  color: #00e1e7;
+  display: block;
+  line-height: 1;
+  position: relative;
+}
+
+/* Eliminar cualquier línea decorativa debajo del ícono */
+.back-btn::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  border: none !important;
 }
 
 /* Imagen central */
@@ -50,7 +67,7 @@ body {
   max-width: 95vw;
   height: auto;
   z-index: 1;
-  filter: drop-shadow(0 6px 32px rgba(200,170,90,0.10));
+  filter: drop-shadow(0 6px 32px rgba(0,225,231,0.07));
 }
 
 /* Swirl decorativo */
@@ -61,7 +78,7 @@ body {
   height: 80px;
   border-radius: 80px 80px 180px 180px;
   background: transparent;
-  border: 9px solid rgba(203, 176, 120, 0.10);
+  border: 9px solid rgba(0,225,231,0.09);
   border-bottom: none;
   border-right: none;
   z-index: 2;
@@ -74,77 +91,92 @@ body {
   right: 6vw;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(253, 238, 210, 0.98);
+  background: rgba(29, 38, 44, 0.97);
   padding: 44px 38px 34px 38px;
   border-radius: 32px;
-  box-shadow: 0 8px 32px rgba(200,170,90,0.10);
+  box-shadow: 0 0 60px 12px #00e1e711, 0 8px 32px rgba(0,225,231,0.06);
   min-width: 380px;
   max-width: 480px;
   width: 100%;
   z-index: 3;
-  border: 1.5px solid #fbe4b6;
+  border: 1.5px solid #183238;
 }
 
 /* Titulo */
 .recuperar-form h2 {
-  background: linear-gradient(90deg, #ffe259, #ffa751, #ff9800, #eac65c); 
+  background: linear-gradient(90deg, #fff 0%, #00e1e7 80%);
   background-size: 300% 100%;
-  animation: gradient-move 3s ease-in-out infinite;
+  animation: gradient-move 3s linear infinite;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
   font-family: 'Orbitron', Arial, sans-serif;
-  color: #eac65c;
   font-size: 2.4rem;
   margin: 0 0 28px 0;
   letter-spacing: 2px;
   font-weight: bold;
   text-align: left;
 }
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 .recuperar-form h2 span {
-  color: #ff9800;
+  color: #00e1e7;
   font-weight: 900;
+  background: linear-gradient(90deg, #00e1e7 0%, #04fff8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-move 3s linear infinite;
 }
 
+/* Etiquetas */
 .recuperar-form label {
-  color: #bda87a;
+  color: #00e1e7;
   font-size: 1rem;
   margin-top: 12px;
   display: block;
   letter-spacing: .5px;
-  opacity: .98;
+  opacity: 0.98;
+  font-weight: 600;
 }
 
+/* Input */
 .input-group {
   position: relative;
   margin-bottom: 18px;
 }
-
 .input-group input {
   width: 100%;
   padding: 13px 16px;
-  border: 2px solid #ffa600;
+  border: 2px solid #00e1e7;
   border-radius: 8px;
-  background: #fffbe9;
+  background: #192024;
   font-size: 1.1rem;
   margin-top: 6px;
   box-sizing: border-box;
-  color: #444;
+  color: #00e1e7;
   outline: none;
   transition: box-shadow .2s, border .2s;
   opacity: 1;
 }
 .input-group input:focus {
-  box-shadow: 0 0 0 2px #ffc35a88;
-  border: 2.5px solid #ffa600;
+  box-shadow: 0 0 0 2px #00e1e77a;
+  border: 2.5px solid #04fff8;
+}
+.input-group input::placeholder {
+  color: #3dc3c7;
+  opacity: 1;
 }
 
+/* Botón enviar */
 .recuperar-btn {
   display: block;
   margin: 18px auto 0 auto;
-  background: #ffa600;
-  color: #fffbe9;
+  background: linear-gradient(90deg, #00e1e7 0%, #0cb9bb 100%);
+  color: #fff;
   font-family: 'Orbitron', Arial, sans-serif;
   font-size: 1.15rem;
   border: none;
@@ -154,18 +186,37 @@ body {
   letter-spacing: 1px;
   font-weight: bold;
   transition: background .2s, color .2s;
-  box-shadow: 0 2px 16px rgba(255,166,0,0.09);
+  box-shadow: 0 2px 16px rgba(0,225,231,0.09);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.recuperar-btn::after {
+  content: "";
+  position: absolute;
+  left: -75%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.38) 100%);
+  transform: skewX(-25deg);
+  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
+  pointer-events: none;
+}
+.recuperar-btn:hover::after {
+  left: 120%;
+  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
 }
 .recuperar-btn:hover {
-  background: #ffd600;
-  color: #232323;
+  background: linear-gradient(90deg, #04fff8 0%, #07cfd2 100%);
+  color: #192024;
 }
 
+/* Línea decorativa */
 .line {
   width: 70%;
   margin: 10px auto 0 auto;
-  border-bottom: 2px solid #ffa600;
+  border-bottom: 2px solid #00e1e7;
   opacity: 0.18;
 }
 
@@ -212,80 +263,4 @@ body {
         width: auto;
         max-width: none;
     }
-}
-/* Fondo decorativo detrás de la imagen */
-.recuperar-figure::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle at 60% 40%, #ffe9b3 60%, transparent 100%);
-  opacity: 0.65;
-  z-index: -1;
-  filter: blur(18px);
-  border-radius: 50%;
-  pointer-events: none;
-}
-/* Animación piola para el botón de enviar */
-.recuperar-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.recuperar-btn::after {
-  content: "";
-  position: absolute;
-  left: -75%;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.38) 100%);
-  transform: skewX(-25deg);
-  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
-  pointer-events: none;
-}
-
-.recuperar-btn:hover::after {
-  left: 120%;
-  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
-}
-.back-btn {
-  position: absolute;
-  top: 32px;
-  left: 44px;
-  background: #f6ecd1;
-  border: none;
-  border-radius: 50%;
-  width: 64px;
-  height: 64px;
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 20;
-  transition: background .2s;
-  outline: none;
-  padding: 0;
-}
-.back-btn:hover {
-  background: #f5e2b6;
-}
-.back-icon {
-  font-size: 2rem;
-  color: #d1bb8a;
-  display: block;
-  line-height: 1;
-  position: relative;
-}
-
-/* Eliminar cualquier línea decorativa debajo del ícono */
-.back-btn::after {
-  content: none !important;
-  display: none !important;
-  background: none !important;
-  border: none !important;
 }
