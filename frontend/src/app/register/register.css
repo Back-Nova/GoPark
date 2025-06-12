@@ -1,0 +1,245 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: #f7f1e3; /* Fondo crema */
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.register-bg {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Botón volver */
+.back-btn {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  background: rgba(180, 180, 180, 0.10);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background .2s;
+}
+.back-btn:hover {
+  background: rgba(255,180,80,0.14);
+}
+.back-icon {
+  font-size: 2rem;
+  color: #bda87a;
+}
+
+/* Imagen central */
+.register-figure {
+  position: absolute;
+  left: 7vw;
+  bottom: 0;
+  width: 400px;
+  max-width: 90vw;
+  height: auto;
+  z-index: 1;
+  filter: drop-shadow(0 6px 32px rgba(0,0,0,0.09));
+}
+
+@media (min-width: 701px) {
+  .register-figure {
+    width: 520px;
+    max-width: 98vw;
+    left: 7vw;
+    bottom: 80px;
+  }
+}
+
+/* Cubo decorativo */
+.cube {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: #7c5a36;
+  opacity: 0.85;
+  transform: rotate(22deg);
+  z-index: 2;
+  left: 54vw;
+  top: 10vh;
+}
+
+/* CONTENEDOR DEL FORMULARIO */
+.register-form-container {
+  position: absolute;
+  right: 6vw;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(253, 238, 210, 0.95);
+  padding: 48px 40px 36px 40px;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px rgba(200, 170, 90, 0.10);
+  min-width: 370px;
+  max-width: 480px;
+  width: 100%;
+  z-index: 3;
+  border: 1.5px solid #fbe4b6;
+}
+
+/* Título con gradiente animado */
+.register-form h2 {
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 2.7rem;
+  margin: 0 0 28px 0;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-align: left;
+  opacity: 1;
+  background: linear-gradient(120deg, rgba(134, 122, 122, 0.533) 0%, #ffd60088 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-move 3s linear infinite;
+}
+
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.register-form label {
+  color: #bda87a;
+  font-size: 1rem;
+  margin-top: 12px;
+  display: block;
+  letter-spacing: .5px;
+  opacity: .98;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 13px 42px 13px 16px;
+  border: 2px solid #ffa600;
+  border-radius: 8px;
+  background: #fffbe9;
+  font-size: 1.1rem;
+  margin-top: 6px;
+  box-sizing: border-box;
+  color: #444;
+  outline: none;
+  transition: box-shadow .2s, border .2s;
+  opacity: 1;
+}
+.input-group input:focus {
+  box-shadow: 0 0 0 2px #ffc35a88;
+  border: 2.5px solid #ffa600;
+}
+
+.input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffa600;
+  font-size: 1.3rem;
+  opacity: .98;
+}
+
+.register-btn {
+  width: 100%;
+  background: #ffa600;
+  color: #fffbe9;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 0;
+  margin-top: 18px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  font-weight: bold;
+  transition: background .2s, color .2s;
+  opacity: 1;
+  box-shadow: 0 2px 16px 0 rgba(255,166,0, 0.07);
+}
+.register-btn:hover {
+  background: #ff8000;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 950px) {
+  .register-form-container {
+    right: 2vw;
+    min-width: 290px;
+    padding: 28px 12px 22px 12px;
+  }
+  .register-figure {
+    left: 2vw;
+    width: 260px;
+  }
+}
+@media (max-width: 700px) {
+  .register-bg {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .register-form-container, .register-figure {
+    position: static;
+    transform: none;
+    margin: 0 auto;
+  }
+  .register-form-container {
+    margin-top: 42px;
+    margin-bottom: 24px;
+    min-width: auto;
+    width: 92vw;
+  }
+  .register-figure {
+    margin-top: 52px;
+    width: 160px;
+  }
+  .cube {
+    display: none;
+  }
+}
+
+/* Animación para el botón de registrarse */
+.register-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.register-btn::before {
+  content: "";
+  position: absolute;
+  left: -75%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.38) 100%);
+  transform: skewX(-24deg);
+  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
+  pointer-events: none;
+}
+
+.register-btn:hover::before {
+  left: 120%;
+  transition: left 0.5s cubic-bezier(.4,1.6,.6,1);
+}
+
+.register-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 8px 0 rgba(255,166,0, 0.10);
+}

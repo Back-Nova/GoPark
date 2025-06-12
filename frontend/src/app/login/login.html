@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-bg">
+    <button class="back-btn" title="Volver">
+      <span class="back-icon">&#x21A9;</span>
+    </button>
+    <img src="/Image/Login.png" alt="Persona con laptop" class="login-figure">
+    <div class="cube cube1"></div>
+    <div class="cube cube2"></div>
+    <div class="smile"></div>
+    <div class="swirl"></div>
+    <div class="swirl swirl2"></div>
+    <div class="login-form-container">
+      <form class="login-form">
+        <h2>Iniciar Sesion</h2>
+        <label for="email">Email</label>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="Ingrese su email" required>
+          <span class="input-icon">&#x2709;</span>
+        </div>
+        <label for="password">Contraseña</label>
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+          <span class="input-icon">&#128274;</span>
+        </div>
+        <button type="submit" class="login-btn">Ingresar</button>
+        <div class="form-links">
+          <a href="/frontend/src/app/recuperar-contra/recuperar-contra.html">¿A olvidado su contraseña?</a>
+          <a href="/frontend/src/app/register/register.html">¿Esta Registrado?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
