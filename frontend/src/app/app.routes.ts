@@ -1,3 +1,17 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { PaginaPrin } from './pagina-prin/pagina-prin';
+import { Login } from './login/login';
+import { RecuperarContra } from './recuperar-contra/recuperar-contra';
+import { Register } from './register/register';
+import { RestablecerContra } from './restablecer-contra/restablecer-contra';
+import { Admin } from './admin/admin';
+
+export const routes: Routes = [
+  { path: '', component: PaginaPrin }, // Ruta principal (inicio)
+  { path: 'login', component: Login },
+  { path: 'recuperar-contra', component: RecuperarContra },
+  { path: 'register', component: Register },
+  { path: 'restablecer-contra', component: RestablecerContra },
+  { path: 'admin', component: Admin },
+];
