@@ -107,8 +107,8 @@ body {
   background: linear-gradient(90deg, #fff 0%, #00e1e7 80%);
   background-size: 300% 100%;
   animation: gradient-move 3s linear infinite;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
   font-family: 'Orbitron', Arial, sans-serif;

@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+body {
+  background: #222729;
+  margin: 0;
+  font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+  color: #fff;
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: #232b2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+
+.logo {
+  margin-top: 32px;
+  margin-bottom: 30px;
+  font-size: 2.1rem;
+  color: #18f0fc;
+  text-align: center;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar nav ul li {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: #b2d6d6;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  border-left: 4px solid transparent;
+  gap: 10px;
+}
+
+.sidebar nav ul li.active,
+.sidebar nav ul li:hover {
+  background: #1c2325;
+  color: #18f0fc;
+  border-left: 4px solid #18f0fc;
+}
+
+.sidebar nav ul li i {
+  min-width: 22px;
+}
+
+.main-panel {
+  flex: 1;
+  padding: 0 2vw;
+  background: #222729;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 18px 0 6px 0;
+}
+
+.admin-name {
+  color: #18f0fc;
+  font-size: 1.1rem;
+  margin-right: 18px;
+  font-family: 'Orbitron', Arial, sans-serif;
+}
+
+.logout-btn {
+  background: #18f0fc;
+  color: #222729;
+  border: none;
+  border-radius: 7px;
+  font-size: 1rem;
+  padding: 5px 18px;
+  font-family: 'Orbitron', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.logout-btn:hover {
+  background: #13b7c5;
+  color: #fff;
+}
+
+.welcome-title {
+  font-size: 2.4rem;
+  color: #fff;
+  margin-top: 12px;
+  margin-bottom: 28px;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: bold;
+}
+
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.dashboard-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 0;
+}
+
+.dashboard-card {
+  background: radial-gradient(ellipse at left, #19373a 0%, #21292b 100%);
+  border-radius: 20px;
+  padding: 36px 0 0 18px;
+  min-width: 200px;
+  min-height: 90px;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.3rem;
+  color: #18f0fc;
+  box-shadow: 0 0 22px 0 #19373a88;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.dashboard-card span {
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-card.wide {
+  min-width: 100%;
+  min-height: 70px;
+  flex: 3;
+  align-items: flex-start;
+}
+.dashboard-card.tall {
+  min-height: 150px;
+}
+@media (max-width: 1200px) {
+  .dashboard-row {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .dashboard-card {
+    min-width: unset;
+  }
+}

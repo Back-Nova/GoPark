@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pagina-prin.css">
+    <title>Document</title>
+</head>
+<body>
+        <div class="gopark-main">
+  <!-- Sidebar -->
+  <aside class="gopark-sidebar">
+    <div class="sidebar-logo">
+      <button class="login-logo-btn" title="Iniciar sesión" onclick="location.href='/GoPark/frontend/src/app/login/login.html'">
+        <!-- Icono usuario -->
+        <svg class="sidebar-user-icon" viewBox="0 0 64 64" fill="none" stroke-width="3">
+          <circle cx="32" cy="24" r="14" stroke="currentColor" fill="none"/>
+          <path d="M12 54c0-10.5 40-10.5 40 0" stroke="currentColor" fill="none"/>
+        </svg>
+      </button>
+      <div class="sidebar-login-label">
+        Iniciar Sesión
+      </div>
+    </div>
+    <div class="sidebar-cart">
+      <button class="cart-btn" title="Ver carrito" onclick="location.href='/carrito'">
+        <svg class="cart-icon" viewBox="0 0 32 32" fill="none" stroke-width="2">
+          <circle cx="11" cy="27" r="2.2" stroke="currentColor"/>
+          <circle cx="23" cy="27" r="2.2" stroke="currentColor"/>
+          <path d="M4 7h2.5l3.3 13.8A2 2 0 0 0 12.7 23h10.6a2 2 0 0 0 1.9-1.4L28 10H7" stroke="currentColor" fill="none"/>
+        </svg>
+        <span class="cart-label">Carrito</span>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-btn active" href="#">
+        <span class="icon">
+          <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
+            <rect x="4" y="6" width="10" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="18" y="6" width="10" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M14 8C15.5 10 18.5 10 20 8" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </span>
+        <span>Tutoriales</span>
+      </a>
+      <a class="sidebar-btn" href="#">
+        <span class="icon">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 7h8M8 11h8M8 15h4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </span>
+        <span>Documentos</span>
+      </a>
+      <a class="sidebar-btn" href="#">
+        <span class="icon">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-1.82-.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .33-1.82l-.06-.06A2 2 0 1 1 7.7 4.3l.06.06A1.65 1.65 0 0 0 9 4.6c.36-.15.76-.15 1.12 0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.6c.15.36.15.76 0 1.12z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </span>
+        <span>Opciones</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Contenido Principal -->
+  <main class="gopark-content">
+    <header class="main-header">
+      <div></div>
+      <div class="main-lang">
+        <span class="icon">🌐</span> ES
+      </div>
+    </header>
+
+    <section class="main-logo-center">
+      <img src="/GoPark/Image/LogoApp.png" alt="GoPark logo grande" class="main-logo" />
+      <span class="main-title">GOPARK</span>
+    </section>
+
+    <footer class="gopark-footer">
+      <div class="footer-columns">
+        <div>
+          <b><u>Redes sociales</u></b><br>
+          <a href="#">Youtube</a><br>
+          <a href="#">Git Hub</a><br>
+          <a href="#">Blog</a>
+        </div>
+        <div>
+          <b><u>Comunidad</u></b><br>
+          <a href="#">Contribuir</a><br>
+          <a href="#">Reportar Problemas</a>
+        </div>
+        <div>
+          <b><u>Recursos</u></b><br>
+          <a href="#">Kit de prensa</a><br>
+          <a href="#">Hoja de ruta</a>
+        </div>
+        <div>
+          <b>Integrantes</b><br>
+          Aban Santiago<br>
+          Rocio Gonzales<br>
+          <b>Mogro Lautaro</b><br>
+          Victor Hugo Flores
+        </div>
+      </div>
+      <div class="footer-credits">
+        Echo por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+      </div>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
