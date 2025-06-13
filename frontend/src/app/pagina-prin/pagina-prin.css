@@ -67,7 +67,7 @@ body, html {
   margin-top: 12px;
   font-family: 'Orbitron', Arial, sans-serif;
   font-size: 1.5rem;
-  color: #111;
+  color: #fffcfc;  /* Se cambio el color por uno blanco para que se vea  */
   font-weight: bold;
   letter-spacing: 1px;
   text-align: center;
