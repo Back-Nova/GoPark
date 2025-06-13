@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restablecer-contra',
@@ -7,5 +8,4 @@ import { Component } from '@angular/core';
   styleUrl: './restablecer-contra.css'
 })
 export class RestablecerContra {
-
 }

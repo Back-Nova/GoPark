@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
 :root {
-  --color-bg: #112329;
+
   --color-sidebar: #22282a;
   --color-accent: #00f2ff;
   --color-sidebar-text: #eafcff;
@@ -12,15 +12,16 @@
 body, html {
   margin: 0;
   padding: 0;
-  background: var(--color-bg);
+  background: #112329;
   font-family: 'Orbitron', Arial, sans-serif;
   box-sizing: border-box;
+  background-color:#112329 ;
 }
 
 .gopark-main {
   display: flex;
   height: 100vh;
-  border: 3px solid var(--color-border);
+  border: 3px solid #00f2ff;
   box-sizing: border-box;
   min-width: 320px;
 }
@@ -28,7 +29,7 @@ body, html {
 .gopark-sidebar {
   width: 320px;
   min-width: 200px;
-  background: var(--color-sidebar);
+  background: #22282a;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,8 +61,8 @@ body, html {
     fill: #fff;
   width: 90px;
   height: 90px;
-  stroke: var(--color-accent);
-  filter: drop-shadow(0 0 18px var(--color-accent));
+  stroke: #00f2ff;
+  filter: drop-shadow(0 0 18px #00f2ff);
 }
 .sidebar-login-label {
   margin-top: 12px;
@@ -87,7 +88,7 @@ body, html {
   cursor: pointer;
   padding: 4px 20px 4px 6px;
   gap: 10px;
-  color: var(--color-accent);
+  color: #00f2ff;
   border-radius: 10px;
   transition: background 0.2s;
 }
@@ -98,13 +99,13 @@ body, html {
 .cart-icon {
   width: 36px;
   height: 36px;
-  stroke: var(--color-accent);
-  filter: drop-shadow(0 0 12px var(--color-accent));
+  stroke: #00f2ff;
+  filter: drop-shadow(0 0 12px #00f2ff);
 }
 .cart-label {
   font-family: 'Orbitron', Arial, sans-serif;
   font-size: 1.3rem;
-  color: var(--color-accent);
+  color: #00f2ff;
   font-weight: 600;
   letter-spacing: 1px;
   margin-left: 6px;
@@ -113,7 +114,7 @@ body, html {
   position: absolute;
   top: 2px;
   right: 8px;
-  background: var(--color-accent);
+  background: #00f2ff;
   color: #0a1720;
   font-size: 1.0rem;
   border-radius: 50%;
@@ -137,7 +138,7 @@ body, html {
   width: 92%;
   background: none;
   border: none;
-  color: var(--color-sidebar-text);
+  color:  #eafcff;
   font-size: 2rem;
   font-family: 'Orbitron', Arial, sans-serif;
   font-weight: 700;
@@ -150,6 +151,7 @@ body, html {
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
+
 .sidebar-btn .icon {
   font-size: 2.2rem;
   width: 2.7rem;
@@ -162,12 +164,12 @@ body, html {
 .sidebar-btn.active,
 .sidebar-btn:hover {
   background: #162b31;
-  color: var(--color-accent);
+  color: #00f2ff;
 }
 
 .gopark-content {
   flex: 1;
-  background: var(--color-bg);
+  background: #112329;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -185,7 +187,7 @@ body, html {
 .main-lang {
   display: flex;
   align-items: center;
-  color: var(--color-accent);
+  color: #00f2ff;
   font-weight: 600;
   gap: 10px;
 }
@@ -209,7 +211,7 @@ body, html {
 }
 .main-logo-center .main-title {
   font-size: 5.2rem;
-  color: var(--color-accent);
+  color: #00f2ff;
   font-family: 'Orbitron', Arial, sans-serif;
   font-weight: 900;
   letter-spacing: 7px;
@@ -221,12 +223,12 @@ body, html {
 .gopark-footer {
   width: 100%;
   padding: 0 0 13px 0;
-  background: var(--color-footer);
-  color: var(--color-accent);
+  background: #1b2326;
+  color: #00f2ff;
   font-size: 1.05rem;
   box-sizing: border-box;
   text-align: center;
-  border-top: 2px solid var(--color-border);
+  border-top: 2px solid #00f2ff;
 }
 .gopark-footer hr {
   display: none;
@@ -248,7 +250,7 @@ body, html {
   font-size: 1.07rem;
 }
 .footer-columns a {
-  color: var(--color-accent);
+  color: #00f2ff;
   text-decoration: underline;
   font-size: 1.03rem;
 }

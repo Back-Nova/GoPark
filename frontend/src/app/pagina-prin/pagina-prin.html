@@ -11,7 +11,7 @@
   <!-- Sidebar -->
   <aside class="gopark-sidebar">
     <div class="sidebar-logo">
-      <button class="login-logo-btn" title="Iniciar sesión" onclick="location.href='/GoPark/frontend/src/app/login/login.html'">
+      <button class="login-logo-btn" title="Iniciar sesión" (click)="Valogin()">
         <!-- Icono usuario -->
         <svg class="sidebar-user-icon" viewBox="0 0 64 64" fill="none" stroke-width="3">
           <circle cx="32" cy="24" r="14" stroke="currentColor" fill="none"/>
@@ -74,7 +74,7 @@
     </header>
 
     <section class="main-logo-center">
-      <img src="/Image/LogoApp.png" alt="GoPark logo grande" class="main-logo" /> <!--  Se cambio la ruta para la imagen -->
+      <img src="Image/LogoApp.png" alt="GoPark logo grande" class="main-logo" /> <!--  Se cambio la ruta para la imagen -->
       <span class="main-title">GOPARK</span>
     </section>
 
