@@ -21,12 +21,20 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*.@(png|jpg|jpeg|gif|svg)",
+                "input": "../Image",
+                "output": "/assets/image"
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -78,12 +86,20 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*.@(png|jpg|jpeg|gif|svg)",
+                "input": "../Image",
+                "output": "/assets/image"
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "scripts": []
           }
         }
       }

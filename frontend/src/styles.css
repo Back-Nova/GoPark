@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+/* Elimina márgenes predeterminados y aplica fondo oscuro */
+body, html {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100%;
+  background-color: #121e26; /* Usa tu color de diseño */
+  font-family: 'Orbitron', sans-serif; /* Opcional: si usas esta fuente */
+}
