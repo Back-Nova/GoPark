@@ -24,7 +24,8 @@ body {
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center; /* Cambiado de flex-start a center */
+  gap: 0;
 }
 
 /* ===== BOTÓN VOLVER ===== */
@@ -57,36 +58,40 @@ body {
 
 /* ===== IMAGEN PRINCIPAL ===== */
 .login-figure {
-  position: absolute;
-  left: 10vw;
-  top: 50%;
-  transform: translateY(-50%);
+  position: static;
+  margin: 0 5vw 0 0; /* Espacio a la derecha, ajusta según prefieras */
   width: 370px;
   max-width: 90vw;
   height: auto;
   z-index: 1;
   filter: drop-shadow(0 6px 32px rgba(0,0,0,0.25));
+  align-self: center;
+  max-height: 75vh;
 }
 @media (min-width: 951px) {
   .login-figure {
-    top: 50%;
-    transform: translateY(-50%);
     width: 500px;
     max-width: 40vw;
+    margin: 0 7vw 0 0;
   }
 }
 @media (max-width: 950px) {
   .login-figure {
-    left: 2vw;
     width: 220px;
+    margin: 0 3vw 0 0;
   }
 }
 @media (max-width: 700px) {
+  .login-bg {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+  }
   .login-figure {
-    position: static;
-    transform: none;
     margin: 52px auto 0 auto;
     width: 160px;
+    position: static;
+    transform: none;
   }
 }
 
@@ -142,10 +147,10 @@ body {
 
 /* ===== FORMULARIO LOGIN ===== */
 .login-form-container {
-  position: absolute;
-  right: 7vw;
+  position: static;
+  /* right: 7vw;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); */
   background: rgba(29, 38, 44, 0.97);
   border-radius: 28px;
   box-shadow: 0 0 60px 12px #00e1e711, 0 8px 32px rgba(0,225,231,0.06);
@@ -156,18 +161,17 @@ body {
   width: 100%;
   z-index: 3;
   transition: box-shadow 0.4s;
+  align-self: center;
+  margin: 0;
 }
 @media (max-width: 950px) {
   .login-form-container {
-    right: 2vw;
     min-width: 290px;
     padding: 28px 12px 22px 12px;
   }
 }
 @media (max-width: 700px) {
   .login-form-container {
-    position: static;
-    transform: none;
     margin: 42px auto 24px auto;
     min-width: auto;
     width: 92vw;

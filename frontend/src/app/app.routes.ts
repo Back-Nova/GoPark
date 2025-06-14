@@ -6,6 +6,7 @@ import { RecuperarContra } from './recuperar-contra/recuperar-contra';
 import { Register } from './register/register';
 import { RestablecerContra } from './restablecer-contra/restablecer-contra';
 import { Admin } from './admin/admin';
+import { Carrito } from './carrito/carrito';
 
 export const routes: Routes = [
   { path: '', component: PaginaPrin }, // Ruta principal (inicio)
@@ -14,4 +15,5 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'restablecer-contra', component: RestablecerContra },
   { path: 'admin', component: Admin },
+  { path: 'carrito', component: Carrito}
 ];

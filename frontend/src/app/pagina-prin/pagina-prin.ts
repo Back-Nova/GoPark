@@ -14,4 +14,7 @@ export class PaginaPrin {
     Valogin() { // se agrega metodo
       this.router.navigate(['/login']);
     }
+    Carrito(){
+      this.router.navigate(['/carrito']);
+    }
 }

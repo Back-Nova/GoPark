@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
 :root {
-
   --color-sidebar: #22282a;
   --color-accent: #00f2ff;
   --color-sidebar-text: #eafcff;
@@ -68,7 +67,7 @@ body, html {
   margin-top: 12px;
   font-family: 'Orbitron', Arial, sans-serif;
   font-size: 1.5rem;
-  color: #fffcfc;  /* Se cambio el color por uno blanco para que se vea  */
+  color: #fffcfc;
   font-weight: bold;
   letter-spacing: 1px;
   text-align: center;
@@ -218,6 +217,29 @@ body, html {
   text-shadow: 0 0 24px #00f2ff55;
   line-height: 1.1;
   margin-top: -25px;
+}
+
+/* ====== BOTÓN EMPEZAR ====== */
+.empezar-btn {
+  margin-top: 20px;
+  padding: 15px 45px;
+  font-size: 1.5rem;
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: linear-gradient(90deg, #00f2ff 20%, #1b2326 100%);
+  color: #071a1b;
+  border: 2px solid #00f2ff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 2px;
+  box-shadow: 0 0 16px #00f2ff55;
+  transition: background 0.2s, color 0.2s;
+}
+.empezar-btn:hover, .empezar-btn:focus {
+  background: #00f2ff;
+  color: #112329;
+  border-color: #00f2ff;
+  box-shadow: 0 0 24px #00f2ff;
 }
 
 .gopark-footer {
