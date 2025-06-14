@@ -1,51 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="admin.css">
-    <title>Document</title>
+  <title>Administración | GoPark</title>
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-        <div class="admin-container">
-    <aside class="sidebar">
-        <div class="logo">
-        <span>Turismo<br>Admin</span>
+  <div class="admin-bg">
+
+    <header class="admin-header">
+      <h1 class="admin-title"><i class="fa-solid fa-user-shield"></i> Administración GoPark</h1>
+      <nav class="admin-nav">
+        <a href="#paquetes" class="nav-link active"><i class="fa-solid fa-box"></i> Paquetes</a>
+        <a href="#usuarios" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+        <a href="#reservas" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Reservas</a>
+        <a href="#reportes" class="nav-link"><i class="fa-solid fa-chart-column"></i> Reportes</a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <!-- Paquetes -->
+      <section id="paquetes" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-box"></i> Paquetes turísticos</h2>
+          <button class="admin-nuevo-btn">
+            <i class="fa-solid fa-plus"></i> Nuevo Paquete
+          </button>
         </div>
-        <nav>
-        <ul>
-            <li class="active"><i class="icon-dashboard"></i> Dashboard</li>
-            <li><i class="icon-paquetes"></i> Paquetes</li>
-            <li><i class="icon-reservas"></i> Reservas</li>
-            <li><i class="icon-clientes"></i> Clientes</li>
-            <li><i class="icon-ofertas"></i> Ofertas</li>
-            <li><i class="icon-usuarios"></i> Usuarios</li>
-            <li><i class="icon-reportes"></i> Reportes</li>
-            <li><i class="icon-config"></i> Configuración</li>
-        </ul>
-        </nav>
-    </aside>
-    <main class="main-panel">
-        <header class="panel-header">
-        <span class="admin-name">Administrador</span>
-        <button class="logout-btn">Cerrar sesión</button>
-        </header>
-        <h1 class="welcome-title">Bienvenido al Panel de Administración</h1>
-        <section class="dashboard-section">
-        <div class="dashboard-row">
-            <div class="dashboard-card"><span>COMPRA</span></div>
-            <div class="dashboard-card"><span>COMPROBANTE</span></div>
-            <div class="dashboard-card"><span>CLIENTE</span></div>
+        <div class="admin-lista">
+          <!-- Ejemplo de paquete -->
+          <div class="admin-card">
+            <div class="admin-card-info">
+              <div class="admin-card-img">
+                <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" alt="Bariloche">
+              </div>
+              <div class="admin-card-data">
+                <h3 class="admin-card-nombre">Aventura en Bariloche</h3>
+                <div><b>Fechas:</b> 12/07/2025 - 19/07/2025</div>
+                <div><b>Descripción:</b> Incluye hotel 4 estrellas, excursiones y alquiler de vehículo.</div>
+                <div><b>Precio:</b> $120.000</div>
+                <div><b>Cupos totales:</b> 20 | <b>Disponibles:</b> 10</div>
+                <div><b>Tipo:</b> Familiar</div>
+                <div><b>Vuelo:</b> 123 | <b>Vehículo:</b> 5 | <b>Alojamiento:</b> 8 | <b>Excursiones:</b> 6</div>
+                <div><b>Estado:</b> <span class="badge disponible">Disponible</span></div>
+              </div>
+            </div>
+            <div class="admin-card-acciones">
+              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+          <!-- Más paquetes... -->
         </div>
-        <div class="dashboard-row">
-            <div class="dashboard-card wide"><span>PAQUETE</span></div>
+      </section>
+
+      <!-- Usuarios -->
+      <section id="usuarios" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-users"></i> Usuarios</h2>
+          <button class="admin-nuevo-btn">
+            <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
+          </button>
         </div>
-        <div class="dashboard-row">
-            <div class="dashboard-card tall"><span>Compras</span></div>
-            <div class="dashboard-card tall"><span>Comprobantes</span></div>
+        <div class="admin-lista">
+          <!-- Ejemplo de usuario -->
+          <div class="admin-card">
+            <div class="admin-card-info">
+              <div class="admin-card-img">
+                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Usuario">
+              </div>
+              <div class="admin-card-data">
+                <h3 class="admin-card-nombre">Juan Pérez</h3>
+                <div><b>Email:</b> juanperez&#64;gmail.com</div>
+                <div><b>Rol:</b> Administrador</div>
+              </div>
+            </div>
+            <div class="admin-card-acciones">
+              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+          <!-- Más usuarios... -->
         </div>
-        </section>
+      </section>
+
+      <!-- Reservas -->
+      <section id="reservas" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-calendar-check"></i> Reservas</h2>
+        </div>
+        <div class="admin-lista">
+          <!-- Ejemplo de reserva -->
+          <div class="admin-card">
+            <div class="admin-card-info">
+              <div class="admin-card-data">
+                <div><b>Reserva:</b> #1004</div>
+                <div><b>Usuario:</b> Juan Pérez</div>
+                <div><b>Paquete:</b> Aventura en Bariloche</div>
+                <div><b>Fecha de reserva:</b> 01/07/2025</div>
+                <div><b>Cantidad personas:</b> 4</div>
+                <div><b>Estado:</b> <span class="badge disponible">Activa</span></div>
+                <div><b>Observaciones:</b> Sin observaciones</div>
+              </div>
+            </div>
+            <div class="admin-card-acciones">
+              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+          <!-- Más reservas... -->
+        </div>
+      </section>
+
+      <!-- Reportes -->
+      <section id="reportes" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-chart-column"></i> Reportes</h2>
+          <button class="admin-nuevo-btn">
+            <i class="fa-solid fa-file-arrow-down"></i> Generar Reporte
+          </button>
+        </div>
+        <div class="admin-lista">
+          <!-- Ejemplo de reporte -->
+          <div class="admin-card">
+            <div class="admin-card-info">
+              <div class="admin-card-data">
+                <div><b>Reporte:</b> #501</div>
+                <div><b>Tipo:</b> Ventas Mensuales</div>
+                <div><b>Generado por:</b> Juan Pérez</div>
+                <div><b>Fecha:</b> 10/06/2025</div>
+                <div><b>Parámetros:</b> Mes: Junio</div>
+                <div><b>Estado:</b> <span class="badge disponible">Completado</span></div>
+              </div>
+            </div>
+            <div class="admin-card-acciones">
+              <button class="admin-descargar-btn"><i class="fa-solid fa-download"></i> Descargar</button>
+              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+          <!-- Más reportes... -->
+        </div>
+      </section>
+
     </main>
-    </div>
+    <footer class="admin-footer">
+      Echo por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+    </footer>
+  </div>
 </body>
 </html>
