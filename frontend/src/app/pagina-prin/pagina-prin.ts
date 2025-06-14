@@ -17,4 +17,7 @@ export class PaginaPrin {
     Carrito(){
       this.router.navigate(['/carrito']);
     }
+    ApartadoPrin() { // se agrega metodo
+      this.router.navigate(['/apartado-prin']);
+    }
 }
