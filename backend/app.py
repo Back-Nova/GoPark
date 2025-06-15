@@ -1,21 +1,13 @@
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request
+from flask_cors import CORS
 import os
 
+app = Flask(__name__, static_folder='static/browser', static_url_path='')
+CORS(app)
 
-# Inicializamos la app
-app = Flask(__name__, static_folder='static')
-
-# 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    full_path = os.path.join(app.static_folder, 'browser', path)
-
-    if path != "" and os.path.exists(full_path):
-        return send_from_directory(os.path.join(app.static_folder, 'browser'), path)
-    else:
-        return send_from_directory(os.path.join(app.static_folder, 'browser'), 'index.html')
-
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

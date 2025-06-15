@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -18,8 +19,7 @@ export class Login {
       this.router.navigate(['/recuperar-contra']);
     }
 
-    Registrar() { // se agrega metodo
-      this.router.navigate(['/register']);
-    }
-
+  Registrar() {
+    this.router.navigate(['/register']);
+  }
 }

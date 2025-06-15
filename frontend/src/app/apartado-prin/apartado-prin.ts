@@ -12,5 +12,6 @@ export class ApartadoPrin {
   ApartadoPrin() { // se agrega metodo
     this.router.navigate(['/']);
   }
+  
 
 }
