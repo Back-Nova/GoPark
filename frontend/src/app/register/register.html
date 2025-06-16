@@ -9,14 +9,14 @@
 </head>
 <body>
   <div class="register-bg">
-    <button class="back-btn" title="Volver" (click)="Login()">
+    <button class="back-btn" title="Volver" onclick="window.location.href='/login'">
       <span class="back-icon">&#x21A9;</span>
     </button>
 
     <!-- Imagen decorativa central -->
     <img src="/assets/image/Registro.png" alt="Persona con computadora y gráficos" class="register-figure">
 
-    <!-- Nubes y decorativos (puedes usar imágenes o SVGs reales si tienes) -->
+    <!-- Nubes y decorativos -->
     <div class="cloud cloud1"></div>
     <div class="cloud cloud2"></div>
     <div class="cloud cloud3"></div>
@@ -26,28 +26,32 @@
 
     <!-- FORMULARIO -->
     <div class="register-form-container">
-      <form class="register-form">
+      <form id="registerForm" class="register-form">
         <h2>Crear cuenta</h2>
         <label for="nombre">Nombre</label>
         <div class="input-group">
           <input type="text" id="nombre" placeholder="Ingrese su nombre" required>
           <span class="input-icon">&#128100;</span>
         </div>
+
         <label for="apellido">Apellido</label>
         <div class="input-group">
           <input type="text" id="apellido" placeholder="Ingrese su apellido" required>
           <span class="input-icon">&#128100;</span>
         </div>
+
         <label for="email">Gmail</label>
         <div class="input-group">
           <input type="email" id="email" placeholder="Ingrese su Email" required>
           <span class="input-icon">&#x2709;</span>
         </div>
+
         <label for="password">Contraseña</label>
         <div class="input-group">
           <input type="password" id="password" placeholder="Ingrese su contraseña" required>
           <span class="input-icon">&#128274;</span>
         </div>
+
         <button type="submit" class="register-btn">Registrarse</button>
       </form>
     </div>

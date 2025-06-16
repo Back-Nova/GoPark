@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+:root {
+  --color-sidebar: #22282a;
+  --color-accent: #00f2ff;
+  --color-sidebar-text: #eafcff;
+  --color-border: #00f2ff;
+  --color-footer: #1b2326;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #112329;
+  font-family: 'Orbitron', Arial, sans-serif;
+  box-sizing: border-box;
+  background-color:#112329 ;
+}
+
+.gopark-main {
+  display: flex;
+  height: 100vh;
+  border: 3px solid #00f2ff;
+  box-sizing: border-box;
+  min-width: 320px;
+}
+
+.gopark-sidebar {
+  width: 320px;
+  min-width: 200px;
+  background: #22282a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+.sidebar-logo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.login-logo-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-user-icon {
+    fill: #fff;
+  width: 90px;
+  height: 90px;
+  stroke: #00f2ff;
+  filter: drop-shadow(0 0 18px #00f2ff);
+}
+.sidebar-login-label {
+  margin-top: 12px;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.5rem;
+  color: #fffcfc;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.sidebar-cart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.cart-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 20px 4px 6px;
+  gap: 10px;
+  color: #00f2ff;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+.cart-btn:hover,
+.cart-btn:focus {
+  background: #162b31;
+}
+.cart-icon {
+  width: 36px;
+  height: 36px;
+  stroke: #00f2ff;
+  filter: drop-shadow(0 0 12px #00f2ff);
+}
+.cart-label {
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.3rem;
+  color: #00f2ff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-left: 6px;
+}
+.cart-count {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  background: #00f2ff;
+  color: #0a1720;
+  font-size: 1.0rem;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: bold;
+  border: 2px solid #22282a;
+}
+
+.sidebar-nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 92%;
+  background: none;
+  border: none;
+  color:  #eafcff;
+  font-size: 2rem;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: 700;
+  padding: 14px 24px;
+  margin: 0 auto;
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-btn .icon {
+  font-size: 2.2rem;
+  width: 2.7rem;
+  min-width: 2.7rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-btn.active,
+.sidebar-btn:hover {
+  background: #162b31;
+  color: #00f2ff;
+}
+
+.gopark-content {
+  flex: 1;
+  background: #112329;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.main-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 26px 40px 0 0;
+  font-size: 1.4rem;
+}
+
+.main-lang {
+  display: flex;
+  align-items: center;
+  color: #00f2ff;
+  font-weight: 600;
+  gap: 10px;
+}
+.main-lang .icon {
+  font-size: 1.7rem;
+}
+
+.main-logo-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  gap: 30px;
+  padding-top: 38px;
+}
+.main-logo-center .main-logo {
+  width: 190px;
+  max-width: 32vw;
+  margin-bottom: 0;
+}
+.main-logo-center .main-title {
+  font-size: 5.2rem;
+  color: #00f2ff;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: 7px;
+  text-shadow: 0 0 24px #00f2ff55;
+  line-height: 1.1;
+  margin-top: -25px;
+}
+
+/* ====== BOTÓN EMPEZAR ====== */
+.empezar-btn {
+  margin-top: 20px;
+  padding: 15px 45px;
+  font-size: 1.5rem;
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: linear-gradient(90deg, #00f2ff 20%, #1b2326 100%);
+  color: #071a1b;
+  border: 2px solid #00f2ff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 2px;
+  box-shadow: 0 0 16px #00f2ff55;
+  transition: background 0.2s, color 0.2s;
+}
+.empezar-btn:hover, .empezar-btn:focus {
+  background: #00f2ff;
+  color: #112329;
+  border-color: #00f2ff;
+  box-shadow: 0 0 24px #00f2ff;
+}
+
+.gopark-footer {
+  width: 100%;
+  padding: 0 0 13px 0;
+  background: #1b2326;
+  color: #00f2ff;
+  font-size: 1.05rem;
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 2px solid #00f2ff;
+}
+.gopark-footer hr {
+  display: none;
+}
+.footer-columns {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  font-size: 1.01rem;
+  margin-bottom: 11px;
+  flex-wrap: wrap;
+}
+.footer-columns div {
+  min-width: 120px;
+  text-align: left;
+  line-height: 1.45;
+}
+.footer-columns b, .footer-columns u {
+  font-size: 1.07rem;
+}
+.footer-columns a {
+  color: #00f2ff;
+  text-decoration: underline;
+  font-size: 1.03rem;
+}
+.footer-columns a:hover {
+  color: #fff;
+}
+.footer-credits {
+  font-size: 0.96rem;
+  color: #aef8ff;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .gopark-sidebar {
+    width: 180px;
+    min-width: 110px;
+    padding-top: 24px;
+  }
+  .sidebar-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  .login-logo-btn .sidebar-user-icon,
+  .cart-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .sidebar-login-label {
+    font-size: 1.1rem;
+  }
+  .cart-label {
+    font-size: 1rem;
+  }
+  .sidebar-cart {
+    margin-bottom: 14px;
+  }
+  .sidebar-btn {
+    font-size: 1.1rem;
+    padding: 10px 12px;
+  }
+  .sidebar-btn .icon {
+    font-size: 1.3rem;
+    width: 1.8rem;
+    min-width: 1.8rem;
+  }
+  .main-logo-center .main-logo { width: 90px; }
+  .main-logo-center .main-title { font-size: 2.1rem; margin-top: -10px;}
+  .footer-columns { flex-direction: column; gap: 10px; align-items: center; }
+}

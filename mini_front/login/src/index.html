@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-bg">
+    <button class="back-btn" title="Volver" onclick="Va_print()">
+      <span class="back-icon">&#x21A9;</span>
+    </button>
+    <!-- Ejemplo en cualquier componente -->
+    <img src="../../../Image/Login.png" alt="Login">
+    <div class="cube cube1"></div>
+    <div class="cube cube2"></div>
+    <div class="smile"></div>
+    <div class="swirl"></div>
+    <div class="swirl swirl2"></div>
+    <div class="login-form-container">
+      <form class="login-form">
+        <h2>Iniciar Sesion</h2>
+        <label for="email">Email</label>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="Ingrese su email" required>
+          <span class="input-icon">&#x2709;</span>
+        </div>
+        <label for="password">Contraseña</label>
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+          <span class="input-icon">&#128274;</span>
+        </div>
+        <button type="submit" class="login-btn">Ingresar</button>
+        <div class="form-links">
+          <a onclick="window.location.href='http://127.0.0.1:4200/recuperar_contra'">¿A olvidado su contraseña?</a>
+          <a onclick="Registrarme()">¿Esta Registrado?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    function Va_print() {
+            window.location.href = "http://127.0.0.1:4200/";
+            console.log("Redirigiendo a la página de inicio de sesión...");
+        }
+    function Registrarme() {
+            window.location.href = "http://127.0.0.1:4200/register";
+            console.log("Redirigiendo a la página de registro...");
+        }
+  </script>
+</body>
+</html>

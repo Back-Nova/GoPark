@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es" data-beasties-container>
+<head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta</title>
+  <style>@font-face{font-family:'Orbitron';font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/orbitron/v34/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_CmBoWgz.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}</style>
+  <link rel="stylesheet" href="/backend/static/browser/register.css">
+<style>body{margin:0;padding:0;font-family:Orbitron,Arial,sans-serif;background:#181e21;min-height:100vh;overflow-x:hidden}.register-bg{position:relative;min-height:100vh;width:100vw;overflow:hidden;display:flex;align-items:center;justify-content:flex-start}.back-btn{position:absolute;top:32px;left:32px;background:#00e1e717;border:none;border-radius:50%;width:48px;height:48px;cursor:pointer;z-index:10;transition:background .2s;display:flex;align-items:center;justify-content:center;outline:none}.back-btn:hover{background:#00e1e72e}.back-icon{font-size:2rem;color:#00e1e7}.register-figure{position:absolute;left:7vw;bottom:0;width:400px;max-width:90vw;height:auto;z-index:1;filter:drop-shadow(0 6px 32px rgba(0,225,231,.07))}@media (min-width: 701px){.register-figure{width:520px;max-width:98vw;left:7vw;bottom:80px}}.register-form-container{position:absolute;right:6vw;top:50%;transform:translateY(-50%);background:#1d262cf7;padding:48px 40px 36px;border-radius:32px;box-shadow:0 0 60px 12px #00e1e711,0 8px 32px #00e1e70f;min-width:370px;max-width:480px;width:100%;z-index:3;border:1.5px solid #183238}.register-form h2{font-family:Orbitron,Arial,sans-serif;font-size:2.7rem;margin:0 0 28px;letter-spacing:2px;font-weight:700;text-align:left;opacity:1;background:linear-gradient(90deg,#fff,#00e1e7 80%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;animation:gradient-move 3s linear infinite}@keyframes gradient-move{0%{background-position:0% 50%}to{background-position:100% 50%}}.register-form label{color:#00e1e7;font-size:1rem;margin-top:12px;display:block;letter-spacing:.5px;opacity:.98;font-weight:600}.input-group{position:relative;margin-bottom:18px}.input-group input{width:100%;padding:13px 42px 13px 16px;border:2px solid #00e1e7;border-radius:8px;background:#192024;font-size:1.1rem;margin-top:6px;box-sizing:border-box;color:#00e1e7;outline:none;transition:box-shadow .2s,border .2s;opacity:1}.input-group input:focus{box-shadow:0 0 0 2px #00e1e77a;border:2.5px solid #04fff8}.input-group input::placeholder{color:#3dc3c7;opacity:1}.input-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#00e1e7;font-size:1.3rem;opacity:.98}.register-btn{width:100%;background:linear-gradient(90deg,#00e1e7,#0cb9bb);color:#fff;font-family:Orbitron,Arial,sans-serif;font-size:1.2rem;border:none;border-radius:8px;padding:13px 0;margin-top:18px;cursor:pointer;letter-spacing:1px;font-weight:700;transition:background .2s,color .2s;opacity:1;box-shadow:0 2px 16px #00e1e717;position:relative;overflow:hidden}.register-btn:before{content:"";position:absolute;left:-75%;top:0;width:50%;height:100%;background:linear-gradient(120deg,#ffffff2e,#ffffff61);transform:skew(-24deg);transition:left .5s cubic-bezier(.4,1.6,.6,1);pointer-events:none}.register-btn:hover:before{left:120%;transition:left .5s cubic-bezier(.4,1.6,.6,1)}.register-btn:hover{background:linear-gradient(90deg,#04fff8,#07cfd2);color:#192024}.register-btn:active{transform:scale(.97);box-shadow:0 1px 8px #00e1e71a}@media (max-width: 950px){.register-form-container{right:2vw;min-width:290px;padding:28px 12px 22px}.register-figure{left:2vw;width:260px}}@media (max-width: 700px){.register-bg{flex-direction:column;justify-content:center}.register-form-container,.register-figure{position:static;transform:none;margin:0 auto}.register-form-container{margin-top:42px;margin-bottom:24px;min-width:auto;width:92vw}.register-figure{margin-top:52px;width:160px}}</style><link rel="stylesheet" href="styles-FSN4P3HW.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-FSN4P3HW.css"></noscript></head>
+<body>
+  <div class="register-bg">
+    <button class="back-btn" title="Volver" onclick="window.location.href='/login'">
+      <span class="back-icon">&#x21A9;</span>
+    </button>
+
+    <!-- Imagen decorativa central -->
+    <img src="../../../Image/Registro.png" alt="Persona con computadora y gráficos" class="register-figure">
+
+    <!-- Nubes y decorativos -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="tree tree1"></div>
+    <div class="tree tree2"></div>
+    <div class="swirl"></div>
+
+    <!-- FORMULARIO -->
+    <div class="register-form-container">
+      <form id="registerForm" class="register-form">
+        <h2>Crear cuenta</h2>
+        <label for="nombre">Nombre</label>
+        <div class="input-group">
+          <input type="text" id="nombre" placeholder="Ingrese su nombre" required>
+          <span class="input-icon">&#128100;</span>
+        </div>
+
+        <label for="apellido">Apellido</label>
+        <div class="input-group">
+          <input type="text" id="apellido" placeholder="Ingrese su apellido" required>
+          <span class="input-icon">&#128100;</span>
+        </div>
+
+        <label for="email">Gmail</label>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="Ingrese su Email" required>
+          <span class="input-icon">&#x2709;</span>
+        </div>
+
+        <label for="password">Contraseña</label>
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+          <span class="input-icon">&#128274;</span>
+        </div>
+
+        <label for="rol">¿Qué quieres ser?</label>
+        <div class="input-group-rol">
+          <select id="rol" class="select-rol" required>
+            <option value>Seleccione un rol</option>
+            <option value="5">Jefe de Venta</option>
+            <option value="6">Cliente</option>
+          </select>
+          <span class="input-icon-rol">&#128221;</span>
+        </div>
+        <style>
+          .input-group-rol {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            position: relative;
+          }
+          .select-rol {
+            width: 100%;
+            padding: 13px 42px 13px 16px;
+            border: 2px solid #00e1e7;
+            border-radius: 8px;
+            background: #192024;
+            font-size: 1.1rem;
+            margin-top: 6px;
+            box-sizing: border-box;
+            color: #00e1e7;
+            outline: none;
+            transition: box-shadow .2s, border .2s;
+            opacity: 1;
+          }
+          .input-icon-rol {
+            position: absolute;
+            right: 12px;
+            font-size: 1.2em;
+            color: #b1adad;
+            pointer-events: none;
+          }
+        </style>
+
+
+        <button type="submit" class="register-btn">Registrarse</button>
+      </form>
+
+      <!-- Mensaje de resultado -->
+      <div id="resultMessage" style="margin-top: 15px; color: red; font-weight: bold;"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const apellido = document.getElementById("apellido").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const rol = document.getElementById("rol").value;
+
+    if (!nombre || !apellido || !email || !password || !rol) {
+      document.getElementById("resultMessage").innerText = "Por favor, complete todos los campos.";
+      return;
+    }
+
+    fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, apellido, email, password, rol })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("resultMessage").style.color = "green";
+        document.getElementById("resultMessage").innerText = "¡Registro exitoso! Redirigiendo...";
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      } else {
+        document.getElementById("resultMessage").style.color = "red";
+        document.getElementById("resultMessage").innerText = data.message;
+      }
+    })
+    .catch(error => {
+      console.error("Error en la solicitud:", error);
+      document.getElementById("resultMessage").innerText = "Error al conectar con el servidor.";
+    });
+  });
+  </script>
+<script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-2AKIR3DF.js" type="module"></script></body>
+</html>
