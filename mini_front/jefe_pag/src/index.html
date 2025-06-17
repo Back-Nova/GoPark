@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jefe de Ventas | GoPark</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="admin-bg">
+    <header class="admin-header">
+      <h1 class="admin-title"><i class="fa-solid fa-user-shield"></i> Jefe de Ventas GoPark</h1>
+      <nav class="admin-nav">
+        <a href="#paquetes" class="nav-link active"><i class="fa-solid fa-box"></i> Paquetes</a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <!-- Paquetes -->
+      <section id="paquetes" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-box"></i> Paquetes turísticos</h2>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="admin-nuevo-btn" id="nuevoPaqueteBtn">
+              <i class="fa-solid fa-plus"></i> Nuevo Paquete
+            </button>
+            <button class="admin-nuevo-btn" onclick="location.href='/recursos'">
+              <i class="fa-solid fa-cubes"></i> Nuevo Recursos
+            </button>
+            <button class="admin-nuevo-btn" onclick="location.href='/destino'">
+              <i class="fa-solid fa-map-location-dot"></i> Nuevo Destino
+            </button>
+          </div>
+        </div>
+        
+        <!-- CONTENEDOR DONDE SE CARGA EL FORMULARIO -->
+        <div id="contenedorFormularioPaquete" style="margin-top: 1em;"></div>
+        
+        <div class="admin-lista" id="paquetesLista"></div>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      Echo por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+    </footer>
+  </div>
+
+  <script>
+    // Aquí va tu código JavaScript para mostrar el formulario del paquete dinámico
+  </script>
+</body>
+</html>

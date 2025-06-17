@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="login-bg">
-    <button class="back-btn" title="Volver" onclick="Va_print()">
+    <button class="back-btn" title="Volver" oneclick="window.location.href='http://127.0.0.1:4200/';">
       <span class="back-icon">&#x21A9;</span>
     </button>
     <!-- Ejemplo en cualquier componente -->
@@ -34,21 +34,41 @@
         </div>
         <button type="submit" class="login-btn">Ingresar</button>
         <div class="form-links">
-          <a onclick="window.location.href='http://127.0.0.1:4200/recuperar_contra'">¿A olvidado su contraseña?</a>
-          <a onclick="Registrarme()">¿Esta Registrado?</a>
+          <a onclick="window.location.href='/recuperar_contra'">¿A olvidado su contraseña?</a>
+          <a onclick="window.location.href='/register'">¿Esta Registrado?</a>
         </div>
       </form>
     </div>
   </div>
   <script>
-    function Va_print() {
-            window.location.href = "http://127.0.0.1:4200/";
-            console.log("Redirigiendo a la página de inicio de sesión...");
-        }
-    function Registrarme() {
-            window.location.href = "http://127.0.0.1:4200/register";
-            console.log("Redirigiendo a la página de registro...");
-        }
+    document.querySelector('.login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+
+              console.log("Login correcto");
+              window.location.href = data.redirect;  // usamos el redirect que nos manda el backend
+            } else {
+              console.error("Error de autenticación:", data.message);
+              alert("Error de autenticación: " + data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            alert("Error al iniciar sesión.");
+        });
+    });
+
   </script>
 </body>
 </html>

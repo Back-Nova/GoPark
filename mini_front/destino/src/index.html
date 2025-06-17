@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nuevo Destino | GoPark</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <div class="admin-bg">
+    <header class="admin-header">
+      <h1 class="admin-title"><i class="fa-solid fa-map-location-dot"></i> Gestión de Destinos</h1>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-section">
+        <h2>Nuevo Destino</h2>
+        <form id="formDestino" class="destino-form">
+          <div class="form-group">
+            <label for="pais"><i class="fa-solid fa-flag"></i> País</label>
+            <input type="text" placeholder="Ej: Argentina" id="pais" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="ciudad"><i class="fa-solid fa-city"></i> Ciudad</label>
+            <input type="text" placeholder="Ej: Salta" id="ciudad" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="region"><i class="fa-solid fa-location-dot"></i> Región</label>
+            <input type="text" placeholder="Ej: Noroeste" id="region" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="descripcion"><i class="fa-solid fa-align-left"></i> Descripción</label>
+            <textarea placeholder="Describe el destino..." id="descripcion" required rows="3"></textarea>
+          </div>
+          <button type="submit"><i class="fa-solid fa-plus"></i> Crear Destino</button>
+        </form>
+
+        <hr>
+
+        <h2 style="color: #fff;">Destinos Creados</h2>
+        <div id="listaDestinos" class="destino-grid"></div>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      Echo por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+    </footer>
+  </div>
+
+  <script>
+    // Cargar Destinos
+    async function cargarDestinos() {
+      const res = await fetch('/api/destinos');
+      const destinos = await res.json();
+      const contenedor = document.getElementById('listaDestinos');
+      contenedor.innerHTML = '';
+
+      if (!destinos.length) {
+        contenedor.innerHTML = `<div style="color:#fff;text-align:center;font-size:1.1rem;padding:18px 0;">No hay destinos creados aún.</div>`;
+        return;
+      }
+
+      destinos.forEach(destino => {
+        const div = document.createElement('div');
+        div.className = 'destino-card';
+        div.innerHTML = `
+          <strong style="color:#fff;"><i class="fa-solid fa-location-dot"></i> ${destino.ciudad}, ${destino.pais}</strong>
+          <small style="color:#fff;"><i class="fa-solid fa-location-crosshairs"></i> Región: ${destino.region}</small>
+          <div style="margin-bottom:8px;">
+        <i class="fa-solid fa-align-left"></i>
+        <span style="color:#fff;">${destino.descripcion}</span>
+          </div>
+          <div class="card-buttons" style="display:flex;gap:8px;">
+            <button 
+              onclick="editarDestino(${destino.id_destino})" 
+              style="background:#2196f3;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+              onmouseover="this.style.background='#1769aa'" 
+              onmouseout="this.style.background='#2196f3'">
+              <i class="fa-solid fa-pen-to-square"></i> Editar
+            </button>
+            <button 
+              onclick="eliminarDestino(${destino.id_destino})" 
+              style="background:#e53935;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+              onmouseover="this.style.background='#ab000d'" 
+              onmouseout="this.style.background='#e53935'">
+              <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+          </div>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+    // Crear Destino
+    document.getElementById('formDestino').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        pais: document.getElementById('pais').value,
+        ciudad: document.getElementById('ciudad').value,
+        region: document.getElementById('region').value,
+        descripcion: document.getElementById('descripcion').value
+      };
+
+      const res = await fetch('/api/destinos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        e.target.reset();
+        cargarDestinos();
+      } else {
+        alert("Error al crear destino.");
+      }
+    });
+
+    // Eliminar Destino
+    async function eliminarDestino(id) {
+      if (!confirm("¿Seguro que deseas eliminar este destino?")) return;
+      const res = await fetch(`/api/destinos/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        cargarDestinos();
+      } else {
+        alert("Error al eliminar destino.");
+      }
+    }
+
+    // Editar Destino
+    async function editarDestino(id) {
+      const nuevoPais = prompt("Nuevo país:");
+      const nuevaCiudad = prompt("Nueva ciudad:");
+      const nuevaRegion = prompt("Nueva región:");
+      const nuevaDescripcion = prompt("Nueva descripción:");
+
+      if (nuevoPais && nuevaCiudad && nuevaRegion && nuevaDescripcion) {
+        const res = await fetch(`/api/destinos/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pais: nuevoPais,
+            ciudad: nuevaCiudad,
+            region: nuevaRegion,
+            descripcion: nuevaDescripcion
+          })
+        });
+        if (res.ok) {
+          cargarDestinos();
+        } else {
+          alert("Error al editar destino.");
+        }
+      }
+    }
+
+    // Inicial
+    cargarDestinos();
+  </script>
+</body>
+</html>

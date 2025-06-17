@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrador de Alojamientos y Excursiones</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="admin-bg">
+
+  <header class="admin-header">
+    <h1 class="admin-title"><i class="fa-solid fa-suitcase-rolling"></i> Panel de Administración</h1>
+    <nav class="admin-nav">
+      <a href="#" class="nav-link active"><i class="fa-solid fa-bed"></i> Alojamientos</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-person-hiking"></i> Excursiones</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-car"></i> Vehículos de Alquiler</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-plane"></i> Vuelos</a>
+    </nav>
+  </header>
+
+  <main class="admin-main" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+    
+    <!-- Contenedor para los bloques de Alojamiento y Excursión uno al lado del otro -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; width: 100%; justify-items: center;">
+
+      <!-- Bloque de Alojamiento -->
+      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-plus"></i> Nuevo Alojamiento
+        </h2>
+        <form id="formAlojamiento" autocomplete="off">
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="nombre" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-font"></i> Nombre del alojamiento
+        </label>
+        <input type="text" id="nombre" placeholder="Ej: Hotel Las Nubes" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="descripcion" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-align-left"></i> Descripción
+        </label>
+        <textarea id="descripcion" placeholder="Descripción..." required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></textarea>
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="tipo" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-building"></i> Tipo de alojamiento
+        </label>
+        <input type="text" id="tipo" placeholder="Ej: Hotel, Hostel, Cabaña" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="capacidad" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-users"></i> Capacidad
+        </label>
+        <input type="number" id="capacidad" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:22px;">
+        <label for="precio" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-dollar-sign"></i> Precio por noche
+        </label>
+        <input type="number" step="0.01" id="precio" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-map-marker-alt"></i> Destino
+        </label>
+        <select id="destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; margin-bottom:0; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+          </div>
+          <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar Alojamiento
+          </button>
+        </form>
+
+        <hr style="border:0; border-top:1.5px solid #00f2ff44; margin:28px 0 18px 0;" />
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.18rem; font-weight:800; letter-spacing:1.2px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-list"></i> Alojamientos Creados
+        </h2>
+        <div id="listaAlojamientos" class="admin-lista"></div>
+      </section>
+
+      <!-- Bloque de Vehículo de Alquiler -->
+      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-car"></i> Nuevo Vehículo de Alquiler
+        </h2>
+        <form id="formVehiculo" autocomplete="off">
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vehiculo_marca" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-car-side"></i> Marca
+        </label>
+        <input type="text" id="vehiculo_marca" placeholder="Ej: Toyota" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vehiculo_modelo" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-font"></i> Modelo
+        </label>
+        <input type="text" id="vehiculo_modelo" placeholder="Ej: Corolla" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vehiculo_capacidad" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-users"></i> Capacidad
+        </label>
+        <input type="number" id="vehiculo_capacidad" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vehiculo_destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-map-marker-alt"></i> Destino
+        </label>
+        <select id="vehiculo_destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+          </div>
+          <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar Vehículo
+          </button>
+        </form>
+        <hr style="border:0; border-top:1.5px solid #00f2ff44; margin:28px 0 18px 0;" />
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.18rem; font-weight:800; letter-spacing:1.2px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-list"></i> Vehículos Creados
+        </h2>
+        <div id="listaVehiculos" class="admin-lista"></div>
+      </section>
+
+      <!-- Bloque de Vuelo -->
+      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-plane"></i> Nuevo Vuelo
+        </h2>
+        <form id="formVuelo" autocomplete="off">
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_aerolinea" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-plane-departure"></i> Aerolínea
+        </label>
+        <input type="text" id="vuelo_aerolinea" placeholder="Ej: Aerolíneas Argentinas" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_aeropuerto_o" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-location-dot"></i> Aeropuerto Origen
+        </label>
+        <input type="text" id="vuelo_aeropuerto_o" placeholder="Ej: Ezeiza" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_aeropuerto_d" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-location-dot"></i> Aeropuerto Destino
+        </label>
+        <input type="text" id="vuelo_aeropuerto_d" placeholder="Ej: Bariloche" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_fecha" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-calendar"></i> Fecha
+        </label>
+        <input type="date" id="vuelo_fecha" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_duracion" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-clock"></i> Duración
+        </label>
+        <input type="text" id="vuelo_duracion" placeholder="Ej: 2h 30m" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_precio" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-dollar-sign"></i> Precio
+        </label>
+        <input type="number" step="0.01" id="vuelo_precio" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="vuelo_destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-map-marker-alt"></i> Destino
+        </label>
+        <select id="vuelo_destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+          </div>
+          <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar Vuelo
+          </button>
+        </form>
+        <hr style="border:0; border-top:1.5px solid #00f2ff44; margin:28px 0 18px 0;" />
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.18rem; font-weight:800; letter-spacing:1.2px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-list"></i> Vuelos Creados
+        </h2>
+        <div id="listaVuelos" class="admin-lista"></div>
+      </section>
+
+      <!-- Bloque de Excursión -->
+      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-person-hiking"></i> Nueva Excursión
+        </h2>
+        <form id="formExcursion" autocomplete="off">
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_nombre" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-font"></i> Nombre
+        </label>
+        <input type="text" id="excursion_nombre" placeholder="Ej: Trekking al Glaciar" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_descripcion" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-align-left"></i> Descripción
+        </label>
+        <textarea id="excursion_descripcion" placeholder="Descripción..." required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></textarea>
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_duracion" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-clock"></i> Duración
+        </label>
+        <input type="text" id="excursion_duracion" placeholder="Ej: 4 horas" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_precio_adulto" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-dollar-sign"></i> Precio Adulto
+        </label>
+        <input type="number" step="0.01" id="excursion_precio_adulto" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_precio_nino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-child"></i> Precio Niño
+        </label>
+        <input type="number" step="0.01" id="excursion_precio_nino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_participantes" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-users"></i> Participantes
+        </label>
+        <input type="text" id="excursion_participantes" placeholder="Ej: 2-10 personas" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
+          </div>
+          <div class="form-group" style="margin-bottom:18px;">
+        <label for="excursion_destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+          <i class="fa-solid fa-map-marker-alt"></i> Destino
+        </label>
+        <select id="excursion_destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+          </div>
+          <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar Excursión
+          </button>
+        </form>
+        <hr style="border:0; border-top:1.5px solid #00f2ff44; margin:28px 0 18px 0;" />
+        <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.18rem; font-weight:800; letter-spacing:1.2px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-list"></i> Excursiones Creadas
+        </h2>
+        <div id="listaExcursiones" class="admin-lista"></div>
+      </section>
+
+      
+    </div>
+
+  </main>
+
+  <footer class="admin-footer">
+    <p>&copy; 2025 Panel de Administración</p>
+  </footer>
+
+  
+  <script >
+    document.addEventListener("DOMContentLoaded", () => {
+    cargarDestinos();
+    cargarAlojamientos();
+
+    const form = document.getElementById("formAlojamiento");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const datos = {
+        nombre: document.getElementById("nombre").value,
+        descripcion: document.getElementById("descripcion").value,
+        tipo_alojamiento: document.getElementById("tipo").value,
+        capacidad: parseInt(document.getElementById("capacidad").value),
+        precio: parseFloat(document.getElementById("precio").value),
+        destino: parseInt(document.getElementById("destino").value)
+      };
+
+      const res = await fetch('/api/alojamientos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      if (res.ok) {
+        form.reset();
+        cargarAlojamientos();
+        alert("✅ Alojamiento guardado");
+      } else {
+        alert("❌ Error al guardar alojamiento");
+      }
+    });
+  });
+
+  async function cargarDestinos() {
+    try {
+      const res = await fetch('/api/destinos');
+      const destinos = await res.json();
+
+      const select = document.getElementById("destino");
+      select.innerHTML = '';
+      destinos.forEach(destino => {
+        const option = document.createElement("option");
+        option.value = destino.id_destino;
+        option.textContent = `${destino.pais} - ${destino.ciudad}`;
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error al cargar destinos:", error);
+    }
+  }
+
+  async function cargarAlojamientos() {
+    try {
+      const res = await fetch('/api/alojamientos');
+      const alojamientos = await res.json();
+
+      const contenedor = document.getElementById("listaAlojamientos");
+      contenedor.innerHTML = '';
+
+      alojamientos.forEach(a => {
+        const div = document.createElement("div");
+        div.className = "alojamiento-item";
+        div.innerHTML = `
+            <strong style="color:#fff;">${a.nombre}</strong> <span style="color:#fff;">(${a.tipo_alojamiento})</span><br/>
+            <span style="color:#fff;">Capacidad: ${a.capacidad} - $${a.precio} por noche</span><br/>
+            <button onclick="eliminarAlojamiento(${a.id_alojamiento})" style="margin-top:5px; background:#ff4c4c; border:none; color:white; padding:6px 12px; border-radius:5px; font-weight:600; cursor:pointer;">
+            <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+        `;
+        contenedor.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error al cargar alojamientos:", error);
+    }
+  }
+
+  async function eliminarAlojamiento(id) {
+    const confirmado = confirm("¿Seguro que deseas eliminar este alojamiento?");
+    if (!confirmado) return;
+
+    const res = await fetch(`/api/alojamientos/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      cargarAlojamientos();
+      alert("🗑️ Alojamiento eliminado");
+    } else {
+      alert("❌ Error al eliminar alojamiento");
+    }
+  }
+  // Esto esta Echo 
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarDestinosVehiculo();
+    cargarVehiculos();
+
+    const formVehiculo = document.getElementById("formVehiculo");
+    formVehiculo.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const datos = {
+        marca: document.getElementById("vehiculo_marca").value,
+        modelo: document.getElementById("vehiculo_modelo").value,
+        capacidad: parseInt(document.getElementById("vehiculo_capacidad").value),
+        destino: parseInt(document.getElementById("vehiculo_destino").value)
+      };
+
+      const res = await fetch('/api/vehiculos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      if (res.ok) {
+        formVehiculo.reset();
+        cargarVehiculos();
+        alert("✅ Vehículo guardado correctamente");
+      } else {
+        alert("❌ Error al guardar vehículo");
+      }
+    });
+  });
+
+  async function cargarDestinosVehiculo() {
+    try {
+      const res = await fetch('/api/destinos');
+      const destinos = await res.json();
+
+      const select = document.getElementById("vehiculo_destino");
+      select.innerHTML = '';
+      destinos.forEach(destino => {
+        const option = document.createElement("option");
+        option.value = destino.id_destino;
+        option.textContent = `${destino.pais} - ${destino.ciudad}`;
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error al cargar destinos:", error);
+    }
+  }
+
+  async function cargarVehiculos() {
+    try {
+      const res = await fetch('/api/vehiculos');
+      const vehiculos = await res.json();
+
+      const contenedor = document.getElementById("listaVehiculos");
+      contenedor.innerHTML = '';
+
+      vehiculos.forEach(v => {
+        const div = document.createElement("div");
+        div.className = "vehiculo-item";
+        div.innerHTML = `
+          <strong style="color:#fff;">${v.marca} ${v.modelo}</strong> - <span style="color:#fff;">Capacidad: ${v.capacidad}</span><br/>
+          <button onclick="eliminarVehiculo(${v.id_vehiculo})" style="margin-top:5px; background:#ff4c4c; border:none; color:white; padding:6px 12px; border-radius:5px; font-weight:600; cursor:pointer;">
+            <i class="fa-solid fa-trash"></i> Eliminar
+          </button>
+        `;
+        contenedor.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error al cargar vehículos:", error);
+    }
+  }
+
+  async function eliminarVehiculo(id) {
+    const confirmar = confirm("¿Seguro que querés eliminar este vehículo?");
+    if (!confirmar) return;
+
+    const res = await fetch(`/api/vehiculos/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      cargarVehiculos();
+      alert("🗑️ Vehículo eliminado");
+    } else {
+      alert("❌ Error al eliminar vehículo");
+    }
+  }
+  // Echo hasta aca 
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarDestinosVuelo();
+    cargarVuelos();
+
+    const formVuelo = document.getElementById("formVuelo");
+    formVuelo.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const datos = {
+        aerolinea: document.getElementById("vuelo_aerolinea").value,
+        aeropuerto_o: document.getElementById("vuelo_aeropuerto_o").value,
+        aeropuerto_d: document.getElementById("vuelo_aeropuerto_d").value,
+        fecha: document.getElementById("vuelo_fecha").value,
+        duracion: document.getElementById("vuelo_duracion").value,
+        precio: parseFloat(document.getElementById("vuelo_precio").value),
+        destino: parseInt(document.getElementById("vuelo_destino").value)
+      };
+
+      const res = await fetch('/api/vuelos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      if (res.ok) {
+        formVuelo.reset();
+        cargarVuelos();
+        alert("✅ Vuelo guardado correctamente");
+      } else {
+        alert("❌ Error al guardar vuelo");
+      }
+    });
+  });
+
+  async function cargarDestinosVuelo() {
+    try {
+      const res = await fetch('/api/destinos');
+      const destinos = await res.json();
+      const select = document.getElementById("vuelo_destino");
+      select.innerHTML = '';
+      destinos.forEach(destino => {
+        const option = document.createElement("option");
+        option.value = destino.id_destino;
+        option.textContent = `${destino.pais} - ${destino.ciudad}`;
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error al cargar destinos:", error);
+    }
+  }
+
+  async function cargarVuelos() {
+    try {
+      const res = await fetch('/api/vuelos');
+      const vuelos = await res.json();
+
+      const contenedor = document.getElementById("listaVuelos");
+      contenedor.innerHTML = '';
+
+      vuelos.forEach(v => {
+        const div = document.createElement("div");
+        div.className = "vuelo-item";
+        div.innerHTML = `
+            <strong style="color:#fff;">${v.aerolinea}</strong><br/>
+            <span style="color:#fff;">${v.aeropuerto_o} → ${v.aeropuerto_d}</span><br/>
+            <span style="color:#fff;">Fecha: ${v.fecha} | Duración: ${v.duracion} | Precio: $${v.precio}</span><br/>
+            <button onclick="eliminarVuelo(${v.id_vuelo})" style="margin-top:5px; background:#ff4c4c; border:none; color:white; padding:6px 12px; border-radius:5px; font-weight:600; cursor:pointer;">
+            <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+        `;
+        contenedor.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error al cargar vuelos:", error);
+    }
+  }
+
+  async function eliminarVuelo(id) {
+    const confirmar = confirm("¿Seguro que querés eliminar este vuelo?");
+    if (!confirmar) return;
+
+    const res = await fetch(`/api/vuelos/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      cargarVuelos();
+      alert("🗑️ Vuelo eliminado");
+    } else {
+      alert("❌ Error al eliminar vuelo");
+    }
+  }
+  // Echo 
+    document.addEventListener("DOMContentLoaded", () => {
+  cargarDestinos();
+  cargarExcursiones();
+
+  const formExcursion = document.getElementById("formExcursion");
+  formExcursion.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nuevaExcursion = {
+      nombre: document.getElementById("excursion_nombre").value,
+      descripcion: document.getElementById("excursion_descripcion").value,
+      duracion: document.getElementById("excursion_duracion").value,
+      precio_adulto: parseFloat(document.getElementById("excursion_precio_adulto").value),
+      precio_nino: parseFloat(document.getElementById("excursion_precio_nino").value),
+      participantes: document.getElementById("excursion_participantes").value,
+      destino: parseInt(document.getElementById("excursion_destino").value)
+    };
+
+    const res = await fetch('/api/excursiones', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevaExcursion)
+    });
+
+    const data = await res.json();
+    alert(data.mensaje || data.error);
+    formExcursion.reset();
+    cargarExcursiones();
+  });
+});
+
+async function cargarDestinos() {
+  const res = await fetch('/api/destinos');
+  const destinos = await res.json();
+  const select = document.getElementById("excursion_destino");
+  select.innerHTML = destinos.map(d => `
+    <option value="${d.id_destino}">${d.pais} - ${d.ciudad}</option>
+  `).join('');
+}
+
+async function cargarExcursiones() {
+  const res = await fetch('/api/excursiones');
+  const excursiones = await res.json();
+  const lista = document.getElementById("listaExcursiones");
+
+  lista.innerHTML = excursiones.map(e => `
+    <div class="item-admin">
+      <strong>${e.nombre}</strong> (${e.destino})<br>
+      ${e.descripcion}<br>
+      Duración: ${e.duracion}<br>
+      Adulto: $${e.precio_adulto} | Niño: $${e.precio_nino}<br>
+      Participantes: ${e.participantes}<br>
+      <button onclick="eliminarExcursion(${e.id_excursion})" class="eliminar-btn">Eliminar</button>
+    </div>
+  `).join('');
+}
+
+async function eliminarExcursion(id) {
+  if (!confirm("¿Estás seguro de eliminar esta excursión?")) return;
+
+  const res = await fetch(`/api/excursiones/${id}`, {
+    method: 'DELETE'
+  });
+
+  const data = await res.json();
+  alert(data.mensaje || data.error);
+  cargarExcursiones();
+};
+  </script>
+</body>
+</html>

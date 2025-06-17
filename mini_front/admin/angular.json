@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pagina-prin": {
+    "admin": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -22,11 +22,6 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              {
-                "glob": "**/*.@(png|jpg|jpeg|gif|svg)",
-                "input": "../../../../Image/",
-                "output": "/assets/image"
               }
             ],
             "styles": [
@@ -61,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pagina-prin:build:production"
+              "buildTarget": "admin:build:production"
             },
             "development": {
-              "buildTarget": "pagina-prin:build:development"
+              "buildTarget": "admin:build:development"
             }
           },
           "defaultConfiguration": "development"

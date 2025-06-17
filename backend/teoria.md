@@ -10,3 +10,5 @@ ng build --output-path=../../backend/static/register
                 "input": "../Image",
                 "output": "/assets/image"
               }
+
+

@@ -1,19 +1,14 @@
-import bcrypt
+from werkzeug.security import generate_password_hash
 from conexion import get_connection
-
-# Datos del rol admin
-rol_nombre = "admin"
-rol_permisos = "todos"  # O los permisos que desees
 
 # Datos del usuario admin
 nombre = "admin"
 apellido = "admin"
-email = "santiagogokuaban@gmail.com"
+email = "Prueba@gmail.com"
 password_plano = "admin"
 
-# Hashear la contraseña
-password_bytes = password_plano.encode('utf-8')
-hashed_password = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
+# Hashear la contraseña usando werkzeug (compatible con tu login)
+hashed_password = generate_password_hash(password_plano)
 
 # Conectar a la base de datos
 conn = get_connection()
@@ -25,7 +20,7 @@ try:
     cur = conn.cursor()
 
     # Verificar si existe el rol admin
-    cur.execute("SELECT id_rol FROM rol WHERE tipo_rol = %s", (rol_nombre,))
+    cur.execute("SELECT id_rol FROM rol WHERE tipo_rol = %s", ("admin",))
     rol_existente = cur.fetchone()
 
     if rol_existente:
@@ -34,7 +29,7 @@ try:
     else:
         cur.execute(
             "INSERT INTO rol (tipo_rol, permisos_rol) VALUES (%s, %s) RETURNING id_rol",
-            (rol_nombre, rol_permisos)
+            ("admin", "todos")
         )
         id_rol = cur.fetchone()[0]
         print(f"Rol 'admin' creado con id {id_rol}.")
@@ -46,11 +41,10 @@ try:
     if usuario_existente:
         print("El usuario con este email ya existe.")
     else:
-        # Insertar el usuario admin - CORREGIDO: usar id_rol en lugar de rol
         cur.execute("""
             INSERT INTO usuario (nombre, apellido, email, contraseña, id_rol)
             VALUES (%s, %s, %s, %s, %s)
-        """, (nombre, apellido, email, hashed_password.decode('utf-8'), id_rol))
+        """, (nombre, apellido, email, hashed_password, id_rol))
         print("Usuario administrador creado correctamente.")
 
     conn.commit()
