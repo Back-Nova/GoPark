@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
+.paquete-card {
+  background: #0e1d25;
+  border: 2px solid #00f2ff99;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  color: #eafcff;
+  font-family: 'Orbitron', Arial, sans-serif;
+  box-shadow: 0 0 14px #00f2ff44;
+}
+
 body, html {
   margin: 0;
   padding: 0;

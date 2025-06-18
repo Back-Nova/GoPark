@@ -71,6 +71,135 @@ def serve_jefe_pag():
     return send_from_directory('static/jefe_pag/browser', 'index.html')
 
 
+
+#--- Paquetes de rutas ---
+@app.route("/api/paquetes", methods=["POST"])
+def crear_paquete():
+    data = request.get_json()
+
+    campos_necesarios = [
+        "nombre", "descripcion", "precio", "cupos_totales", "cupos_disponibles",
+        "fecha_inicio", "fecha_fin", "tipo", "disponible", "vuelo", "vehiculo", "alojamiento", "excursion"
+    ]
+
+    # Verificar campos obligatorios
+    for campo in campos_necesarios:
+        if campo not in data:
+            return jsonify({"error": f"Falta el campo obligatorio: {campo}"}), 400
+
+    connection = get_connection()
+    if not connection:
+        return jsonify({"error": "Error de conexión con la base de datos"}), 500
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+                INSERT INTO paquete (
+                    nombre, descripcion, precio, cupos_totales, cupos_disponibles,
+                    fecha_inicio, fecha_fin, tipo, disponible, vuelo, vehiculo, alojamiento, excursion
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING id_paquete
+            """
+            valores = (
+                data.get("nombre"),
+                data.get("descripcion"),
+                data.get("precio"),
+                data.get("cupos_totales"),
+                data.get("cupos_disponibles"),
+                data.get("fecha_inicio"),
+                data.get("fecha_fin"),
+                data.get("tipo"),
+                data.get("disponible"),
+                data.get("vuelo") or None,
+                data.get("vehiculo") or None,
+                data.get("alojamiento") or None,
+                data.get("excursion") or None
+            )
+            cursor.execute(sql, valores)
+            id_paquete = cursor.fetchone()[0]
+            connection.commit()
+
+            return jsonify({"mensaje": "✅ Paquete creado correctamente", "id_paquete": id_paquete}), 201
+    except Exception as e:
+        import traceback
+        print("❌ Error al insertar paquete:")
+        traceback.print_exc()
+        return jsonify({"error": "Error al insertar paquete"}), 500
+    finally:
+        connection.close()
+        
+
+@app.route("/api/paquetes", methods=["GET"])
+def obtener_paquetes():
+    connection = get_connection()
+    if not connection:
+        return jsonify({"error": "Error de conexión"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        sql = """
+        SELECT 
+            paquete.id_paquete,
+            paquete.nombre,
+            paquete.descripcion,
+            paquete.precio,
+            paquete.cupos_totales,
+            paquete.cupos_disponibles,
+            paquete.fecha_inicio,
+            paquete.fecha_fin,
+            paquete.tipo,
+            paquete.disponible,
+            paquete.vuelo,
+            paquete.vehiculo,
+            paquete.alojamiento,
+            paquete.excursion,
+            vuelo.aerolinea AS vuelo_texto,
+            vehiculo.modelo AS vehiculo_texto,
+            alojamiento.nombre AS alojamiento_texto,
+            excursion.nombre AS excursion_texto
+        FROM paquete
+        LEFT JOIN vuelo ON paquete.vuelo = vuelo.id_vuelo
+        LEFT JOIN vehiculo ON paquete.vehiculo = vehiculo.id_vehiculo
+        LEFT JOIN alojamiento ON paquete.alojamiento = alojamiento.id_alojamiento
+        LEFT JOIN excursion ON paquete.excursion = excursion.id_excursion
+        ORDER BY paquete.id_paquete DESC
+        """
+        cursor.execute(sql)
+        paquetes = cursor.fetchall()
+        cursor.close()
+
+        if not paquetes:
+            return jsonify({"mensaje": "No hay paquetes cargados", "paquetes": []}), 200
+
+        return jsonify({"paquetes": paquetes}), 200
+    except Exception as e:
+        import traceback
+        print("❌ Error al obtener paquetes:")
+        traceback.print_exc()
+        return jsonify({"error": "Error al obtener paquetes"}), 500
+    finally:
+        connection.close()
+
+@app.route("/api/paquetes/<int:id_paquete>", methods=["DELETE"])
+def eliminar_paquete(id_paquete):
+    connection = get_connection()
+    if not connection:
+        return jsonify({"error": "Error de conexión"}), 500
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM paquete WHERE id_paquete = %s", (id_paquete,))
+            connection.commit()
+            return jsonify({"mensaje": "Paquete eliminado"}), 200
+    except Exception as e:
+        print("❌ Error al eliminar paquete:", e)
+        return jsonify({"error": "Error al eliminar paquete"}), 500
+    finally:
+        connection.close()
+#--- FIN DE PAQUETES ---
+
+
+
 # -------- DESTINO --------
 
 @app.route('/destino')
@@ -189,7 +318,7 @@ def agregar_alojamiento():
     if not conn:
         return jsonify({'error': 'Error de conexión'}), 500
 
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
     cursor.execute("""
         INSERT INTO alojamiento (nombre, descripcion, tipo_alojamiento, capacidad, precio, destino)
         VALUES (%s, %s, %s, %s, %s, %s)
