@@ -15,7 +15,7 @@
     <img src="../../../Image/Recuperar_Contraseña.png" alt="Persona con laptop" class="restablecer-figure">
     <div class="swirl"></div>
     <div class="restablecer-form-container">
-      <form class="restablecer-form">
+      <form class="restablecer-form" id="form-restablecer">
         <h2><span>Restablecer</span> contraseña</h2>
         <label for="nueva">Nueva Contraseña</label>
         <div class="input-group">
@@ -30,5 +30,51 @@
       </form>
     </div>
   </div>
+
+  <script>
+    document.getElementById("form-restablecer").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const nueva = document.getElementById("nueva").value;
+      const confirmar = document.getElementById("confirmar").value;
+      const email = localStorage.getItem("recuperar_email");
+
+      if (!email) {
+        alert("No se ha proporcionado un email.");
+        return;
+      }
+
+      if (nueva !== confirmar) {
+        alert("Las contraseñas no coinciden.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/api/restablecer_contra", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: email,
+            nueva_contra: nueva
+          })
+        });
+
+        if (response.ok) {
+          alert("Contraseña actualizada con éxito.");
+          localStorage.removeItem("recuperar_email");
+          window.location.href = "/login";
+        } else {
+          const result = await response.json();
+          alert(result.message || "Error al restablecer la contraseña.");
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Ocurrió un error al enviar la solicitud.");
+      }
+    });
+  </script>
 <script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-LLQUMBJX.js" type="module"></script></body>
 </html>

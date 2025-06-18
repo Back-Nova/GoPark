@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Recuperar contraseña</title>
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -15,17 +15,388 @@
 
     <img src="../../../Image/Perder_contraseña.png" alt="Persona con laptop" class="recuperar-figure">
     <div class="swirl"></div>
-    <div class="recuperar-form-container">
-      <form class="recuperar-form">
-        <h2>Recuperar su contraseña</h2>
-        <label for="email">Ingrese su Email</label>
-        <div class="input-group">
-          <input type="email" id="email" placeholder="Ingrese su Email" required>
-        </div>
-        <button type="submit" class="recuperar-btn">Enviar</button>
-        <div class="line"></div>
-      </form>
+
+    <div class="recuperar-form-container" id="form-container">
+      <!-- Aquí se cargan los formularios dinámicos -->
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("form-container");
+      cargarFormularioEmail();
+
+      function cargarFormularioEmail() {
+        container.innerHTML = `
+            <form class="recuperar-form" id="form-email" style="color: #fff;">
+            <h2 style="color: #fff;">
+              <span style="vertical-align: middle;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" style="margin-right:10px;vertical-align:-5px;">
+          <rect width="24" height="24" rx="6" fill="#00e1e7" opacity="0.13"/>
+          <path d="M4 7.5V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5l-8 5.25L4 7.5z" fill="#00e1e7"/>
+          <path d="M20 6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2l8 5 8-5z" fill="#00e1e7" fill-opacity="0.6"/>
+              </svg>
+              </span>
+              Recuperar su contraseña
+            </h2>
+            <label for="email" style="color: #fff;">Ingrese su Email</label>
+            <div class="input-group">
+          <input 
+            type="email" 
+            id="email" 
+            placeholder="Ingrese su Email" 
+            required 
+            style="
+              width: 100%;
+              padding: 13px 42px 13px 16px;
+              border: 1.5px solid #00e1e7;
+              border-radius: 8px;
+              background: #192024;
+              color: #fff;
+              font-size: 1.1rem;
+              margin-top: 6px;
+              box-sizing: border-box;
+              outline: none;
+              transition: box-shadow .2s, border .2s;
+            "
+          >
+            </div>
+            <button type="submit" class="recuperar-btn" style="
+              width: 100%;
+              background: linear-gradient(90deg, #00e1e7 0%, #0cb9bb 100%);
+              color: #fff;
+              font-family: 'Orbitron', Arial, sans-serif;
+              font-size: 1.15rem;
+              border: none;
+              border-radius: 8px;
+              padding: 13px 0;
+              margin-top: 18px;
+              cursor: pointer;
+              letter-spacing: 1px;
+              font-weight: bold;
+              transition: background 0.2s, color 0.2s, box-shadow 0.25s;
+              position: relative;
+              overflow: hidden;
+              box-shadow: 0 2px 16px rgba(0,225,231,0.13);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <span style="vertical-align: middle; margin-right:7px; display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                <path d="M2 21l21-9-21-9v7l15 2-15 2v7z" fill="#fff"/>
+              </svg>
+              </span>
+              Enviar
+            </button>
+            <style>
+              .recuperar-btn::before {
+              content: "";
+              position: absolute;
+              left: -75%;
+              top: 0;
+              width: 50%;
+              height: 100%;
+              background: linear-gradient(120deg, #fff8 0%, #00e1e788 100%);
+              transform: skewX(-25deg);
+              transition: left 0.4s cubic-bezier(.4,0,.2,1);
+              z-index: 1;
+              pointer-events: none;
+              }
+              .recuperar-btn:hover::before {
+              left: 120%;
+              }
+              .recuperar-btn:hover {
+              background: linear-gradient(90deg, #04fff8 0%, #07cfd2 100%);
+              color: #192024;
+              }
+              .recuperar-btn:active {
+              background: #00e1e7;
+              color: #fff;
+              box-shadow: 0 1px 4px rgba(0,225,231,0.18);
+              }
+            </style>
+            <div class="line"></div>
+            </form>
+        `;
+
+        document.getElementById("form-email").addEventListener("submit", async e => {
+          e.preventDefault();
+          const email = document.getElementById("email").value;
+
+          const res = await fetch('/api/recuperar_contra', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            localStorage.setItem("rec_email", email);
+            cargarFormularioCodigo();
+          } else {
+            alert(data.message);
+          }
+        });
+      }
+
+      function cargarFormularioCodigo() {
+        container.innerHTML = `
+            <form class="recuperar-form" id="form-codigo" style="color: #fff;">
+              <h2 style="color: #fff;">
+                <span style="vertical-align: middle;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" style="margin-right:10px;vertical-align:-5px;">
+                    <rect width="24" height="24" rx="6" fill="#00e1e7" opacity="0.13"/>
+                    <path d="M4 7.5V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5l-8 5.25L4 7.5z" fill="#00e1e7"/>
+                    <path d="M20 6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2l8 5 8-5z" fill="#00e1e7" fill-opacity="0.6"/>
+                  </svg>
+                </span>
+                Ingrese el código enviado
+              </h2>
+              <label for="codigo" style="color: #fff;">Código</label>
+              <div class="input-group">
+                <input 
+                  type="text" 
+                  id="codigo" 
+                  placeholder="Código recibido" 
+                  required
+                  style="
+                    width: 100%;
+                    padding: 13px 42px 13px 16px;
+                    border: 1.5px solid #00e1e7;
+                    border-radius: 8px;
+                    background: #192024;
+                    color: #fff;
+                    font-size: 1.1rem;
+                    margin-top: 6px;
+                    box-sizing: border-box;
+                    outline: none;
+                    transition: box-shadow .2s, border .2s;
+                  "
+                >
+              </div>
+              <button type="submit" class="recuperar-btn" style="
+                width: 100%;
+                background: linear-gradient(90deg, #00e1e7 0%, #0cb9bb 100%);
+                color: #fff;
+                font-family: 'Orbitron', Arial, sans-serif;
+                font-size: 1.15rem;
+                border: none;
+                border-radius: 8px;
+                padding: 13px 0;
+                margin-top: 18px;
+                cursor: pointer;
+                letter-spacing: 1px;
+                font-weight: bold;
+                transition: background 0.2s, color 0.2s, box-shadow 0.25s;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 2px 16px rgba(0,225,231,0.13);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <span style="vertical-align: middle; margin-right:7px; display: flex; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                    <path d="M2 21l21-9-21-9v7l15 2-15 2v7z" fill="#fff"/>
+                  </svg>
+                </span>
+                Siguiente
+              </button>
+              <style>
+                .recuperar-btn::before {
+                  content: "";
+                  position: absolute;
+                  left: -75%;
+                  top: 0;
+                  width: 50%;
+                  height: 100%;
+                  background: linear-gradient(120deg, #fff8 0%, #00e1e788 100%);
+                  transform: skewX(-25deg);
+                  transition: left 0.4s cubic-bezier(.4,0,.2,1);
+                  z-index: 1;
+                  pointer-events: none;
+                }
+                .recuperar-btn:hover::before {
+                  left: 120%;
+                }
+                .recuperar-btn:hover {
+                  background: linear-gradient(90deg, #04fff8 0%, #07cfd2 100%);
+                  color: #192024;
+                }
+                .recuperar-btn:active {
+                  background: #00e1e7;
+                  color: #fff;
+                  box-shadow: 0 1px 4px rgba(0,225,231,0.18);
+                }
+              </style>
+              <div class="line"></div>
+            </form>
+        `;
+
+        document.getElementById("form-codigo").addEventListener("submit", async e => {
+          e.preventDefault();
+          const codigo = document.getElementById("codigo").value;
+          const email = localStorage.getItem("rec_email");
+
+          const res = await fetch('/api/verificar_codigo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, codigo })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            cargarFormularioRestablecer();
+          } else {
+            alert(data.message);
+          }
+        });
+      }
+
+      function cargarFormularioRestablecer() {
+        container.innerHTML = `
+            <form class="recuperar-form" id="form-restablecer" style="color: #fff;">
+              <h2 style="color: #fff;">
+          <span style="vertical-align: middle;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" style="margin-right:10px;vertical-align:-5px;">
+              <rect width="24" height="24" rx="6" fill="#00e1e7" opacity="0.13"/>
+              <path d="M12 2a5 5 0 0 1 5 5v1h1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm-3 6V7a3 3 0 1 1 6 0v1H9zm-3 2v10h12V10H6zm6 4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" fill="#00e1e7"/>
+            </svg>
+          </span>
+          <span>Restablecer</span> contraseña
+              </h2>
+              <label for="nueva" style="color: #fff;">Nueva Contraseña</label>
+              <div class="input-group">
+          <input 
+            type="password" 
+            id="nueva" 
+            placeholder="Ingresar nueva contraseña" 
+            required
+            style="
+              width: 100%;
+              padding: 13px 42px 13px 16px;
+              border: 1.5px solid #00e1e7;
+              border-radius: 8px;
+              background: #192024;
+              color: #fff;
+              font-size: 1.1rem;
+              margin-top: 6px;
+              box-sizing: border-box;
+              outline: none;
+              transition: box-shadow .2s, border .2s;
+            "
+          >
+              </div>
+              <label for="confirmar" style="color: #fff;">Confirmar Contraseña</label>
+              <div class="input-group">
+          <input 
+            type="password" 
+            id="confirmar" 
+            placeholder="Ingresar nueva contraseña" 
+            required
+            style="
+              width: 100%;
+              padding: 13px 42px 13px 16px;
+              border: 1.5px solid #00e1e7;
+              border-radius: 8px;
+              background: #192024;
+              color: #fff;
+              font-size: 1.1rem;
+              margin-top: 6px;
+              box-sizing: border-box;
+              outline: none;
+              transition: box-shadow .2s, border .2s;
+            "
+          >
+              </div>
+              <button type="submit" class="recuperar-btn" style="
+          width: 100%;
+          background: linear-gradient(90deg, #00e1e7 0%, #0cb9bb 100%);
+          color: #fff;
+          font-family: 'Orbitron', Arial, sans-serif;
+          font-size: 1.15rem;
+          border: none;
+          border-radius: 8px;
+          padding: 13px 0;
+          margin-top: 18px;
+          cursor: pointer;
+          letter-spacing: 1px;
+          font-weight: bold;
+          transition: background 0.2s, color 0.2s, box-shadow 0.25s;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 2px 16px rgba(0,225,231,0.13);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+              ">
+          <span style="vertical-align: middle; margin-right:7px; display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+              <rect width="24" height="24" rx="6" fill="#00e1e7" opacity="0.13"/>
+              <path d="M12 17a1 1 0 0 1-1-1v-4.59l-1.3 1.3a1 1 0 1 1-1.4-1.42l3-3a1 1 0 0 1 1.4 0l3 3a1 1 0 1 1-1.4 1.42l-1.3-1.3V16a1 1 0 0 1-1 1z" fill="#fff"/>
+            </svg>
+          </span>
+          Confirmar
+              </button>
+              <style>
+          .recuperar-btn::before {
+            content: "";
+            position: absolute;
+            left: -75%;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, #fff8 0%, #00e1e788 100%);
+            transform: skewX(-25deg);
+            transition: left 0.4s cubic-bezier(.4,0,.2,1);
+            z-index: 1;
+            pointer-events: none;
+          }
+          .recuperar-btn:hover::before {
+            left: 120%;
+          }
+          .recuperar-btn:hover {
+            background: linear-gradient(90deg, #04fff8 0%, #07cfd2 100%);
+            color: #192024;
+          }
+          .recuperar-btn:active {
+            background: #00e1e7;
+            color: #fff;
+            box-shadow: 0 1px 4px rgba(0,225,231,0.18);
+          }
+              </style>
+              <div class="line"></div>
+            </form>
+        `;
+
+        document.getElementById("form-restablecer").addEventListener("submit", async e => {
+          e.preventDefault();
+          const nueva = document.getElementById("nueva").value;
+          const confirmar = document.getElementById("confirmar").value;
+          const email = localStorage.getItem("rec_email");
+
+          if (nueva !== confirmar) {
+            alert("Las contraseñas no coinciden.");
+            return;
+          }
+
+          const res = await fetch('/api/restablecer_contra', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, nueva_contra: nueva })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert("Contraseña restablecida correctamente");
+            window.location.href = "/login";
+          } else {
+            alert(data.message);
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
