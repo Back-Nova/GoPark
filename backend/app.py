@@ -1,10 +1,12 @@
 # Configuración de Flask
-from flask import Flask, request, jsonify, send_from_directory, Blueprint
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from conexion import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
+from psycopg2.extras import RealDictCursor
 from datetime import datetime
+import traceback
 
 app = Flask(__name__)
 CORS(app)
@@ -73,136 +75,96 @@ def serve_jefe_pag():
 
 
 #--- Paquetes de rutas ---
+
 @app.route("/api/paquetes", methods=["POST"])
 def crear_paquete():
+    print("==> Recibí una petición POST para crear paquete")
     data = request.get_json()
+    print("Datos recibidos:", data)
 
-    campos_necesarios = [
-        "nombre", "descripcion", "precio", "cupos_totales", "cupos_disponibles",
-        "fecha_inicio", "fecha_fin", "tipo", "disponible", "vuelo", "vehiculo", "alojamiento", "excursion"
-    ]
-
-    # Verificar campos obligatorios
-    for campo in campos_necesarios:
-        if campo not in data:
-            return jsonify({"error": f"Falta el campo obligatorio: {campo}"}), 400
-
-    connection = get_connection()
-    if not connection:
-        return jsonify({"error": "Error de conexión con la base de datos"}), 500
+    # Función para convertir valores vacíos a None
+    def convertir_a_null(valor):
+        return valor if valor not in [None, "", "null"] else None
 
     try:
-        with connection.cursor() as cursor:
-            sql = """
-                INSERT INTO paquete (
-                    nombre, descripcion, precio, cupos_totales, cupos_disponibles,
-                    fecha_inicio, fecha_fin, tipo, disponible, vuelo, vehiculo, alojamiento, excursion
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                RETURNING id_paquete
-            """
-            valores = (
-                data.get("nombre"),
-                data.get("descripcion"),
-                data.get("precio"),
-                data.get("cupos_totales"),
-                data.get("cupos_disponibles"),
-                data.get("fecha_inicio"),
-                data.get("fecha_fin"),
-                data.get("tipo"),
-                data.get("disponible"),
-                data.get("vuelo") or None,
-                data.get("vehiculo") or None,
-                data.get("alojamiento") or None,
-                data.get("excursion") or None
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Recolectar campos
+        nombre = data.get("nombre")
+        descripcion = data.get("descripcion")
+        precio = data.get("precio")
+        cupos_totales = data.get("cupos_totales")
+        fecha_inicio = data.get("fecha_inicio")
+        fecha_fin = data.get("fecha_fin")
+        tipo = data.get("tipo")
+        disponible = data.get("disponible")
+        cupos_disponibles = data.get("cupos_disponibles")
+
+        # Campos opcionales que podrían ser NULL
+        vuelo = convertir_a_null(data.get("vuelo"))
+        vehiculo = convertir_a_null(data.get("vehiculo"))
+        alojamiento = convertir_a_null(data.get("alojamiento"))
+        excursion = convertir_a_null(data.get("excursion"))
+
+        # Insertar el paquete en la base de datos
+        cursor.execute("""
+            INSERT INTO paquete (
+                nombre, descripcion, precio, cupos_totales, fecha_inicio, fecha_fin,
+                tipo, disponible, cupos_disponibles, vuelo, vehiculo, alojamiento, excursion
             )
-            cursor.execute(sql, valores)
-            id_paquete = cursor.fetchone()[0]
-            connection.commit()
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            nombre, descripcion, precio, cupos_totales, fecha_inicio, fecha_fin,
+            tipo, disponible, cupos_disponibles,
+            vuelo, vehiculo, alojamiento, excursion
+        ))
 
-            return jsonify({"mensaje": "✅ Paquete creado correctamente", "id_paquete": id_paquete}), 201
-    except Exception as e:
-        import traceback
-        print("❌ Error al insertar paquete:")
-        traceback.print_exc()
-        return jsonify({"error": "Error al insertar paquete"}), 500
-    finally:
-        connection.close()
-        
-
-@app.route("/api/paquetes", methods=["GET"])
-def obtener_paquetes():
-    connection = get_connection()
-    if not connection:
-        return jsonify({"error": "Error de conexión"}), 500
-
-    try:
-        cursor = connection.cursor(dictionary=True)
-        sql = """
-        SELECT 
-            paquete.id_paquete,
-            paquete.nombre,
-            paquete.descripcion,
-            paquete.precio,
-            paquete.cupos_totales,
-            paquete.cupos_disponibles,
-            paquete.fecha_inicio,
-            paquete.fecha_fin,
-            paquete.tipo,
-            paquete.disponible,
-            paquete.vuelo,
-            paquete.vehiculo,
-            paquete.alojamiento,
-            paquete.excursion,
-            vuelo.aerolinea AS vuelo_texto,
-            vehiculo.modelo AS vehiculo_texto,
-            alojamiento.nombre AS alojamiento_texto,
-            excursion.nombre AS excursion_texto
-        FROM paquete
-        LEFT JOIN vuelo ON paquete.vuelo = vuelo.id_vuelo
-        LEFT JOIN vehiculo ON paquete.vehiculo = vehiculo.id_vehiculo
-        LEFT JOIN alojamiento ON paquete.alojamiento = alojamiento.id_alojamiento
-        LEFT JOIN excursion ON paquete.excursion = excursion.id_excursion
-        ORDER BY paquete.id_paquete DESC
-        """
-        cursor.execute(sql)
-        paquetes = cursor.fetchall()
+        conn.commit()
         cursor.close()
+        conn.close()
 
-        if not paquetes:
-            return jsonify({"mensaje": "No hay paquetes cargados", "paquetes": []}), 200
+        print("✅ Paquete creado exitosamente")
+        return jsonify({"message": "Paquete creado exitosamente"}), 201
 
-        return jsonify({"paquetes": paquetes}), 200
     except Exception as e:
-        import traceback
-        print("❌ Error al obtener paquetes:")
-        traceback.print_exc()
-        return jsonify({"error": "Error al obtener paquetes"}), 500
-    finally:
-        connection.close()
+        print("Error al insertar paquete en la BD:", e)
+        return jsonify({"message": "Error al crear el paquete", "error": str(e)}), 500
+    
+@app.route('/api/paquetes', methods=['GET'])
+def obtener_paquetes():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id_paquete, nombre, descripcion, precio, cupos_disponibles, cupos_totales, fecha_inicio, fecha_fin, tipo FROM paquete")
+    paquetes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    resultado = [
+        {"id": p[0], "nombre": p[1], "descripcion": p[2], "precio": float(p[3]), "cupos_disponibles": p[4], "cupos_totales": p[5], "fecha_inicio": p[6], "fecha_fin": p[7], "tipo": p[8]}
+        for p in paquetes
+    ]
+    return jsonify(resultado)
 
-@app.route("/api/paquetes/<int:id_paquete>", methods=["DELETE"])
-def eliminar_paquete(id_paquete):
-    connection = get_connection()
-    if not connection:
-        return jsonify({"error": "Error de conexión"}), 500
+@app.route('/api/paquetes/<int:id>', methods=['DELETE'])
+def eliminar_paquete(id):
+    conn = get_connection()
+    cursor = conn.cursor()
 
-    try:
-        with connection.cursor() as cursor:
-            cursor.execute("DELETE FROM paquete WHERE id_paquete = %s", (id_paquete,))
-            connection.commit()
-            return jsonify({"mensaje": "Paquete eliminado"}), 200
-    except Exception as e:
-        print("❌ Error al eliminar paquete:", e)
-        return jsonify({"error": "Error al eliminar paquete"}), 500
-    finally:
-        connection.close()
+    cursor.execute("DELETE FROM paquete WHERE id_paquete = %s", (id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": "Paquete eliminado correctamente"}), 200
 #--- FIN DE PAQUETES ---
 
 
 
 # -------- DESTINO --------
 
-@app.route('/destino')
+@app.route('/pagina_destino')
 def serve_destino():
     return send_from_directory('static/destino/browser', 'index.html')
 
@@ -220,6 +182,7 @@ def obtener_destinos():
     cursor.close()
     conn.close()
     return jsonify(destino)
+
 
 # POST - Crear destino
 @app.route('/api/destinos', methods=['POST'])
@@ -246,6 +209,8 @@ def crear_destino():
     cursor.close()
     conn.close()
     return jsonify({'mensaje': 'Destino creado correctamente'}), 201
+
+
 
 # PUT - Actualizar destino
 @app.route('/api/destinos/<int:id>', methods=['PUT'])
@@ -603,4 +568,4 @@ def serve_recuperar_contra():
 # ------------------ ARRANCAR SERVIDOR -------------------
 if __name__ == '__main__':
     print("Servidor Flask arrancando...")
-    app.run(debug=True, port=4200)
+    app.run(debug=True, port=5000)

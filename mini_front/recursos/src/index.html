@@ -262,7 +262,7 @@
         tipo_alojamiento: document.getElementById("tipo").value,
         capacidad: parseInt(document.getElementById("capacidad").value),
         precio: parseFloat(document.getElementById("precio").value),
-        destino: parseInt(document.getElementById("destino").value)
+        destino: parseInt(document.getElementById("destino_alojamiento").value)
       };
 
       const res = await fetch('/api/alojamientos', {
@@ -298,7 +298,7 @@
       console.error("Error al cargar destinos:", error);
     }
   }
-// Esto es otra cosa
+// Esto es otra
   async function cargarAlojamientos() {
     try {
       const res = await fetch('/api/alojamientos');

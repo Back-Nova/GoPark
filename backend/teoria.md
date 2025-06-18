@@ -32,3 +32,7 @@ ng build --output-path=../../backend/static/register
               }
 
 
+
+
+Ten cuenta esta bd y solo haz el script para poder subir paquete 
+y por favor hazlo co todos los print para los erroes y a su vez los mensajes de script por si hay algunas error 

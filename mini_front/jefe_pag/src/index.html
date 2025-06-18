@@ -28,7 +28,7 @@
             <button class="admin-nuevo-btn" onclick="location.href='/recursos'">
               <i class="fa-solid fa-cubes"></i> Nuevo Recurso
             </button>
-            <button class="admin-nuevo-btn" onclick="location.href='/destino'">
+            <button class="admin-nuevo-btn" onclick="location.href='/pagina_destino'">
               <i class="fa-solid fa-map-location-dot"></i> Nuevo Destino
             </button>
           </div>
@@ -145,7 +145,7 @@
 
                 <div style="grid-column: 1 / -1; display:flex; justify-content:flex-end; margin-top:16px;">
                   <button type="submit" style="padding:5px 27px; background:linear-gradient(90deg,#00f2ff 30%,#1b2326 100%); color:#071a1b; border:2px solid #00f2ff; border-radius:10px; font-family:'Orbitron',Arial,sans-serif; font-size:1.09rem; font-weight:900; letter-spacing:1px; cursor:pointer; box-shadow:0 0 18px #00f2ff66; transition:background 0.19s, color 0.19s, box-shadow 0.19s; display:flex; align-items:center; gap:10px;">
-                    <i class="fa-solid fa-plus"></i> Crear Paquete
+                    <i class="fa-solid fa-plus" id="btnCrearPaquete"></i> Crear Paquete
                   </button>
                 </div>
               </form>
@@ -153,6 +153,13 @@
         </div>
 
         <div class="admin-lista" id="paquetesLista"></div>
+
+        <section id="listaPaquetes" class="admin-section" style="margin-top: 40px; padding: 12px;">
+          <h2 style="color:#00f2ff; font-family:'Orbitron',Arial,sans-serif; font-size:1.4rem;">
+            <i class="fa-solid fa-list"></i> Lista de Paquetes Creados
+          </h2>
+          <div id="lista-paquetes-contenedor" style="margin-top:20px; display: grid; gap: 20px;"></div>
+        </section>
       </section>
     </main>
 
@@ -164,96 +171,10 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+  const formPaquete = document.getElementById("formPaquete");
+  const contenedorFormulario = document.getElementById("contenedorFormularioPaquete");
 
-    console.log("DOM cargado");
-
-    document.getElementById("nuevoPaqueteBtn").addEventListener("click", () => {
-      const formulario = document.getElementById("contenedorFormularioPaquete");
-      formulario.style.display = (formulario.style.display === "none" || !formulario.style.display)
-        ? "block"
-        : "none";
-      console.log("Toggle formulario nuevo paquete, display =", formulario.style.display);
-    });
-
-    cargarOpciones();
-    cargarPaquetes();
-
-    document.getElementById("btnCrearPaquete").addEventListener("click", async () => {
-      console.log("Creando nuevo paquete...");
-
-      const nombre = document.getElementById("nombre").value.trim();
-      const descripcion = document.getElementById("descripcion").value.trim();
-      const precio = parseFloat(document.getElementById("precio").value);
-      const cupos_totales = parseInt(document.getElementById("cupos_totales").value);
-      const cupos_disponibles = parseInt(document.getElementById("cupos_disponibles").value);
-      const fecha_inicio = document.getElementById("fecha_inicio").value;
-      const fecha_fin = document.getElementById("fecha_fin").value;
-      const tipo = document.getElementById("tipo").value.trim();
-      const disponible = document.getElementById("disponible").value === "true";
-      const vuelo = document.getElementById("vuelo").value;
-      const vehiculo = document.getElementById("vehiculo").value;
-      const alojamiento = document.getElementById("alojamiento").value;
-      const excursion = document.getElementById("excursion").value;
-
-      console.log("Datos ingresados:", {
-        nombre, descripcion, precio, cupos_totales, cupos_disponibles,
-        fecha_inicio, fecha_fin, tipo, disponible, vuelo, vehiculo, alojamiento, excursion
-      });
-
-      if (
-        !nombre || !descripcion || isNaN(precio) || isNaN(cupos_totales) || isNaN(cupos_disponibles) ||
-        !fecha_inicio || !fecha_fin || !tipo || vuelo === "" || vehiculo === "" || alojamiento === "" || excursion === ""
-      ) {
-        console.warn("Faltan datos o datos incorrectos");
-        alert("Por favor, completá todos los campos correctamente.");
-        return;
-      }
-
-      const paquete = {
-        nombre,
-        descripcion,
-        precio,
-        cupos_totales,
-        cupos_disponibles,
-        fecha_inicio,
-        fecha_fin,
-        tipo,
-        disponible,
-        vuelo,
-        vehiculo,
-        alojamiento,
-        excursion
-      };
-
-      try {
-        console.log("Enviando paquete al servidor:", paquete);
-        const res = await fetch("/api/paquetes", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(paquete)
-        });
-
-        console.log("Respuesta del servidor:", res.status, res.statusText);
-
-        if (res.ok) {
-          alert("✅ Paquete creado correctamente.");
-          cargarPaquetes();
-          document.getElementById("contenedorFormularioPaquete").style.display = "none";
-          resetearFormulario();
-        } else {
-          const errorTexto = await res.text();
-          console.error("Error en la respuesta del servidor:", errorTexto);
-          traceback.print_exc() 
-          alert("❌ Error al crear el paquete.");
-        }
-      } catch (error) {
-        console.error("Error de red o excepción al enviar paquete:", error);
-        traceback.print_exc() 
-        alert("❌ Error de red al crear paquete.");
-      }
-    });
-  });
-
+  // Cargar todas las opciones para los selects
   async function cargarOpciones() {
     console.log("Cargando opciones para selects...");
 
@@ -268,7 +189,7 @@
       if (!vuelosRes.ok || !vehiculosRes.ok || !alojamientosRes.ok || !excursionesRes.ok) {
         console.warn("Algún fetch de opciones falló:",
           vuelosRes.status, vehiculosRes.status, alojamientosRes.status, excursionesRes.status);
-        alert("Error al cargar datos para los selects.");
+        alert("❌ Error al cargar datos para los selects.");
         return;
       }
 
@@ -283,115 +204,203 @@
       cargarSelect("vehiculo", vehiculos, "id_vehiculo", "modelo");
       cargarSelect("alojamiento", alojamientos, "id_alojamiento", "nombre");
       cargarSelect("excursion", excursiones, "id_excursion", "nombre");
+
     } catch (error) {
       console.error("Error al cargar opciones:", error);
-      alert("❌ Error al cargar datos para los selects.");
-      traceback.print_exc() 
+      alert("❌ Error inesperado al cargar datos.");
     }
   }
 
-  function cargarSelect(id, datos, valor, texto) {
-    const select = document.getElementById(id);
-    select.innerHTML = '<option value="">Seleccionar</option>';
+  // Llenar un select con opciones
+  function cargarSelect(selectId, datos, campoId, campoTexto) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="" style="color:#eafcff;">--Seleccione--</option>';
+
     datos.forEach(item => {
       const option = document.createElement("option");
-      option.value = item[valor];
-      option.textContent = item[texto];
+      option.value = item[campoId];
+      option.textContent = item[campoTexto];
+      option.style.color = "#eafcff";
       select.appendChild(option);
     });
-    console.log(`Select '${id}' cargado con ${datos.length} opciones.`);
   }
 
+  // Cargar y mostrar todos los paquetes existentes
   async function cargarPaquetes() {
-  const contenedor = document.getElementById("paquetesLista");
-  contenedor.innerHTML = "";
-  console.log("Cargando paquetes...");
+    try {
+      const res = await fetch("/api/paquetes");
+      if (!res.ok) throw new Error("Error al obtener los paquetes");
 
-  try {
-    const res = await fetch("/api/paquetes");
-    if (!res.ok) {
-      console.error("Error al obtener paquetes, status:", res.status);
-      contenedor.innerHTML = "<p style='color:red;'>Error al cargar paquetes. este es el que complica</p>";
-      traceback.print_exc()
-      console.error("Error de red o respuesta no OK:", res.statusText);
-      return;
+      const paquetes = await res.json();
+      const contenedor = document.getElementById("lista-paquetes-contenedor");
+      contenedor.innerHTML = ""; // Limpiar lista anterior
+
+      if (paquetes.length === 0) {
+        contenedor.innerHTML = "<p style='color:#ccc;'>No hay paquetes cargados aún.</p>";
+        return;
+      }
+
+      paquetes.forEach(p => {
+        const tarjeta = document.createElement("div");
+        tarjeta.style.background = "#06242c";
+        tarjeta.style.border = "1px solid #00f2ff";
+        tarjeta.style.borderRadius = "5px";
+        tarjeta.style.padding = "8px";
+        tarjeta.style.color = "#eafcff";
+        tarjeta.style.boxShadow = "0 0 10px #00f2ff88";
+        tarjeta.style.display = "flex";
+        tarjeta.style.justifyContent = "space-between";
+        tarjeta.style.alignItems = "center";
+
+        tarjeta.innerHTML = `
+          <div style="flex: 1;">
+            <h3 style="margin-bottom: 8px; color:#00f2ff; font-family:'Orbitron',Arial,sans-serif;">
+              <i class="fa-solid fa-box"></i> ${p.nombre}
+            </h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px 30px;">
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-align-left"></i> Descripción:</span>
+                <span style="color:#eafcff;">${p.descripcion}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-dollar-sign"></i> Precio:</span>
+                <span style="color:#eafcff;">$${p.precio.toFixed(2)}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-users"></i> Cupos:</span>
+                <span style="color:#eafcff;">${p.cupos_disponibles} / ${p.cupos_totales}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-calendar-day"></i> Fechas:</span>
+                <span style="color:#eafcff;">
+                  ${new Date(p.fecha_inicio).toLocaleDateString()} ➜ ${new Date(p.fecha_fin).toLocaleDateString()}
+                </span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-tag"></i> Tipo:</span>
+                <span style="color:#eafcff;">${p.tipo}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-check"></i> Disponible:</span>
+                <span style="color:${p.disponible ? '#00ff99' : '#ff4f4f'}; font-weight:bold;">
+                  ${p.disponible ? 'Si' : 'Sí'}
+                </span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-plane"></i> Vuelo:</span>
+                <span style="color:#eafcff;">${p.vuelo || '-'}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-car"></i> Vehículo:</span>
+                <span style="color:#eafcff;">${p.vehiculo || '-'}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-hotel"></i> Alojamiento:</span>
+                <span style="color:#eafcff;">${p.alojamiento || '-'}</span>
+              </div>
+              <div>
+                <span style="color:#00f2ff;"><i class="fa-solid fa-person-hiking"></i> Excursión:</span>
+                <span style="color:#eafcff;">${p.excursion || '-'}</span>
+              </div>
+            </div>
+          </div>
+          <button class="btn-eliminar" data-id="${p.id}" style="margin-left: 20px; padding:8px 14px; background:linear-gradient(90deg,#ff4f4f 60%,#a80000 100%); color:white; border:none; border-radius:7px; cursor:pointer; font-weight:700; box-shadow:0 0 8px #ff4f4f77;">
+            <i class="fa-solid fa-trash"></i> Eliminar
+          </button>
+        `;
+
+        contenedor.appendChild(tarjeta);
+      });
+
+      // Asociar eventos de eliminar a cada botón
+      document.querySelectorAll(".btn-eliminar").forEach(boton => {
+        boton.addEventListener("click", async () => {
+          const id = boton.getAttribute("data-id");
+          if (confirm("¿Estás seguro de que deseas eliminar este paquete?")) {
+            const delRes = await fetch(`/api/paquetes/${id}`, { method: "DELETE" });
+            if (delRes.ok) {
+              alert("✅ Paquete eliminado con éxito");
+              cargarPaquetes(); // recargar la lista
+            } else {
+              alert("❌ No se pudo eliminar el paquete");
+            }
+          }
+        });
+      });
+
+    } catch (error) {
+      console.error("Error al cargar paquetes:", error);
+      alert("❌ Error al cargar la lista de paquetes");
     }
-
-    //  CAMBIO 
-    const datos = await res.json();
-    const paquetes = datos.paquetes || [];
-
-    if (paquetes.length === 0) {
-      contenedor.innerHTML = "<p style='color:white;'>No hay paquetes cargados.</p>";
-      return;
-    }
-
-    paquetes.forEach(p => {
-      const div = document.createElement("div");
-      div.style = "border: 1px solid #00f2ff; margin-bottom: 10px; padding: 10px; border-radius: 10px; color: white; font-family:'Orbitron', sans-serif;";
-      
-      div.innerHTML = `
-        <p><strong>Nombre:</strong> ${p.nombre}</p>
-        <p><strong>Descripción:</strong> ${p.descripcion}</p>
-        <p><strong>Precio:</strong> $${p.precio}</p>
-        <p><strong>Cupos:</strong> ${p.cupos_disponibles} / ${p.cupos_totales}</p>
-        <p><strong>Fechas:</strong> ${p.fecha_inicio} a ${p.fecha_fin}</p>
-        <p><strong>Tipo:</strong> ${p.tipo}</p>
-        <p><strong>Disponible:</strong> ${p.disponible ? "Sí" : "No"}</p>
-        <p><strong>Vuelo:</strong> ${p.vuelo_texto || p.vuelo}</p>
-        <p><strong>Vehículo:</strong> ${p.vehiculo_texto || p.vehiculo}</p>
-        <p><strong>Alojamiento:</strong> ${p.alojamiento_texto || p.alojamiento}</p>
-        <p><strong>Excursión:</strong> ${p.excursion_texto || p.excursion}</p>
-        <button onclick="eliminarPaquete(${p.id_paquete})" style="background:red;color:white;padding:4px 10px;border:none;border-radius:6px;margin-top:5px;">Eliminar</button>
-      `;
-      contenedor.appendChild(div);
-    });
-
-    console.log(`${paquetes.length} paquetes cargados y mostrados.`);
-  } catch (error) {
-    console.error("Error al cargar paquetes este es el que me complica:", error);
-    contenedor.innerHTML = "<p style='color:red;'>Error al cargar paquetes.</p>";
   }
-}
 
-  async function eliminarPaquete(id) {
-    console.log("Intentando eliminar paquete con id:", id);
-    if (!confirm("¿Seguro que querés eliminar este paquete?")) return;
+  // Llamar al cargar todas las opciones
+  cargarOpciones();
+
+  // Llamar al cargar la lista de paquetes
+  cargarPaquetes();
+
+  formPaquete.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     try {
-      const res = await fetch(`/api/paquetes/${id}`, { method: "DELETE" });
-      console.log("Respuesta eliminación:", res.status);
-      if (res.ok) {
-        alert("🗑️ Paquete eliminado.");
-        cargarPaquetes();
-      } else {
-        alert("❌ No se pudo eliminar.");
+      const paqueteData = {
+        nombre: document.getElementById("nombre").value.trim(),
+        descripcion: document.getElementById("descripcion").value.trim(),
+        precio: parseFloat(document.getElementById("precio").value),
+        cupos_totales: parseInt(document.getElementById("cupos_totales").value, 10),
+        fecha_inicio: document.getElementById("fecha_inicio").value,
+        fecha_fin: document.getElementById("fecha_fin").value,
+        tipo: document.getElementById("tipo").value.trim(),
+        disponible: document.getElementById("disponible").value === "true",
+        cupos_disponibles: parseInt(document.getElementById("cupos_disponibles").value, 10),
+        vuelo: document.getElementById("vuelo").value || null,
+        vehiculo: document.getElementById("vehiculo").value || null,
+        alojamiento: document.getElementById("alojamiento").value || null,
+        excursion: document.getElementById("excursion").value || null,
+      };
+
+      console.log("Datos a enviar:", paqueteData);
+
+      if (!paqueteData.nombre || !paqueteData.descripcion || isNaN(paqueteData.precio)) {
+        alert("Por favor completa los campos obligatorios correctamente.");
+        return;
       }
+
+      const response = await fetch("/api/paquetes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paqueteData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error("Error en la respuesta:", errorData || response.statusText);
+        alert(`Error al crear paquete: ${errorData?.message || response.statusText}`);
+        return;
+      }
+
+      const result = await response.json();
+      console.log("Resultado exitoso:", result);
+
+      alert("✅ Paquete creado con éxito");
+      formPaquete.reset();
+      contenedorFormulario.style.display = "none";
+      cargarPaquetes(); // Recargar la lista al crear
+
     } catch (error) {
-      console.error("Error al eliminar paquete:", error);
-      alert("❌ Error al eliminar paquete.");
+      console.error("Error en la petición:", error);
+      alert("❌ Ocurrió un error al intentar crear el paquete.");
     }
-  }
+  });
 
-  function resetearFormulario() {
-    const campos = [
-      "nombre", "descripcion", "precio", "cupos_totales", "cupos_disponibles",
-      "fecha_inicio", "fecha_fin", "tipo", "disponible",
-      "vuelo", "vehiculo", "alojamiento", "excursion"
-    ];
-
-    campos.forEach(id => {
-      const elem = document.getElementById(id);
-      if (elem) {
-        if (elem.type === "checkbox" || elem.type === "radio") {
-          elem.checked = false;
-        } else {
-          elem.value = "";
-        }
-      }
-    });
-    console.log("Formulario reseteado");
-  }
+  // Mostrar el formulario cuando se presiona el botón "Nuevo Paquete"
+  document.getElementById("nuevoPaqueteBtn").addEventListener("click", () => {
+    contenedorFormulario.style.display = "block";
+  });
+});
 
   </script>
 </body>
