@@ -61,10 +61,10 @@
         <input type="number" step="0.01" id="precio" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;" />
           </div>
           <div class="form-group" style="margin-bottom:18px;">
-        <label for="destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <label for="busqueda_destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
           <i class="fa-solid fa-map-marker-alt"></i> Destino
         </label>
-        <select id="destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; margin-bottom:0; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+        <select id="busqueda_destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; margin-bottom:0; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
           </div>
           <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
         <i class="fa-solid fa-floppy-disk"></i> Guardar Alojamiento
@@ -248,56 +248,24 @@
 
   
   <script >
-    document.addEventListener("DOMContentLoaded", () => {
-    cargarDestinos();
-    cargarAlojamientos();
+    async function cargarDestinos() {
+  try {
+    const res = await fetch("/api/busquedadestino");
+    const destinos = await res.json();
 
-    const form = document.getElementById("formAlojamiento");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    const select = document.getElementById("busqueda_destino"); // 
+    select.innerHTML = `<option disabled selected value="">Seleccionar destino...</option>`;
 
-      const datos = {
-        nombre: document.getElementById("nombre").value,
-        descripcion: document.getElementById("descripcion").value,
-        tipo_alojamiento: document.getElementById("tipo").value,
-        capacidad: parseInt(document.getElementById("capacidad").value),
-        precio: parseFloat(document.getElementById("precio").value),
-        destino: parseInt(document.getElementById("destino_alojamiento").value)
-      };
-
-      const res = await fetch('/api/alojamientos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      });
-
-      if (res.ok) {
-        form.reset();
-        cargarAlojamientos();
-        alert("✅ Alojamiento guardado");
-      } else {
-        alert("❌ Error al guardar alojamiento");
-      }
+    destinos.forEach(dest => {
+      const option = document.createElement("option");
+      option.value = dest.id_destino;
+      option.textContent = `${dest.pais} - ${dest.ciudad}`;
+      select.appendChild(option);
     });
-  });
-
-  async function cargarDestinos() {
-    try {
-      const res = await fetch('/api/destinos');
-      const destinos = await res.json();
-
-      const select = document.getElementById("destino");
-      select.innerHTML = '';
-      destinos.forEach(destino => {
-        const option = document.createElement("option");
-        option.value = destino.id_destino;
-        option.textContent = `${destino.pais} - ${destino.ciudad}`;
-        select.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Error al cargar destinos:", error);
-    }
+  } catch (err) {
+    console.error("Error al cargar destinos:", err);
   }
+}
 // Esto es otra
   async function cargarAlojamientos() {
     try {
@@ -339,6 +307,7 @@
       alert("❌ Error al eliminar alojamiento");
     }
   }
+
   // Esto esta Echo 
   document.addEventListener("DOMContentLoaded", () => {
     cargarDestinosVehiculo();

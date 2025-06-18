@@ -386,21 +386,46 @@ def eliminar_paquete(id):
 def serve_destino():
     return send_from_directory('static/destino/browser', 'index.html')
 
+
+
 # GET - Listar destinos
 @app.route('/api/destinos', methods=['GET'])
 def obtener_destinos():
     conn = get_connection()
-    if not conn:
-        return jsonify({'error': 'Error de conexión'}), 500
-
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM destino")
-    columnas = [desc[0] for desc in cursor.description]
-    destino = [dict(zip(columnas, fila)) for fila in cursor.fetchall()]
-    cursor.close()
-    conn.close()
-    return jsonify(destino)
-
+    try:
+        cursor.execute("SELECT id_destino, pais, ciudad FROM destino ORDER BY pais, ciudad")
+        destinos = cursor.fetchall()
+        lista = [
+            {"id_destino": d[0], "pais": d[1], "ciudad": d[2]}
+            for d in destinos
+        ]
+        return jsonify(lista)
+    except Exception as e:
+        print("Error obteniendo destinos:", e)
+        return jsonify([]), 500
+    finally:
+        cursor.close()
+        conn.close()
+        
+@app.route('/api/busquedadestino', methods=['GET'])
+def busqueda_destino():
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT id_destino, pais, ciudad FROM destino ORDER BY pais, ciudad")
+        destinos = cursor.fetchall()
+        lista = [
+            {"id_destino": d[0], "pais": d[1], "ciudad": d[2]}
+            for d in destinos
+        ]
+        return jsonify(lista)
+    except Exception as e:
+        print("Error en búsqueda de destino:", e)
+        return jsonify([]), 500
+    finally:
+        cursor.close()
+        conn.close()
 
 # POST - Crear destino
 @app.route('/api/destinos', methods=['POST'])
