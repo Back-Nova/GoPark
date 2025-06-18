@@ -160,8 +160,6 @@ def eliminar_paquete(id):
     return jsonify({"message": "Paquete eliminado correctamente"}), 200
 #--- FIN DE PAQUETES ---
 
-
-
 # -------- DESTINO --------
 
 @app.route('/pagina_destino')
