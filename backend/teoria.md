@@ -1,3 +1,23 @@
+Lo primero para iniciar el proyecto
+hay que crea un entorno  virtual 
+python -m venv gopark
+luego hay que activarlo
+gopark\Scripts\activate
+
+Luego que este activada hay que hacer esto 
+hay que instalar la liberia con 
+pip install -r requirements.txt
+luego instalado ve a la carpeta de 
+/backend
+y en la terminal haz 
+python app.py 
+y con esto lanza el proyecto
+pero antes 
+para la conexion en la base de dato es por medio de postresql  
+y la bd esta en la carpeta de database
+llama la base como GoPark
+
+
 # Comando para poder poner tood en backend 
 ### ng build --output-path=../backend/static
 
