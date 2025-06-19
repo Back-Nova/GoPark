@@ -27,8 +27,9 @@
 
       <!-- Botón Carrito y Usuario a la derecha -->
       <div style="display: flex; align-items: center; gap: 18px;">
-        <button class="carrito-btn" style="background: linear-gradient(90deg, #00f2ff 30%, #00f2ff 100%); color: #071a1b; border: 2px solid #00f2ff; border-radius: 10px; font-family: 'Orbitron', Arial, sans-serif; font-size: 1.09rem; font-weight: 800; letter-spacing: 1px; padding: 10px 22px; box-shadow: 0 0 18px #00f2ff44; cursor: pointer; transition: background 0.18s, color 0.18s, box-shadow 0.18s;">
+        <button class="carrito-btn" onclick="irAlCarrito()" style="position:relative;background:linear-gradient(90deg,#00f2ff 30%,#00f2ff 100%);color:#071a1b;border:2px solid #00f2ff;border-radius:10px;font-family:'Orbitron',Arial,sans-serif;font-size:1.09rem;font-weight:800;letter-spacing:1px;padding:10px 22px;box-shadow:0 0 18px #00f2ff44;cursor:pointer;transition:background 0.18s,color 0.18s,box-shadow 0.18s;">
           <i class="fa-solid fa-cart-shopping" style="margin-right:7px;"></i> Carrito
+          <span id="contador-carrito" style="position:absolute;top:-8px;right:-10px;background:red;color:white;font-weight:bold;padding:2px 7px;border-radius:50%;font-size:0.85rem;">0</span>
         </button>
         <div class="usuario-dropdown" style="position: relative;">
           <button id="usuarioBtn" class="usuario-btn" style="background: none; border: none; cursor: pointer; font-size: 2.5rem; color: #00f2ff; padding: 0;">
@@ -46,7 +47,13 @@
     <main class="productos-lista" id="lista-paquetes">
       <!-- Aquí se insertarán los paquetes dinámicamente con JS -->
     </main>
-
+    <div id="carritoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(120deg, #071a1b 70%, #00f2ff 180%); z-index:999; overflow:auto;">
+      <div style="background:#101c24; margin:50px auto; padding:20px; border-radius:18px; width:90%; max-width:800px; position:relative; box-shadow:0 0 38px #00f2ff99;">
+      <span onclick="document.getElementById('carritoModal').style.display='none'" style="position:absolute; top:10px; right:20px; font-size:24px; cursor:pointer; color:#00f2ff;">&times;</span>
+      <h2 style="color:#00f2ff; font-family:'Orbitron',Arial,sans-serif; font-weight:900; letter-spacing:1.5px;">🛒 Carrito de Paquetes</h2>
+      <div id="contenidoCarrito" style="margin-top:20px;"></div>
+      </div>
+    </div>
     <footer class="productos-footer">
       Realizado por alumnos E.E.T N°3139 Gral M Miguel De Guemes
     </footer>
@@ -54,100 +61,21 @@
   <!-- Aquí podrás agregar tu script para mostrar los datos -->
    <!-- Este fragmento ya está bien y funcional -->
 <script>
+  // Ejecuta al cargar la página
 document.addEventListener("DOMContentLoaded", async () => {
-  // Cargar paquetes dinámicamente
-  const lista = document.getElementById("lista-paquetes");
+  await cargarPaquetes();
+  actualizarContadorCarrito();
 
-  try {
-    const res = await fetch("http://127.0.0.1:5000/api/paquetes_cliente");
-    const paquetes = await res.json();
-
-    paquetes.forEach(p => {
-      const div = document.createElement("div");
-      div.className = "producto-card";
-      div.innerHTML = `
-        <div class="producto-card-anim" style="background: linear-gradient(135deg, #071a1b 80%, #00f2ff22 100%); border-radius: 18px; box-shadow: 0 4px 24px #00f2ff22, 0 1.5px 0 #00f2ff44 inset; padding: 28px 22px 22px 22px; margin-bottom: 18px; display: flex; flex-direction: column; align-items: flex-start; min-width: 270px; max-width: 340px; width: 100%; transition: transform 0.22s, box-shadow 0.22s; animation: fadeInCard 0.7s cubic-bezier(.4,1.6,.4,1) both;">
-          <style>
-            @keyframes fadeInCard {
-              0% { opacity: 0; transform: translateY(40px) scale(0.97); }
-              100% { opacity: 1; transform: translateY(0) scale(1); }
-            }
-
-            .agregar-btn-anim:hover {
-              background: linear-gradient(90deg, #00f2ff 60%, #00b3c6 100%);
-              color: #fff;
-              box-shadow: 0 0 28px #00f2ff88;
-              transform: scale(1.04);
-            }
-
-            .agregar-btn-anim:active {
-              background: linear-gradient(90deg, #00b3c6 30%, #00f2ff 100%);
-              color: #071a1b;
-              box-shadow: 0 0 10px #00f2ff44;
-              transform: scale(0.97);
-            }
-
-            .producto-card-anim:hover {
-              transform: translateY(-7px) scale(1.03);
-              box-shadow: 0 8px 32px #00f2ff44, 0 2px 0 #00f2ff66 inset;
-            }
-          </style>
-
-          <div style="font-size:1.35rem;color:#00f2ff;margin-bottom:10px;font-weight:900;letter-spacing:1px;">
-            ${p.nombre}
-          </div>
-
-          <div style="font-size:1rem;color:#00b3c6;margin-bottom:8px;display:flex;align-items:center;gap:7px;">
-            <i class="fa-regular fa-calendar"></i>
-            <span>
-              ${new Date(p.fecha_inicio).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })} - 
-              ${new Date(p.fecha_fin).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
-            </span>
-          </div>
-
-          <p style="font-size:1rem;color:#e0f7fa;margin-bottom:14px;min-height:48px;">
-            ${p.descripcion}
-          </p>
-
-          <div style="font-size:1.13rem;font-weight:800;color:#00f2ff;margin-bottom:7px;letter-spacing:1px;">
-            <i class="fa-solid fa-dollar-sign"></i> ${p.precio}
-          </div>
-
-          <div style="font-size:1rem;color:#00b3c6;margin-bottom:12px;">
-            <i class="fa-solid fa-layer-group"></i> Cupos totales: ${p.cupos_totales}
-          </div>
-
-          <div style="font-size:1rem;color:#00b3c6;margin-bottom:16px;">
-            <i class="fa-solid fa-users"></i> Cupos disponibles: ${p.cupos_disponibles}
-          </div>
-
-          <button style="padding:11px 36px;background:linear-gradient(90deg,#00f2ff 30%,#1b2326 100%);color:#071a1b;border:2px solid #00f2ff;border-radius:10px;font-family:'Orbitron',Arial,sans-serif;font-size:1.09rem;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px #00f2ff44;transition:background 0.18s,color 0.18s,box-shadow 0.18s,transform 0.18s;margin-top:auto;outline:none;" onmouseover="this.classList.add('agregar-btn-anim')" onmouseout="this.classList.remove('agregar-btn-anim')" onmousedown="this.classList.add('agregar-btn-anim')" onmouseup="this.classList.remove('agregar-btn-anim')">
-            <i class="fa-solid fa-cart-plus" style="margin-right:7px;"></i> Agregar al carrito
-          </button>
-        </div>
-      `;
-      lista.appendChild(div);
-    });
-  } catch (err) {
-    console.error("Error cargando paquetes:", err);
-    lista.innerHTML = "<p>Error al cargar los paquetes.</p>";
-  }
-
-  // Mostrar información del usuario en el icono
+  // Mostrar info de usuario desde localStorage
   const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
-
   document.getElementById("nombreUsuario").textContent = `${usuario.nombre || "Nombre"} ${usuario.apellido || "Apellido"}`;
   document.getElementById("emailUsuario").textContent = usuario.email || "correo@ejemplo.com";
 
-  const usuarioBtn = document.getElementById("usuarioBtn");
-  const usuarioMenu = document.getElementById("usuarioMenu");
-
-  // Toggle del menú de usuario
-  usuarioBtn.addEventListener("click", () => {
-    usuarioMenu.style.display = usuarioMenu.style.display === "none" ? "block" : "none";
+  document.getElementById("usuarioBtn").addEventListener("click", () => {
+    const menu = document.getElementById("usuarioMenu");
+    menu.style.display = menu.style.display === "none" ? "block" : "none";
   });
 
-  // Ocultar menú al hacer clic fuera
   window.addEventListener("click", (e) => {
     if (!usuarioBtn.contains(e.target) && !usuarioMenu.contains(e.target)) {
       usuarioMenu.style.display = "none";
@@ -155,11 +83,340 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// Función para cerrar sesión
+// Carga los paquetes desde el backend
+async function cargarPaquetes() {
+  const lista = document.getElementById("lista-paquetes");
+  lista.innerHTML = "";
+  try {
+    const res = await fetch("/api/paquetes_cliente");
+    const paquetes = await res.json();
+
+    paquetes.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "producto-card";
+      div.innerHTML = `
+        <div style="
+          background: linear-gradient(120deg, #101c24 70%, #00f2ff 180%);
+          border-radius: 18px;
+          box-shadow: 0 6px 28px #00f2ff44, 0 2px 12px #00f2ff22;
+          padding: 28px 20px 22px 20px;
+          margin-bottom: 28px;
+          margin-top: 12px;
+          color: #eafcff;
+          border: 2.5px solid #00f2ff55;
+          position: relative;
+          overflow: hidden;
+          animation: fadeInCard 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+          transition: transform 0.18s, box-shadow 0.18s, border 0.18s;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        " 
+        onmouseover="this.style.transform='scale(1.025) translateY(-4px)';this.style.boxShadow='0 0 38px #00f2ff99';this.style.borderColor='#00f2ff99';"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 6px 28px #00f2ff44, 0 2px 12px #00f2ff22';this.style.borderColor='#00f2ff55';"
+        >
+          <div style="font-size:1.35rem;color:#00f2ff;margin-bottom:10px;font-weight:900;text-shadow:0 2px 18px #00f2ff55;">
+            ${p.nombre}
+          </div>
+          <div style="font-size:1rem;color:#00b3c6;margin-bottom:8px;">
+            <i class="fa-regular fa-calendar"></i> ${new Date(p.fecha_inicio).toLocaleDateString('es-ES')} - ${new Date(p.fecha_fin).toLocaleDateString('es-ES')}
+          </div>
+          <p style="font-size:1rem;color:#e0f7fa;margin-bottom:14px;line-height:1.5;">
+            ${p.descripcion}
+          </p>
+          <div style="font-size:1.13rem;font-weight:800;color:#00f2ff;margin-bottom:7px;">
+            <i class="fa-solid fa-dollar-sign"></i> ${p.precio}
+          </div>
+          <div style="font-size:1rem;color:#00b3c6;margin-bottom:12px;">
+            <i class="fa-solid fa-layer-group"></i> Cupos: ${p.cupos_totales} / ${p.cupos_disponibles}
+          </div>
+          <button onclick="agregarAlCarrito(${p.id_paquete})" style="
+            padding:10px 26px;
+            background:linear-gradient(90deg,#00f2ff 30%,#00b3c6 100%);
+            color:#071a1b;
+            border:2px solid #00f2ff;
+            border-radius:10px;
+            font-family:'Orbitron',Arial,sans-serif;
+            font-size:1.09rem;
+            font-weight:800;
+            letter-spacing:1px;
+            margin-bottom:8px;
+            box-shadow:0 0 18px #00f2ff44;
+            cursor:pointer;
+            transition:background 0.18s,color 0.18s,box-shadow 0.18s;
+          ">
+            <i class="fa-solid fa-cart-plus" style="margin-right:7px;"></i> Agregar al carrito
+          </button>
+          <button onclick="eliminarDelCarrito(${p.id_paquete})" style="
+            padding:10px 26px;
+            background:#ff4c4c;
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-family:'Orbitron',Arial,sans-serif;
+            font-size:1.01rem;
+            font-weight:700;
+            letter-spacing:1px;
+            box-shadow:0 0 8px #ff4c4c44;
+            cursor:pointer;
+            margin-top:0;
+            transition:background 0.18s,box-shadow 0.18s;
+          ">
+            <i class="fa-solid fa-trash"></i> Quitar del carrito
+          </button>
+        </div>
+        <style>
+        @keyframes fadeInCard {
+          0% { opacity: 0; transform: translateY(40px) scale(0.95);}
+          100% { opacity: 1; transform: translateY(0) scale(1);}
+        }
+        </style>
+      `;
+      lista.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Error cargando paquetes:", err);
+    lista.innerHTML = "<p>Error al cargar los paquetes.</p>";
+  }
+}
+
+// Agrega un paquete al carrito
+async function agregarAlCarrito(id_paquete) {
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  if (!carrito.includes(id_paquete)) {
+    // Obtener usuario
+    const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+
+    // Crear la reserva
+    const reserva = {
+      id_paquete: id_paquete,
+      id_usuario: usuario.id_usuario,
+      cantidad_personas: 1,
+      observaciones: "Reserva agregada desde carrito",
+      estado: true
+    };
+
+    const resReserva = await fetch("/api/reservas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reserva)
+    });
+
+    if (!resReserva.ok) {
+      alert("❌ Error al crear reserva");
+      return;
+    }
+
+    const reservaCreada = await resReserva.json();
+    const id_reserva = reservaCreada.id_reserva;
+
+    // Crear entrada en la tabla carrito
+    const carritoData = {
+      reserva: id_reserva,
+      precio_final: reservaCreada.precio_paquete,  // opcional, si lo devolvés desde backend
+      metodo_pago: "Transferencia",
+      estado_pago: "Pendiente"
+    };
+
+    const resCarrito = await fetch("/api/carrito", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(carritoData)
+    });
+
+    if (!resCarrito.ok) {
+      alert("❌ Reserva creada, pero error al agregar al carrito");
+      return;
+    }
+
+    // Guardar en localStorage como control visual
+    carrito.push(id_paquete);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    actualizarContadorCarrito();
+
+    alert("✅ Reserva y carrito creados correctamente");
+  } else {
+    alert("⚠️ El paquete ya está en el carrito");
+  }
+}
+
+// Elimina un paquete del carrito
+function eliminarDelCarrito(id_paquete) {
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  carrito = carrito.filter(id => id !== id_paquete);
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  actualizarContadorCarrito();
+  alert("🗑️ Paquete eliminado del carrito");
+}
+
+// Actualiza el número del carrito visualmente
+function actualizarContadorCarrito() {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const contador = document.getElementById("contador-carrito");
+  if (contador) contador.textContent = carrito.length;
+}
+
+// Mensaje temporal al hacer clic en el carrito
+async function irAlCarrito() {
+  const carritoIds = JSON.parse(localStorage.getItem("carrito")) || [];
+  if (carritoIds.length === 0) {
+    alert("🛒 El carrito está vacío");
+    return;
+  }
+
+  const modal = document.getElementById("carritoModal");
+  const contenido = document.getElementById("contenidoCarrito");
+  contenido.innerHTML = "<p>Cargando...</p>";
+  modal.style.display = "block";
+
+  try {
+    const res = await fetch("/api/carrito/detalles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: carritoIds })
+    });
+
+    if (!res.ok) throw new Error("Error al obtener detalles");
+    const paquetes = await res.json();
+
+    contenido.innerHTML = paquetes.map(p => `
+      <div style="
+      background: linear-gradient(120deg, #101c24 70%, #00f2ff 180%);
+      border-radius: 18px;
+      box-shadow: 0 6px 28px #00f2ff44, 0 2px 12px #00f2ff22;
+      padding: 28px 20px 22px 20px;
+      margin-bottom: 28px;
+      margin-top: 12px;
+      width: 98%;
+      max-width: 540px;
+      color: #eafcff;
+      border: 2.5px solid #00f2ff55;
+      position: relative;
+      overflow: hidden;
+      animation: carritoFadeIn 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+      transition: transform 0.18s, box-shadow 0.18s, border 0.18s;
+      }
+      :hover {
+      transform: scale(1.025) translateY(-4px);
+      box-shadow: 0 0 38px #00f2ff99;
+      border-color: #00f2ff99;
+      }
+      ">
+      <h3 style="
+        color: #00f2ff;
+        font-size: 1.45rem;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        margin: 0 0 10px 0;
+        text-shadow: 0 2px 18px #00f2ff55;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideInLeft 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+      ">
+        <i class="fa-solid fa-suitcase-rolling" style="color:#00b3c6;"></i> ${p.nombre}
+      </h3>
+      <p style="margin: 6px 0; color: #00eaff; font-weight: 700; font-size: 1.08rem; letter-spacing: 0.5px;">
+        <i class="fa-solid fa-location-dot" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Destino:</span> ${p.destino_pais}, ${p.destino_ciudad}
+      </p>
+      <p style="margin: 6px 0; color: #00f2ff; font-weight: 700; font-size: 1.08rem;">
+        <i class="fa-solid fa-dollar-sign" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Precio:</span> $${p.precio}
+      </p>
+      <p style="margin: 6px 0; color: #00b3c6; font-weight: 700;">
+        <i class="fa-regular fa-calendar" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Fechas:</span> ${new Date(p.fecha_inicio).toLocaleDateString('es-ES')} - ${new Date(p.fecha_fin).toLocaleDateString('es-ES')}
+      </p>
+      <p style="margin: 6px 0; color: #e0f7fa; font-size: 1.01rem;">
+        <i class="fa-solid fa-hotel" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Alojamiento:</span> ${p.alojamiento_nombre} (${p.alojamiento_tipo})
+      </p>
+      <p style="margin: 6px 0; color: #e0f7fa; font-size: 1.01rem;">
+        <i class="fa-solid fa-car-side" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Vehículo:</span> ${p.vehiculo_marca} ${p.vehiculo_modelo}
+      </p>
+      <p style="margin: 6px 0; color: #e0f7fa; font-size: 1.01rem;">
+        <i class="fa-solid fa-plane-departure" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Vuelo:</span> ${p.vuelo_aerolinea} (${p.aeropuerto_o} → ${p.aeropuerto_d})
+      </p>
+      <p style="margin: 6px 0 0 0; color: #e0f7fa; font-size: 1.01rem;">
+        <i class="fa-solid fa-person-hiking" style="color:#00f2ff;margin-right:7px;"></i>
+        <span style="color:#fff;">Excursión:</span> ${p.excursion_nombre} (${p.excursion_duracion})
+      </p>
+      <button style="
+        margin-top: 18px;
+        padding: 12px 32px;
+        background: linear-gradient(90deg,#00f2ff 30%,#00b3c6 100%);
+        color: #071a1b;
+        border: 2px solid #00f2ff;
+        border-radius: 10px;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 1.09rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        box-shadow: 0 0 18px #00f2ff44;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+        display: block;
+      " onclick="comprar()"">
+        <i class="fa-solid fa-credit-card" style="margin-right:7px;"></i> Comprar
+      </button>
+      </div>
+      <style>
+      @keyframes carritoFadeIn {
+      0% { opacity: 0; transform: translateY(40px) scale(0.95);}
+      100% { opacity: 1; transform: translateY(0) scale(1);}
+      }
+      @keyframes slideInLeft {
+      0% { opacity: 0; transform: translateX(-40px);}
+      100% { opacity: 1; transform: translateX(0);}
+      }
+      </style>
+
+    `).join('');
+
+  } catch (error) {
+    contenido.innerHTML = `<p style="color:red">Error al cargar el carrito</p>`;
+    console.error(error);
+  }
+}
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("carritoModal");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+// Cierra sesión
 function cerrarSesion() {
   localStorage.removeItem("usuario");
   window.location.href = "/login";
 }
+async function comprar() {
+  try {
+    const res = await fetch("/crear_pago", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ precio: 30000 })
+    });
+
+    const data = await res.json();
+    if (data.init_point) {
+      window.location.href = data.init_point;
+    } else {
+      alert("❌ Error al generar el pago.");
+    }
+  } catch (err) {
+    console.error("Error:", err);
+    alert("❌ Ocurrió un error al intentar pagar.");
+  }
+}
+
+
 </script>
 
 </body>
