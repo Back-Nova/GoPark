@@ -9,8 +9,34 @@
 </head>
 <body>
   <div class="admin-bg">
-    <header class="admin-header">
+    <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center;">
       <h1 class="admin-title"><i class="fa-solid fa-map-location-dot"></i> Gestión de Destinos</h1>
+      <div style="display: flex; align-items: center;">
+        <button 
+          onclick="window.location.href='/jefe_pag'"
+          style="
+        background: linear-gradient(90deg, #00f2ff 30%, #101c24 100%);
+        color: #101c24;
+        border: 2px solid #00f2ff;
+        border-radius: 10px;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 1.08rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 0 18px #00f2ff66;
+        padding: 10px 26px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.19s, color 0.19s, box-shadow 0.19s;
+          "
+          onmouseover="this.style.background='#00f2ff';this.style.color='#112329';this.style.boxShadow='0 0 24px #00f2ffbb';"
+          onmouseout="this.style.background='linear-gradient(90deg, #00f2ff 30%, #101c24 100%)';this.style.color='#101c24';this.style.boxShadow='0 0 18px #00f2ff66';"
+        >
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+      </div>
     </header>
 
     <main class="admin-main">

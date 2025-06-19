@@ -10,6 +10,27 @@
 <body class="admin-bg">
 
   <header class="admin-header">
+    <div style="display: flex; align-items: center;">
+        <button onclick="window.location.href='/jefe_pag'" style="
+        background: linear-gradient(90deg, #00f2ff 30%, #101c24 100%);
+        color: #101c24;
+        border: 2px solid #00f2ff;
+        border-radius: 10px;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 1.08rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 0 18px #00f2ff66;
+        padding: 10px 26px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.19s, color 0.19s, box-shadow 0.19s;
+          " onmouseover="this.style.background='#00f2ff';this.style.color='#112329';this.style.boxShadow='0 0 24px #00f2ffbb';" onmouseout="this.style.background='linear-gradient(90deg, #00f2ff 30%, #101c24 100%)';this.style.color='#101c24';this.style.boxShadow='0 0 18px #00f2ff66';">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+      </div>
     <h1 class="admin-title"><i class="fa-solid fa-suitcase-rolling"></i> Panel de Administración</h1>
     <nav class="admin-nav">
       <a href="#" class="nav-link active"><i class="fa-solid fa-bed"></i> Alojamientos</a>
@@ -25,7 +46,7 @@
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; width: 100%; justify-items: center;">
 
       <!-- Bloque de Alojamiento -->
-      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+      <!-- <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
         <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
           <i class="fa-solid fa-plus"></i> Nuevo Alojamiento
         </h2>
@@ -76,7 +97,7 @@
           <i class="fa-solid fa-list"></i> Alojamientos Creados
         </h2>
         <div id="listaAlojamientos" class="admin-lista"></div>
-      </section>
+      </section> -->
 
       <!-- Bloque de Vehículo de Alquiler -->
       <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
@@ -237,6 +258,65 @@
         <div id="listaExcursiones" class="admin-lista"></div>
       </section>
 
+      <section class="admin-section" style="flex: 1; min-width: 340px; max-width: 500px;">
+  <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.45rem; font-weight:800; letter-spacing:1.5px; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+    <i class="fa-solid fa-hotel"></i> Nuevo Alojamiento
+  </h2>
+  <form id="formAlojamiento" autocomplete="off">
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_nombre" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-signature"></i> Nombre
+      </label>
+      <input type="text" id="alojamiento_nombre" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;">
+    </div>
+
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_descripcion" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-align-left"></i> Descripción
+      </label>
+      <textarea id="alojamiento_descripcion" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></textarea>
+    </div>
+
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_tipo" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-building"></i> Tipo de Alojamiento
+      </label>
+      <input type="text" id="alojamiento_tipo" required placeholder="Ej: Hotel, Cabaña" style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;">
+    </div>
+
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_capacidad" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-users"></i> Capacidad
+      </label>
+      <input type="number" id="alojamiento_capacidad" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;">
+    </div>
+
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_precio" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-dollar-sign"></i> Precio
+      </label>
+      <input type="number" id="alojamiento_precio" step="0.01" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;">
+    </div>
+
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="alojamiento_destino" style="display:block; font-weight:700; margin-bottom:6px; color:#b2f4ff; letter-spacing:1px;">
+        <i class="fa-solid fa-map-marker-alt"></i> Destino
+      </label>
+      <select id="alojamiento_destino" required style="width:100%; padding:10px; border-radius:7px; border:1.5px solid #00f2ff55; background:rgba(16,28,36,0.8); color:#eafcff; font-family:'Orbitron', Arial, sans-serif; font-size:1.05rem;"></select>
+    </div>
+
+    <button type="submit" class="admin-nuevo-btn" style="margin-top:8px;">
+      <i class="fa-solid fa-floppy-disk"></i> Guardar Alojamiento
+    </button>
+  </form>
+
+  <hr style="border:0; border-top:1.5px solid #00f2ff44; margin:28px 0 18px 0;">
+
+  <h2 style="color:#00f2ff; font-family:'Orbitron', Arial, sans-serif; font-size:1.18rem; font-weight:800; letter-spacing:1.2px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+    <i class="fa-solid fa-list"></i> Alojamientos Creados
+  </h2>
+  <div id="listaAlojamientos" class="admin-lista"></div>
+</section>
       
     </div>
 
@@ -593,6 +673,102 @@ async function eliminarExcursion(id) {
   alert(data.mensaje || data.error);
   cargarExcursiones();
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  cargarDestinosAlojamiento();
+  cargarAlojamientos();
+
+  const formAlojamiento = document.getElementById("formAlojamiento");
+  formAlojamiento.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const datos = {
+      nombre: document.getElementById("alojamiento_nombre").value,
+      descripcion: document.getElementById("alojamiento_descripcion").value,
+      tipo_alojamiento: document.getElementById("alojamiento_tipo").value,
+      capacidad: parseInt(document.getElementById("alojamiento_capacidad").value),
+      precio: parseFloat(document.getElementById("alojamiento_precio").value),
+      destino: parseInt(document.getElementById("alojamiento_destino").value)
+    };
+
+    const res = await fetch('/api/v2_destino/alojamientos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    });
+
+    if (res.ok) {
+      formAlojamiento.reset();
+      cargarAlojamientos();
+      alert("✅ Alojamiento guardado correctamente");
+    } else {
+      alert("❌ Error al guardar alojamiento");
+    }
+  });
+});
+
+async function cargarDestinosAlojamiento() {
+  try {
+    const res = await fetch('/api/v2_destino/destinos');
+    const destinos = await res.json();
+    const select = document.getElementById("alojamiento_destino");
+    select.innerHTML = destinos.map(destino => `
+      <option value="${destino.pais}">${destino.ciudad}</option>
+    `).join('');
+  } catch (error) {
+    console.error("Error al cargar destinos:", error);
+  }
+}
+
+
+async function cargarAlojamientos() {
+  try {
+    const res = await fetch('/api/v2_destino/alojamientos');
+    const alojamientos = await res.json();
+
+    const contenedor = document.getElementById("listaAlojamientos");
+    contenedor.innerHTML = '';
+
+    alojamientos.forEach(a => {
+      const div = document.createElement("div");
+      div.className = "admin-card";
+      div.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:6px; font-size:1rem; color:#fff;">
+          <strong style="color:#00f2ff;"><i class="fa-solid fa-hotel"></i> ${a.nombre}</strong>
+          <div><i class="fa-solid fa-align-left"></i> <b>Descripción:</b> ${a.descripcion}</div>
+          <div><i class="fa-solid fa-bed"></i> <b>Tipo:</b> ${a.tipo_alojamiento}</div>
+          <div><i class="fa-solid fa-users"></i> <b>Capacidad:</b> ${a.capacidad}</div>
+          <div><i class="fa-solid fa-dollar-sign"></i> <b>Precio:</b> $${a.precio}</div>
+          <div><i class="fa-solid fa-map-marker-alt"></i> <b>Destino:</b> ${a.destino}</div>
+        </div>
+        <button onclick="eliminarAlojamiento(${a.id_alojamiento})"
+          style="margin-top:10px; background:#ff4c4c; border:none; color:white; padding:6px 12px; border-radius:7px; font-weight:600; cursor:pointer;">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      `;
+      contenedor.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error al cargar alojamientos:", error);
+  }
+}
+
+async function eliminarAlojamiento(id) {
+  const confirmar = confirm("¿Seguro que querés eliminar este alojamiento?");
+  if (!confirmar) return;
+
+  const res = await fetch(`/api/v2_destino/alojamientos/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    cargarAlojamientos();
+    alert("🗑️ Alojamiento eliminado");
+  } else {
+    alert("❌ Error al eliminar alojamiento");
+  }
+}
+
   </script>
 <script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-ZZDG7C4O.js" type="module"></script></body>
 </html>

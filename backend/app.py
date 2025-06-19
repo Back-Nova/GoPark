@@ -24,6 +24,157 @@ def serve_pagina_prin():
 def serve_admin():
     return send_from_directory('static/admin/browser', 'index.html')
 
+@app.route('/api/admin/paquetes')
+def obtener_paquetes_admin():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id_paquete, nombre, descripcion, precio, cupos_totales, cupos_disponibles,
+               fecha_inicio, fecha_fin, tipo, disponible, vuelo, vehiculo, alojamiento, excursion
+        FROM paquete
+    """)
+    columnas = [desc[0] for desc in cur.description]
+    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return jsonify(datos)
+
+
+@app.route('/api/admin/usuarios')
+def obtener_jefes_venta():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id_usuario, nombre, apellido, email FROM usuario WHERE id_rol = 5
+    """)
+    columnas = [desc[0] for desc in cur.description]
+    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return jsonify(datos)
+
+# Eliminar paquete
+@app.route('/api/admin/paquetes/<int:id_paquete>', methods=['DELETE'])
+def eliminar_paquete_admin(id_paquete):
+    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "Conexión fallida"}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM paquete WHERE id_paquete = %s", (id_paquete,))
+        conn.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Eliminar usuario (solo jefes de venta)
+@app.route('/api/admin/usuarios/<int:id_usuario>', methods=['DELETE'])
+def eliminar_usuario_admin(id_usuario):
+    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "Conexión fallida"}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM usuario WHERE id_usuario = %s AND id_rol = 5", (id_usuario,))
+        conn.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+@app.route('/api/admin/paquetes/<int:id>', methods=['PUT'])
+def editar_paquete_admin(id):
+    data = request.get_json()
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        UPDATE paquete
+        SET nombre = %s, descripcion = %s, precio = %s, cupos_totales = %s,
+            cupos_disponibles = %s, fecha_inicio = %s, fecha_fin = %s, tipo = %s,
+            disponible = %s, vuelo = %s, vehiculo = %s, alojamiento = %s, excursion = %s
+        WHERE id_paquete = %s
+    """, (
+        data['nombre'], data['descripcion'], data['precio'], data['cupos_totales'],
+        data['cupos_disponibles'], data['fecha_inicio'], data['fecha_fin'], data['tipo'],
+        data['disponible'], data['vuelo'], data['vehiculo'], data['alojamiento'],
+        data['excursion'], id
+    ))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({'success': True})
+
+@app.route('/api/admin/usuarios/<int:id>', methods=['PUT'])
+def editar_usuario_admin(id):
+    data = request.get_json()
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        UPDATE usuario
+        SET nombre = %s, apellido = %s, email = %s
+        WHERE id_usuario = %s AND id_rol = 5
+    """, (
+        data['nombre'], data['apellido'], data['email'], id
+    ))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({'success': True})
+
+
+
+
+# Obtener todos los destinos (para el select)
+@app.route('/api/v2_destino/destinos', methods=['GET'])
+def V2_obtener_destinos():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT pais,ciudad FROM destino")
+    columnas = [desc[0] for desc in cur.description]
+    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return jsonify(datos)
+
+# Obtener todos los alojamientos
+@app.route('/api/v2_destino/alojamientos', methods=['GET'])
+def V2_obtener_alojamientos():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id_alojamiento, nombre, descripcion, tipo_alojamiento, capacidad, precio, destino 
+        FROM alojamiento
+    """)
+    columnas = [desc[0] for desc in cur.description]
+    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return jsonify(datos)
+
+# Crear nuevo alojamiento
+@app.route('/api/v2_destino/alojamientos', methods=['POST'])
+def Vcrear_alojamiento():
+    data = request.get_json()
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO alojamiento (nombre, descripcion, tipo_alojamiento, capacidad, precio, destino)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (
+        data['nombre'], data['descripcion'], data['tipo_alojamiento'],
+        data['capacidad'], data['precio'], data['destino']
+    ))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({'success': True})
+
+
 @app.route('/cliente')
 def serve_cliente():
     return send_from_directory('static/cliente/browser', 'index.html')

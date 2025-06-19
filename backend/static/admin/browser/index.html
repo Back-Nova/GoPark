@@ -2,21 +2,18 @@
 <html lang="es" data-beasties-container>
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administración | GoPark</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>@font-face{font-family:Orbitron;font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/orbitron/v34/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_CmBoWgz.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}body,html{margin:0;padding:0;background:linear-gradient(120deg,#101c24 60%,#00f2ff 200%);min-height:100vh;font-family:Orbitron,Arial,sans-serif}.admin-bg{min-height:100vh;display:flex;flex-direction:column}.admin-header{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:30px 7vw 10px;background:transparent}.admin-title{color:#00f2ff;font-size:2.1rem;font-family:Orbitron,Arial,sans-serif;font-weight:900;letter-spacing:1.5px;margin:0 0 8px;text-shadow:0 2px 24px #00f2ff55;display:flex;align-items:center;gap:13px}.admin-nav{display:flex;gap:22px;margin-bottom:4px}.nav-link{color:#b2f4ff;font-size:1.09rem;text-decoration:none;font-weight:700;padding:9px 20px;border-radius:9px;transition:background .15s,color .15s;letter-spacing:1px;display:flex;align-items:center;gap:7px}.nav-link.active,.nav-link:hover,.nav-link:focus{background:#00f2ff;color:#101c24}.admin-main{flex:1;display:flex;flex-direction:column;gap:40px;padding-bottom:30px}.admin-section{margin:0 auto 26px;max-width:900px;width:97vw;background:#101c24ed;border-radius:22px;box-shadow:0 8px 32px #00f2ff44,0 2px 12px #00f2ff22;padding:30px 30px 24px}.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:18px}.section-header h2{color:#00f2ff;font-family:Orbitron,Arial,sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:1.5px;margin:0;display:flex;align-items:center;gap:10px}.admin-nuevo-btn{padding:11px 30px;background:linear-gradient(90deg,#00f2ff 30%,#1b2326);color:#071a1b;border:2px solid #00f2ff;border-radius:10px;font-family:Orbitron,Arial,sans-serif;font-size:1.05rem;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px #00f2ff66;transition:background .19s,color .19s,box-shadow .19s}.admin-nuevo-btn i{margin-right:8px}.admin-nuevo-btn:hover,.admin-nuevo-btn:focus{background:#00f2ff;color:#112329;box-shadow:0 0 24px #00f2ffbb}.admin-lista{display:flex;flex-direction:column;gap:20px;width:100%;min-height:10vh}.admin-card{background:#112329fa;border-radius:13px;box-shadow:0 6px 28px #00f2ff44,0 2px 12px #00f2ff22;padding:15px 15px 10px;width:100%;color:#eafcff;border:2px solid #00f2ff33;display:flex;flex-direction:column;align-items:stretch;transition:transform .16s,box-shadow .16s}.admin-card-info{display:flex;align-items:flex-start;gap:22px;margin-bottom:10px}.admin-card-img img{width:64px;height:64px;border-radius:12px;box-shadow:0 0 18px #00f2ff66;background:#fff;object-fit:cover}.admin-card-data{flex:1;display:flex;flex-direction:column;gap:2px;font-size:1.01rem}.admin-card-nombre{font-size:1.15rem;color:#00f2ff;margin:0 0 3px;font-weight:800;letter-spacing:1px}.badge{font-size:.93rem;padding:5px 13px;border-radius:13px;font-weight:700;letter-spacing:1px;display:inline-block}.disponible{background:#00ffb7;color:#10201c}.admin-card-acciones{display:flex;gap:13px;justify-content:flex-end;margin-top:3px}.admin-editar-btn{background:linear-gradient(90deg,#ffc700 20%,#1b2326);color:#112329;border:2px solid #ffc700;border-radius:10px;font-family:Orbitron,Arial,sans-serif;font-size:1.01rem;font-weight:700;padding:8px 22px;cursor:pointer;box-shadow:0 0 12px #ffc70044;transition:background .18s,color .18s,box-shadow .18s}.admin-editar-btn i{margin-right:7px}.admin-editar-btn:hover,.admin-editar-btn:focus{background:#ffe066;color:#2b2329;box-shadow:0 0 18px #ffc70099}.admin-eliminar-btn{background:linear-gradient(90deg,#f41111 20%,#1b2326);color:#fff;border:2px solid #f41111;border-radius:10px;font-family:Orbitron,Arial,sans-serif;font-size:1.01rem;font-weight:700;padding:8px 22px;cursor:pointer;box-shadow:0 0 12px #f4111166;transition:background .18s,color .18s,box-shadow .18s}.admin-eliminar-btn i{margin-right:7px}.admin-eliminar-btn:hover,.admin-eliminar-btn:focus{background:#ff5757;color:#fff;box-shadow:0 0 18px #f41111bb}.admin-descargar-btn{background:linear-gradient(90deg,#00f2ff 30%,#1b2326);color:#071a1b;border:2px solid #00f2ff;border-radius:10px;font-family:Orbitron,Arial,sans-serif;font-size:1.01rem;font-weight:700;padding:8px 22px;cursor:pointer;box-shadow:0 0 18px #00f2ff44;transition:background .18s,color .18s,box-shadow .18s}.admin-descargar-btn i{margin-right:7px}.admin-descargar-btn:hover,.admin-descargar-btn:focus{background:#00f2ff;color:#112329;box-shadow:0 0 24px #00f2ffbb}.admin-footer{width:100%;text-align:center;color:#b2f4ff;font-size:1.03rem;margin-top:auto;padding-bottom:16px;letter-spacing:.5px;background:transparent}@media (max-width: 900px){.admin-section{padding:13px 3vw 10px}}@media (max-width: 650px){.admin-title{font-size:1.1rem}.section-header h2{font-size:1.01rem}.admin-card-info{flex-direction:column;gap:10px;align-items:center}.admin-card-img img{width:40px;height:40px}.admin-section{padding:8px 1vw 7px}.admin-card{padding:8px 2vw 7px}.admin-editar-btn,.admin-eliminar-btn,.admin-descargar-btn{font-size:.93rem;padding:7px 3vw}.admin-nuevo-btn{font-size:.91rem;padding:7px 3vw}.nav-link{font-size:.97rem;padding:8px 2vw}}</style><link rel="stylesheet" href="styles-U5CADWFH.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-U5CADWFH.css"></noscript></head>
+<style>@font-face{font-family:Orbitron;font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/orbitron/v34/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_CmBoWgz.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}body,html{margin:0;padding:0;background:linear-gradient(120deg,#101c24 60%,#00f2ff 200%);min-height:100vh;font-family:Orbitron,Arial,sans-serif}.admin-bg{min-height:100vh;display:flex;flex-direction:column}.admin-header{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:30px 7vw 10px;background:transparent}.admin-title{color:#00f2ff;font-size:2.1rem;font-family:Orbitron,Arial,sans-serif;font-weight:900;letter-spacing:1.5px;margin:0 0 8px;text-shadow:0 2px 24px #00f2ff55;display:flex;align-items:center;gap:13px}.admin-nav{display:flex;gap:22px;margin-bottom:4px}.nav-link{color:#b2f4ff;font-size:1.09rem;text-decoration:none;font-weight:700;padding:9px 20px;border-radius:9px;transition:background .15s,color .15s;letter-spacing:1px;display:flex;align-items:center;gap:7px}.nav-link.active,.nav-link:hover,.nav-link:focus{background:#00f2ff;color:#101c24}.admin-main{flex:1;display:flex;flex-direction:column;gap:40px;padding-bottom:30px}.admin-section{margin:0 auto 26px;max-width:900px;width:97vw;background:#101c24ed;border-radius:22px;box-shadow:0 8px 32px #00f2ff44,0 2px 12px #00f2ff22;padding:30px 30px 24px}.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:18px}.section-header h2{color:#00f2ff;font-family:Orbitron,Arial,sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:1.5px;margin:0;display:flex;align-items:center;gap:10px}.admin-lista{display:flex;flex-direction:column;gap:20px;width:100%;min-height:10vh}.admin-footer{width:100%;text-align:center;color:#b2f4ff;font-size:1.03rem;margin-top:auto;padding-bottom:16px;letter-spacing:.5px;background:transparent}@media (max-width: 900px){.admin-section{padding:13px 3vw 10px}}@media (max-width: 650px){.admin-title{font-size:1.1rem}.section-header h2{font-size:1.01rem}.admin-section{padding:8px 1vw 7px}.nav-link{font-size:.97rem;padding:8px 2vw}}</style><link rel="stylesheet" href="styles-U5CADWFH.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-U5CADWFH.css"></noscript></head>
 <body>
   <div class="admin-bg">
-
     <header class="admin-header">
       <h1 class="admin-title"><i class="fa-solid fa-user-shield"></i> Administración GoPark</h1>
       <nav class="admin-nav">
         <a href="#paquetes" class="nav-link active"><i class="fa-solid fa-box"></i> Paquetes</a>
         <a href="#usuarios" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
-        <a href="#reservas" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Reservas</a>
-        <a href="#reportes" class="nav-link"><i class="fa-solid fa-chart-column"></i> Reportes</a>
       </nav>
     </header>
 
@@ -25,129 +22,229 @@
       <section id="paquetes" class="admin-section">
         <div class="section-header">
           <h2><i class="fa-solid fa-box"></i> Paquetes turísticos</h2>
-          <button class="admin-nuevo-btn">
-            <i class="fa-solid fa-plus"></i> Nuevo Paquete
-          </button>
         </div>
-        <div class="admin-lista">
-          <!-- Ejemplo de paquete -->
-          <div class="admin-card">
-            <div class="admin-card-info">
-              <div class="admin-card-img">
-                <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" alt="Bariloche">
-              </div>
-              <div class="admin-card-data">
-                <h3 class="admin-card-nombre">Aventura en Bariloche</h3>
-                <div><b>Fechas:</b> 12/07/2025 - 19/07/2025</div>
-                <div><b>Descripción:</b> Incluye hotel 4 estrellas, excursiones y alquiler de vehículo.</div>
-                <div><b>Precio:</b> $120.000</div>
-                <div><b>Cupos totales:</b> 20 | <b>Disponibles:</b> 10</div>
-                <div><b>Tipo:</b> Familiar</div>
-                <div><b>Vuelo:</b> 123 | <b>Vehículo:</b> 5 | <b>Alojamiento:</b> 8 | <b>Excursiones:</b> 6</div>
-                <div><b>Estado:</b> <span class="badge disponible">Disponible</span></div>
-              </div>
-            </div>
-            <div class="admin-card-acciones">
-              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
-            </div>
-          </div>
-          <!-- Más paquetes... -->
-        </div>
+        <div id="paquetes-lista" class="admin-lista"></div>
       </section>
 
       <!-- Usuarios -->
       <section id="usuarios" class="admin-section">
         <div class="section-header">
-          <h2><i class="fa-solid fa-users"></i> Usuarios</h2>
-          <button class="admin-nuevo-btn">
-            <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
-          </button>
+          <h2><i class="fa-solid fa-users"></i> Usuarios (Jefes de Venta)</h2>
         </div>
-        <div class="admin-lista">
-          <!-- Ejemplo de usuario -->
-          <div class="admin-card">
-            <div class="admin-card-info">
-              <div class="admin-card-img">
-                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Usuario">
-              </div>
-              <div class="admin-card-data">
-                <h3 class="admin-card-nombre">Juan Pérez</h3>
-                <div><b>Email:</b> juanperez&#64;gmail.com</div>
-                <div><b>Rol:</b> Administrador</div>
-              </div>
-            </div>
-            <div class="admin-card-acciones">
-              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
-            </div>
-          </div>
-          <!-- Más usuarios... -->
-        </div>
+        <div id="usuarios-lista" class="admin-lista"></div>
       </section>
-
-      <!-- Reservas -->
-      <section id="reservas" class="admin-section">
-        <div class="section-header">
-          <h2><i class="fa-solid fa-calendar-check"></i> Reservas</h2>
-        </div>
-        <div class="admin-lista">
-          <!-- Ejemplo de reserva -->
-          <div class="admin-card">
-            <div class="admin-card-info">
-              <div class="admin-card-data">
-                <div><b>Reserva:</b> #1004</div>
-                <div><b>Usuario:</b> Juan Pérez</div>
-                <div><b>Paquete:</b> Aventura en Bariloche</div>
-                <div><b>Fecha de reserva:</b> 01/07/2025</div>
-                <div><b>Cantidad personas:</b> 4</div>
-                <div><b>Estado:</b> <span class="badge disponible">Activa</span></div>
-                <div><b>Observaciones:</b> Sin observaciones</div>
-              </div>
-            </div>
-            <div class="admin-card-acciones">
-              <button class="admin-editar-btn"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
-            </div>
-          </div>
-          <!-- Más reservas... -->
-        </div>
-      </section>
-
-      <!-- Reportes -->
-      <section id="reportes" class="admin-section">
-        <div class="section-header">
-          <h2><i class="fa-solid fa-chart-column"></i> Reportes</h2>
-          <button class="admin-nuevo-btn">
-            <i class="fa-solid fa-file-arrow-down"></i> Generar Reporte
-          </button>
-        </div>
-        <div class="admin-lista">
-          <!-- Ejemplo de reporte -->
-          <div class="admin-card">
-            <div class="admin-card-info">
-              <div class="admin-card-data">
-                <div><b>Reporte:</b> #501</div>
-                <div><b>Tipo:</b> Ventas Mensuales</div>
-                <div><b>Generado por:</b> Juan Pérez</div>
-                <div><b>Fecha:</b> 10/06/2025</div>
-                <div><b>Parámetros:</b> Mes: Junio</div>
-                <div><b>Estado:</b> <span class="badge disponible">Completado</span></div>
-              </div>
-            </div>
-            <div class="admin-card-acciones">
-              <button class="admin-descargar-btn"><i class="fa-solid fa-download"></i> Descargar</button>
-              <button class="admin-eliminar-btn"><i class="fa-solid fa-trash"></i> Eliminar</button>
-            </div>
-          </div>
-          <!-- Más reportes... -->
-        </div>
-      </section>
-
     </main>
+
     <footer class="admin-footer">
-      Echo por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+      Realizado por alumnos E.E.T N°3139 Gral M Miguel De Guemes
     </footer>
   </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const paquetesContenedor = document.getElementById("paquetes-lista");
+  const usuariosContenedor = document.getElementById("usuarios-lista");
+
+  // Cargar paquetes
+  fetch('/api/admin/paquetes')
+    .then(res => res.json())
+    .then(paquetes => {
+      paquetes.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "admin-card";
+        card.innerHTML = `
+            <div style="display: flex; align-items: flex-start; gap: 22px; margin-bottom: 10px; background: #232946; border-radius: 12px; box-shadow: 0 2px 10px #0003; padding: 18px 22px;">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 1.05rem; color: #fff;">
+              <div style="font-size: 1.18rem; color: #00f2ff; font-weight: 800; letter-spacing: 0.5px;">
+              <i class="fa-solid fa-map-location-dot"></i> ${p.nombre}
+              </div>
+              <div><b>Fechas:</b> <span style="color:#fff">${p.fecha_inicio} - ${p.fecha_fin}</span></div>
+              <div><b>Descripción:</b> <span style="color:#fff">${p.descripcion}</span></div>
+              <div><b>Precio:</b> <span style="color:#fff">$${p.precio}</span></div>
+              <div><b>Cupos:</b> <span style="color:#fff">${p.cupos_totales}</span> | <b>Disponibles:</b> <span style="color:#fff">${p.cupos_disponibles}</span></div>
+              <div><b>Tipo:</b> <span style="color:#fff">${p.tipo}</span></div>
+              <div><b>Vuelo:</b> <span style="color:#fff">${p.vuelo}</span> | <b>Vehículo:</b> <span style="color:#fff">${p.vehiculo}</span> | <b>Alojamiento:</b> <span style="color:#fff">${p.alojamiento}</span> | <b>Excursiones:</b> <span style="color:#fff">${p.excursion}</span></div>
+              <div><b>Estado:</b> <span style="color:#fff">${p.disponible}</span></div>
+            </div>
+            </div>
+            <div style="display: flex; gap: 13px; justify-content: flex-end; margin-bottom: 5px;">
+            <button 
+              style="
+                background: linear-gradient(90deg, #0066ff 0%, #00f2ff 100%);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 22px;
+                font-weight: 700;
+                cursor: pointer;
+                box-shadow: 0 2px 8px #0066ff44;
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+                transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+                outline: none;
+                position: relative;
+                overflow: hidden;
+              "
+              onmouseover="this.style.background='linear-gradient(90deg, #0052cc 0%, #00c3cc 100%)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 16px #00f2ff55';"
+              onmouseout="this.style.background='linear-gradient(90deg, #0066ff 0%, #00f2ff 100%)'; this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px #0066ff44';"
+              onclick="editarPaquete(${p.id_paquete})"
+            >
+              ✏️ Editar
+            </button>
+            <button 
+              style="
+                background: linear-gradient(90deg, #ff4d4d 0%, #ff8c8c 100%);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 22px;
+                font-weight: 700;
+                cursor: pointer;
+                box-shadow: 0 2px 8px #ff4d4d44;
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+                transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+                outline: none;
+                position: relative;
+                overflow: hidden;
+              "
+              onmouseover="this.style.background='linear-gradient(90deg, #cc0000 0%, #ff4d4d 100%)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 16px #ff4d4d55';"
+              onmouseout="this.style.background='linear-gradient(90deg, #ff4d4d 0%, #ff8c8c 100%)'; this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px #ff4d4d44';"
+              onclick="eliminarPaquete(${p.id_paquete})"
+            >
+              🗑️ Eliminar
+            </button>
+            </div>
+        `;
+        paquetesContenedor.appendChild(card);
+      });
+    });
+
+  // Cargar usuarios
+  fetch('/api/admin/usuarios')
+    .then(res => res.json())
+    .then(usuarios => {
+      usuarios.forEach(u => {
+        const card = document.createElement("div");
+        card.className = "admin-card";
+        card.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 22px; margin-bottom: 10px; background: #232946; border-radius: 12px; box-shadow: 0 2px 10px #0003; padding: 18px 22px;">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 1.05rem; color: #fff;">
+            <div style="font-size: 1.18rem; color: #00f2ff; font-weight: 800; letter-spacing: 0.5px;">
+              <i class="fa-solid fa-user"></i> ${u.nombre} ${u.apellido}
+            </div>
+            <div><b>Email:</b> <span style="color:#fff">${u.email}</span></div>
+            <div><b>Rol:</b> <span style="color:#fff">Jefe de Venta</span></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 13px; justify-content: flex-end; margin-bottom: 5px;">
+            <button 
+            style="
+              background: linear-gradient(90deg, #0066ff 0%, #00f2ff 100%);
+              color: #fff;
+              border: none;
+              border-radius: 8px;
+              padding: 8px 22px;
+              font-weight: 700;
+              cursor: pointer;
+              box-shadow: 0 2px 8px #0066ff44;
+              font-size: 1rem;
+              letter-spacing: 0.5px;
+              transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+              outline: none;
+              position: relative;
+              overflow: hidden;
+            "
+            onmouseover="this.style.background='linear-gradient(90deg, #0052cc 0%, #00c3cc 100%)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 16px #00f2ff55';"
+            onmouseout="this.style.background='linear-gradient(90deg, #0066ff 0%, #00f2ff 100%)'; this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px #0066ff44';"
+            onclick="editarUsuario(${u.id_usuario})"
+            >
+            ✏️ Editar
+            </button>
+            <button 
+            style="
+              background: linear-gradient(90deg, #ff4d4d 0%, #ff8c8c 100%);
+              color: #fff;
+              border: none;
+              border-radius: 8px;
+              padding: 8px 22px;
+              font-weight: 700;
+              cursor: pointer;
+              box-shadow: 0 2px 8px #ff4d4d44;
+              font-size: 1rem;
+              letter-spacing: 0.5px;
+              transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+              outline: none;
+              position: relative;
+              overflow: hidden;
+            "
+            onmouseover="this.style.background='linear-gradient(90deg, #cc0000 0%, #ff4d4d 100%)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 16px #ff4d4d55';"
+            onmouseout="this.style.background='linear-gradient(90deg, #ff4d4d 0%, #ff8c8c 100%)'; this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px #ff4d4d44';"
+            onclick="eliminarUsuario(${u.id_usuario})"
+            >
+            🗑️ Eliminar
+            </button>
+          </div>
+        `;
+        usuariosContenedor.appendChild(card);
+      });
+    });
+});
+
+function editarPaquete(id) {
+  const nuevoNombre = prompt("Nuevo nombre del paquete:");
+  if (nuevoNombre) {
+    fetch(`/api/admin/paquetes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: nuevoNombre })
+    }).then(() => location.reload());
+  }
+}
+
+function eliminarPaquete(id) {
+  if (confirm("¿Estás seguro de que quieres eliminar este paquete?")) {
+    fetch(`/api/admin/paquetes/${id}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) location.reload();
+      else alert("Error al eliminar el paquete.");
+    });
+  }
+}
+
+function editarUsuario(id) {
+  const nuevoNombre = prompt("Nuevo nombre del usuario:");
+  const nuevoApellido = prompt("Nuevo apellido:");
+  const nuevoEmail = prompt("Nuevo email:");
+
+  if (nuevoNombre && nuevoApellido && nuevoEmail) {
+    fetch(`/api/admin/usuarios/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: nuevoNombre,
+        apellido: nuevoApellido,
+        email: nuevoEmail
+      })
+    }).then(() => location.reload());
+  }
+}
+
+function eliminarUsuario(id) {
+  if (confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
+    fetch(`/api/admin/usuarios/${id}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) location.reload();
+      else alert("Error al eliminar el usuario.");
+    });
+  }
+}
+</script>
 <script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-43THKGSC.js" type="module"></script></body>
 </html>
