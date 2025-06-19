@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paquetes Turísticos | GoPark</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    
+  </style>
+</head>
+<body>
+  <div class="productos-bg">
+    <header class="productos-header" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 28px;">
+      <div style="display: flex; align-items: center; gap: 18px;">
+      <button class="volver-btn">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </button>
+      <h1 class="productos-title" style="margin: 0;"><i class="fa-solid fa-suitcase-rolling"></i> Paquetes Turísticos</h1>
+      <button class="carrito-btn" style="background: linear-gradient(90deg, #00f2ff 30%, #00f2ff 100%); color: #071a1b; border: 2px solid #00f2ff; border-radius: 10px; font-family: 'Orbitron', Arial, sans-serif; font-size: 1.09rem; font-weight: 800; letter-spacing: 1px; padding: 10px 22px; box-shadow: 0 0 18px #00f2ff44; cursor: pointer; transition: background 0.18s, color 0.18s, box-shadow 0.18s;">
+        <i class="fa-solid fa-cart-shopping" style="margin-right:7px;"></i> Carrito
+      </button>
+      </div>
+    </header>
+
+    <main class="productos-lista" id="lista-paquetes">
+      <!-- Aquí se insertarán los paquetes dinámicamente con JS -->
+    </main>
+
+    <footer class="productos-footer">
+      Realizado por alumnos E.E.T N°3139 Gral M Miguel De Guemes
+    </footer>
+  </div>
+  <!-- Aquí podrás agregar tu script para mostrar los datos -->
+   <!-- Este fragmento ya está bien y funcional -->
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const lista = document.getElementById("lista-paquetes");
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/api/paquetes_cliente");
+    const paquetes = await res.json();
+
+    paquetes.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "producto-card";
+      div.innerHTML = `
+        <div class="producto-card-anim" style="background: linear-gradient(135deg, #071a1b 80%, #00f2ff22 100%); border-radius: 18px; box-shadow: 0 4px 24px #00f2ff22, 0 1.5px 0 #00f2ff44 inset; padding: 28px 22px 22px 22px; margin-bottom: 18px; display: flex; flex-direction: column; align-items: flex-start; min-width: 270px; max-width: 340px; width: 100%; transition: transform 0.22s, box-shadow 0.22s; animation: fadeInCard 0.7s cubic-bezier(.4,1.6,.4,1) both;">
+          <style>
+            @keyframes fadeInCard {
+              0% { opacity: 0; transform: translateY(40px) scale(0.97); }
+              100% { opacity: 1; transform: translateY(0) scale(1); }
+            }
+
+            .agregar-btn-anim:hover {
+              background: linear-gradient(90deg, #00f2ff 60%, #00b3c6 100%);
+              color: #fff;
+              box-shadow: 0 0 28px #00f2ff88;
+              transform: scale(1.04);
+            }
+
+            .agregar-btn-anim:active {
+              background: linear-gradient(90deg, #00b3c6 30%, #00f2ff 100%);
+              color: #071a1b;
+              box-shadow: 0 0 10px #00f2ff44;
+              transform: scale(0.97);
+            }
+
+            .producto-card-anim:hover {
+              transform: translateY(-7px) scale(1.03);
+              box-shadow: 0 8px 32px #00f2ff44, 0 2px 0 #00f2ff66 inset;
+            }
+          </style>
+
+          <div style="font-size:1.35rem;color:#00f2ff;margin-bottom:10px;font-weight:900;letter-spacing:1px;">
+            ${p.nombre}
+          </div>
+
+          <div style="font-size:1rem;color:#00b3c6;margin-bottom:8px;display:flex;align-items:center;gap:7px;">
+            <i class="fa-regular fa-calendar"></i>
+            <span>
+              ${new Date(p.fecha_inicio).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })} - 
+              ${new Date(p.fecha_fin).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
+            </span>
+          </div>
+
+          <p style="font-size:1rem;color:#e0f7fa;margin-bottom:14px;min-height:48px;">
+            ${p.descripcion}
+          </p>
+
+          <div style="font-size:1.13rem;font-weight:800;color:#00f2ff;margin-bottom:7px;letter-spacing:1px;">
+            <i class="fa-solid fa-dollar-sign"></i> ${p.precio}
+          </div>
+
+          <div style="font-size:1rem;color:#00b3c6;margin-bottom:12px;">
+            <i class="fa-solid fa-layer-group"></i> Cupos totales: ${p.cupos_totales}
+          </div>
+
+          <div style="font-size:1rem;color:#00b3c6;margin-bottom:16px;">
+            <i class="fa-solid fa-users"></i> Cupos disponibles: ${p.cupos_disponibles}
+          </div>
+
+          <button style="padding:11px 36px;background:linear-gradient(90deg,#00f2ff 30%,#1b2326 100%);color:#071a1b;border:2px solid #00f2ff;border-radius:10px;font-family:'Orbitron',Arial,sans-serif;font-size:1.09rem;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px #00f2ff44;transition:background 0.18s,color 0.18s,box-shadow 0.18s,transform 0.18s;margin-top:auto;outline:none;" onmouseover="this.classList.add('agregar-btn-anim')" onmouseout="this.classList.remove('agregar-btn-anim')" onmousedown="this.classList.add('agregar-btn-anim')" onmouseup="this.classList.remove('agregar-btn-anim')">
+            <i class="fa-solid fa-cart-plus" style="margin-right:7px;"></i> Agregar al carrito
+          </button>
+        </div>
+        
+      `;
+      lista.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Error cargando paquetes:", err);
+    lista.innerHTML = "<p>Error al cargar los paquetes.</p>";
+  }
+});
+</script>
+</body>
+</html>
