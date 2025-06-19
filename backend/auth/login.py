@@ -47,11 +47,19 @@ def login():
 
             if check_password_hash(password_hash, password):
                 print(f"[LOGIN] Contraseña correcta. Usuario: {nombre} {apellido}, ID: {id_usuario}, Rol: {id_rol}")
+    
+                datos_usuario = {
+                    "id_usuario": id_usuario,
+                    "nombre": nombre,
+                    "apellido": apellido,
+                    "email": email_db
+                }
                 if id_rol == 5:
-                    return jsonify({"success": True, "redirect": "/jefe_pag"})
+                    return jsonify({"success": True, "redirect": "/jefe_pag", "usuario": datos_usuario})
                 elif id_rol == 6:
-                    return jsonify({"success": True, "redirect": "/cliente"})
-                return jsonify({"success": True, "redirect": "/admin"})
+                    return jsonify({"success": True, "redirect": "/cliente", "usuario": datos_usuario})
+                
+                return jsonify({"success": True, "redirect": "/admin", "usuario": datos_usuario})
             else:
                 print("[LOGIN] Contraseña incorrecta")
                 return jsonify({"success": False, "message": "Contraseña incorrecta"})

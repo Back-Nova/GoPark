@@ -12,15 +12,34 @@
 </head>
 <body>
   <div class="productos-bg">
-    <header class="productos-header" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 28px;">
+    <header class="productos-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding: 0 24px;">
+      <!-- Botón Volver a la izquierda -->
+      <button class="volver-btn" onclick="window.location.href = '/login'" style="min-width: 110px;">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </button>
+
+      <!-- Título centrado -->
+      <div style="position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: center; pointer-events: none; z-index: 1;">
+        <h1 class="productos-title" style="margin: 0; text-align: center; pointer-events: auto;">
+          <i class="fa-solid fa-suitcase-rolling"></i> Paquetes Turísticos
+        </h1>
+      </div>
+
+      <!-- Botón Carrito y Usuario a la derecha -->
       <div style="display: flex; align-items: center; gap: 18px;">
-      <button class="volver-btn" onclick="window.location.href = '/login'">
-        <i class="fa-solid fa-arrow-left" ></i> Volver
-      </button>
-      <h1 class="productos-title" style="margin: 0;"><i class="fa-solid fa-suitcase-rolling"></i> Paquetes Turísticos</h1>
-      <button class="carrito-btn" style="background: linear-gradient(90deg, #00f2ff 30%, #00f2ff 100%); color: #071a1b; border: 2px solid #00f2ff; border-radius: 10px; font-family: 'Orbitron', Arial, sans-serif; font-size: 1.09rem; font-weight: 800; letter-spacing: 1px; padding: 10px 22px; box-shadow: 0 0 18px #00f2ff44; cursor: pointer; transition: background 0.18s, color 0.18s, box-shadow 0.18s;">
-        <i class="fa-solid fa-cart-shopping" style="margin-right:7px;"></i> Carrito
-      </button>
+        <button class="carrito-btn" style="background: linear-gradient(90deg, #00f2ff 30%, #00f2ff 100%); color: #071a1b; border: 2px solid #00f2ff; border-radius: 10px; font-family: 'Orbitron', Arial, sans-serif; font-size: 1.09rem; font-weight: 800; letter-spacing: 1px; padding: 10px 22px; box-shadow: 0 0 18px #00f2ff44; cursor: pointer; transition: background 0.18s, color 0.18s, box-shadow 0.18s;">
+          <i class="fa-solid fa-cart-shopping" style="margin-right:7px;"></i> Carrito
+        </button>
+        <div class="usuario-dropdown" style="position: relative;">
+          <button id="usuarioBtn" class="usuario-btn" style="background: none; border: none; cursor: pointer; font-size: 2.5rem; color: #00f2ff; padding: 0;">
+            <i class="fa-solid fa-user-circle"></i>
+          </button>
+          <div id="usuarioMenu" class="usuario-menu" style="display: none; position: absolute; right: 0; top: 40px; background: #071a1b; border: 1px solid #00f2ff66; border-radius: 10px; padding: 12px 18px; box-shadow: 0 0 12px #00f2ff44; min-width: 230px; z-index: 10;">
+            <p style="margin: 0; color: #00f2ff; font-weight: bold;" id="nombreUsuario">Nombre Apellido</p>
+            <p style="margin: 4px 0 8px 0; color: #00b3c6;" id="emailUsuario">correo@ejemplo.com</p>
+            <button onclick="cerrarSesion()" style="background: #00b3c6; border: none; color: #fff; font-weight: bold; padding: 8px 12px; border-radius: 6px; cursor: pointer;">Cerrar sesión</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -36,6 +55,7 @@
    <!-- Este fragmento ya está bien y funcional -->
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
+  // Cargar paquetes dinámicamente
   const lista = document.getElementById("lista-paquetes");
 
   try {
@@ -105,7 +125,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             <i class="fa-solid fa-cart-plus" style="margin-right:7px;"></i> Agregar al carrito
           </button>
         </div>
-        
       `;
       lista.appendChild(div);
     });
@@ -113,7 +132,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error cargando paquetes:", err);
     lista.innerHTML = "<p>Error al cargar los paquetes.</p>";
   }
+
+  // Mostrar información del usuario en el icono
+  const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+
+  document.getElementById("nombreUsuario").textContent = `${usuario.nombre || "Nombre"} ${usuario.apellido || "Apellido"}`;
+  document.getElementById("emailUsuario").textContent = usuario.email || "correo@ejemplo.com";
+
+  const usuarioBtn = document.getElementById("usuarioBtn");
+  const usuarioMenu = document.getElementById("usuarioMenu");
+
+  // Toggle del menú de usuario
+  usuarioBtn.addEventListener("click", () => {
+    usuarioMenu.style.display = usuarioMenu.style.display === "none" ? "block" : "none";
+  });
+
+  // Ocultar menú al hacer clic fuera
+  window.addEventListener("click", (e) => {
+    if (!usuarioBtn.contains(e.target) && !usuarioMenu.contains(e.target)) {
+      usuarioMenu.style.display = "none";
+    }
+  });
 });
+
+// Función para cerrar sesión
+function cerrarSesion() {
+  localStorage.removeItem("usuario");
+  window.location.href = "/login";
+}
 </script>
+
 </body>
 </html>

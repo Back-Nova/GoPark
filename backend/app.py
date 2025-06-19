@@ -36,9 +36,6 @@ def serve_jefe_pag():
 def serve_destino():
     return send_from_directory('static/destino/browser', 'index.html')
 
-
-
-
 #--- Paquetes de rutas ---
 @app.route('/api/paquetes_cliente', methods=['GET'])
 def obtener_paquetes_cliente():
@@ -65,6 +62,12 @@ def obtener_paquetes_cliente():
     except Exception as e:
         print("Error al obtener paquetes:", e)
         return jsonify({'error': 'Error en la consulta'}), 500
+
+
+
+
+
+
 
 
 @app.route("/api/paquetes", methods=["POST"])

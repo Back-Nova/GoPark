@@ -10,10 +10,17 @@
 <body>
   <div class="admin-bg">
     <header class="admin-header">
-      <h1 class="admin-title"><i class="fa-solid fa-user-shield"></i> Jefe de Ventas GoPark</h1>
-      <nav class="admin-nav">
-        <a href="#paquetes" class="nav-link active"><i class="fa-solid fa-box"></i> Paquetes</a>
-      </nav>
+      <div class="usuario-dropdown" style="position: relative;">
+          <button id="usuarioBtn" class="usuario-btn" style="background: none; border: none; cursor: pointer; font-size: 2.5rem; color: #00f2ff; padding: 0; font-family: 'Orbitron', Arial, sans-serif;">
+            <i  class="fa-solid fa-user-shield"></i> Jefe de Ventas GoPark
+          </button>
+          <div id="usuarioMenu" class="usuario-menu" style=" background: #071a1b; border: 1px solid #00f2ff66; border-radius: 10px; padding: 12px 12px; box-shadow: 0 0 12px #00f2ff44; ">
+            <p style="margin: 0; color: #00f2ff; font-weight: bold;" id="nombreUsuario">Nombre Apellido</p>
+            <p style="margin: 4px 0 8px 0; color: #00b3c6;" id="emailUsuario">correo@ejemplo.com</p>
+            <button onclick="cerrarSesion()" style="background: #00b3c6; border: none; color: #fff; font-weight: bold; padding: 8px 12px; border-radius: 6px; cursor: pointer;">Cerrar sesión</button>
+          </div>
+        </div>
+
     </header>
 
     <main class="admin-main">
@@ -401,6 +408,32 @@
     contenedorFormulario.style.display = "block";
   });
 });
+// Mostrar información del usuario en el icono
+  const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+
+  document.getElementById("nombreUsuario").textContent = `${usuario.nombre || "Nombre"} ${usuario.apellido || "Apellido"}`;
+  document.getElementById("emailUsuario").textContent = usuario.email || "correo@ejemplo.com";
+
+  const usuarioBtn = document.getElementById("usuarioBtn");
+  const usuarioMenu = document.getElementById("usuarioMenu");
+
+  // Toggle del menú de usuario
+  usuarioBtn.addEventListener("click", () => {
+    usuarioMenu.style.display = usuarioMenu.style.display === "none" ? "block" : "none";
+  });
+
+  // Ocultar menú al hacer clic fuera
+  window.addEventListener("click", (e) => {
+    if (!usuarioBtn.contains(e.target) && !usuarioMenu.contains(e.target)) {
+      usuarioMenu.style.display = "none";
+    }
+  });
+
+  // Función para cerrar sesión
+  function cerrarSesion() {
+    localStorage.removeItem("usuario");
+    window.location.href = "/login";
+  }
 
   </script>
 </body>

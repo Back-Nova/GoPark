@@ -42,32 +42,38 @@
   </div>
   <script>
     document.querySelector('.login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-        fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Login correcto");
 
-              console.log("Login correcto");
-              window.location.href = data.redirect;  // usamos el redirect que nos manda el backend
-            } else {
-              console.error("Error de autenticación:", data.message);
-              alert("Error de autenticación: " + data.message);
+            // Guardar datos del usuario en localStorage
+            if (data.usuario) {
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
             }
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            alert("Error al iniciar sesión.");
-        });
+
+            // Redirigir a la página correspondiente
+            window.location.href = data.redirect;
+        } else {
+            console.error("Error de autenticación:", data.message);
+            alert("Error de autenticación: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Error al iniciar sesión.");
     });
+});
 
   </script>
 <script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-RLLGLMWQ.js" type="module"></script></body>
