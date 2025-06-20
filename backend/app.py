@@ -2,11 +2,14 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from conexion import get_connection
-
+from datetime import date
 from auth.login import auth_login
 from auth.register import auth_register
 from auth.recuperar import recuperar_bp
 from admin.recursos import recursos_bp
+from admin.paquetes import paquetes_bp
+from admin.v2_destino import v2_destino_bp
+import mercadopago
 app = Flask(__name__)
 CORS(app)
 
@@ -14,6 +17,8 @@ app.register_blueprint(auth_login)
 app.register_blueprint(auth_register)
 app.register_blueprint(recuperar_bp)
 app.register_blueprint(recursos_bp)
+app.register_blueprint(paquetes_bp)
+app.register_blueprint(v2_destino_bp)
 
 # ----------- PAGINAS  SOLO CON LAS RUTAS ---------------
 @app.route('/')
@@ -38,6 +43,152 @@ def obtener_paquetes_admin():
     cur.close()
     conn.close()
     return jsonify(datos)
+
+@app.route('/cliente')
+def serve_cliente():
+    return send_from_directory('static/cliente/browser', 'index.html')
+
+@app.route('/jefe_pag')
+def serve_jefe_pag():
+    return send_from_directory('static/jefe_pag/browser', 'index.html')
+
+@app.route('/pagina_destino')
+def serve_destino():
+    return send_from_directory('static/destino/browser', 'index.html')
+
+
+
+
+@app.route('/api/reservas', methods=['POST'])
+def crear_reserva():
+    from datetime import date
+    data = request.get_json()
+
+    id_paquete = data.get("id_paquete")
+    id_usuario = data.get("id_usuario")
+    cantidad_personas = data.get("cantidad_personas", 1)
+    estado = data.get("estado", True)
+    observaciones = data.get("observaciones", "")
+
+    if not id_paquete or not id_usuario:
+        return jsonify({"error": "Faltan datos"}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        # Obtener precio del paquete
+        cur.execute("SELECT precio FROM paquete WHERE id_paquete = %s", (id_paquete,))
+        row = cur.fetchone()
+        if not row:
+            return jsonify({"error": "Paquete no encontrado"}), 404
+        precio = row[0]
+
+        # Insertar reserva
+        cur.execute("""
+            INSERT INTO reserva (id_paquete, fecha_reserva, cantidad_personas, id_usuario, estado, observaciones)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            RETURNING id_reserva
+        """, (id_paquete, date.today(), cantidad_personas, id_usuario, estado, observaciones))
+
+        id_reserva = cur.fetchone()[0]
+        conn.commit()
+
+        return jsonify({"id_reserva": id_reserva, "precio_paquete": float(precio)}), 200
+
+    except Exception as e:
+        conn.rollback()
+        print("Error al crear reserva:", e)
+        return jsonify({"error": "Error interno"}), 500
+
+    finally:
+        cur.close()
+        conn.close()
+        
+@app.route('/api/carrito', methods=['POST'])
+def crear_carrito():
+    from datetime import date
+    data = request.get_json()
+
+    reserva = data.get("reserva")
+    precio_final = data.get("precio_final", 0)
+    metodo_pago = data.get("metodo_pago", "Transferencia")
+    estado_pago = data.get("estado_pago", "Pendiente")
+
+    if not reserva:
+        return jsonify({"error": "Falta el ID de reserva"}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            INSERT INTO carrito (reserva, fecha_carrito, precio_final, metodo_pago, estado_pago)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (reserva, date.today(), precio_final, metodo_pago, estado_pago))
+        conn.commit()
+        return jsonify({"mensaje": "Carrito creado"}), 200
+
+    except Exception as e:
+        conn.rollback()
+        print("Error al crear carrito:", e)
+        return jsonify({"error": "Error interno"}), 500
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route('/api/carrito/detalles', methods=['POST'])
+def obtener_detalles_carrito():
+    data = request.get_json()
+    ids = data.get("ids", [])
+
+    if not ids:
+        return jsonify([])
+
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+
+        consulta = f'''
+            SELECT
+                p.id_paquete,
+                p.nombre AS paquete_nombre,
+                p.descripcion AS paquete_desc,
+                p.precio,
+                p.fecha_inicio,
+                p.fecha_fin,
+
+                v.aerolinea, v.aeropuerto_o, v.aeropuerto_d, v.fecha AS vuelo_fecha, v.duracion AS vuelo_duracion,
+                vh.marca AS vehiculo_marca, vh.modelo AS vehiculo_modelo, vh.capacidad AS vehiculo_capacidad,
+                a.nombre AS alojamiento_nombre, a.descripcion AS alojamiento_desc, a.tipo_alojamiento, a.capacidad AS alojamiento_capacidad,
+                e.nombre AS excursion_nombre, e.descripcion AS excursion_desc, e.duracion AS excursion_duracion,
+
+                d.pais AS destino_pais, d.ciudad AS destino_ciudad, d.region AS destino_region, d.descripcion AS destino_desc
+
+            FROM paquete p
+            LEFT JOIN vuelo v ON p.vuelo = v.id_vuelo
+            LEFT JOIN vehiculo_alquiler vh ON p.vehiculo = vh.id_vehiculo
+            LEFT JOIN alojamiento a ON p.alojamiento = a.id_alojamiento
+            LEFT JOIN excursion e ON p.excursion = e.id_excursion
+            LEFT JOIN destino d ON v.destino = d.id_destino
+
+            WHERE p.id_paquete = ANY(%s)
+        '''
+
+        cur.execute(consulta, (ids,))
+        columnas = [desc[0] for desc in cur.description]
+        resultados = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+
+        cur.close()
+        conn.close()
+
+        return jsonify(resultados)
+
+    except Exception as e:
+        print("Error en /api/carrito/detalles:", e)
+        return jsonify({'error': 'Error al obtener datos del carrito'}), 500
 
 
 @app.route('/api/admin/usuarios')
@@ -126,184 +277,76 @@ def editar_usuario_admin(id):
     conn.close()
     return jsonify({'success': True})
 
+# Configuración del SDK
+sdk = mercadopago.SDK("APP_USR-4018927116411934-061904-77e75d5c947b1c3da7195bad29f0e838-2503073937")
 
-
-
-# Obtener todos los destinos (para el select)
-@app.route('/api/v2_destino/destinos', methods=['GET'])
-def V2_obtener_destinos():
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT pais,ciudad FROM destino")
-    columnas = [desc[0] for desc in cur.description]
-    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
-    cur.close()
-    conn.close()
-    return jsonify(datos)
-
-# Obtener todos los alojamientos
-@app.route('/api/v2_destino/alojamientos', methods=['GET'])
-def V2_obtener_alojamientos():
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT id_alojamiento, nombre, descripcion, tipo_alojamiento, capacidad, precio, destino 
-        FROM alojamiento
-    """)
-    columnas = [desc[0] for desc in cur.description]
-    datos = [dict(zip(columnas, fila)) for fila in cur.fetchall()]
-    cur.close()
-    conn.close()
-    return jsonify(datos)
-
-# Crear nuevo alojamiento
-@app.route('/api/v2_destino/alojamientos', methods=['POST'])
-def Vcrear_alojamiento():
+@app.route('/crear_pago', methods=['POST'])
+def crear_pago():
     data = request.get_json()
+    monto = data.get("precio", 0)
+    id_paquete = data.get("id_paquete")
+
     conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        INSERT INTO alojamiento (nombre, descripcion, tipo_alojamiento, capacidad, precio, destino)
-        VALUES (%s, %s, %s, %s, %s, %s)
-    """, (
-        data['nombre'], data['descripcion'], data['tipo_alojamiento'],
-        data['capacidad'], data['precio'], data['destino']
-    ))
-    conn.commit()
-    cur.close()
-    conn.close()
-    return jsonify({'success': True})
-
-
-@app.route('/cliente')
-def serve_cliente():
-    return send_from_directory('static/cliente/browser', 'index.html')
-
-@app.route('/jefe_pag')
-def serve_jefe_pag():
-    return send_from_directory('static/jefe_pag/browser', 'index.html')
-
-@app.route('/pagina_destino')
-def serve_destino():
-    return send_from_directory('static/destino/browser', 'index.html')
-
-#--- Paquetes de rutas ---
-@app.route('/api/paquetes_cliente', methods=['GET'])
-def obtener_paquetes_cliente():
-    conn = get_connection()
-    if conn is None:
-        return jsonify({'error': 'No se pudo conectar a la base de datos'}), 500
-
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            SELECT id_paquete, nombre, descripcion, precio, 
-                   cupos_totales, cupos_disponibles, 
-                   fecha_inicio, fecha_fin, tipo, disponible,
-                   vuelo, vehiculo, alojamiento, excursion
-            FROM paquete;
-        """)
-        rows = cur.fetchall()
-        columnas = [desc[0] for desc in cur.description]
-        paquetes = [dict(zip(columnas, row)) for row in rows]
-
-        cur.close()
-        conn.close()
-        return jsonify(paquetes)
-    except Exception as e:
-        print("Error al obtener paquetes:", e)
-        return jsonify({'error': 'Error en la consulta'}), 500
-
-
-
-
-
-
-
-
-@app.route("/api/paquetes", methods=["POST"])
-def crear_paquete():
-    print("==> Recibí una petición POST para crear paquete")
-    data = request.get_json()
-    print("Datos recibidos:", data)
-
-    # Función para convertir valores vacíos a None
-    def convertir_a_null(valor):
-        return valor if valor not in [None, "", "null"] else None
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        # Recolectar campos
-        nombre = data.get("nombre")
-        descripcion = data.get("descripcion")
-        precio = data.get("precio")
-        cupos_totales = data.get("cupos_totales")
-        fecha_inicio = data.get("fecha_inicio")
-        fecha_fin = data.get("fecha_fin")
-        tipo = data.get("tipo")
-        disponible = data.get("disponible")
-        cupos_disponibles = data.get("cupos_disponibles")
-
-        # Campos opcionales que podrían ser NULL
-        vuelo = convertir_a_null(data.get("vuelo"))
-        vehiculo = convertir_a_null(data.get("vehiculo"))
-        alojamiento = convertir_a_null(data.get("alojamiento"))
-        excursion = convertir_a_null(data.get("excursion"))
-
-        # Insertar el paquete en la base de datos
-        cursor.execute("""
-            INSERT INTO paquete (
-                nombre, descripcion, precio, cupos_totales, fecha_inicio, fecha_fin,
-                tipo, disponible, cupos_disponibles, vuelo, vehiculo, alojamiento, excursion
-            )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (
-            nombre, descripcion, precio, cupos_totales, fecha_inicio, fecha_fin,
-            tipo, disponible, cupos_disponibles,
-            vuelo, vehiculo, alojamiento, excursion
-        ))
-
-        conn.commit()
-        cursor.close()
-        conn.close()
-
-        print("✅ Paquete creado exitosamente")
-        return jsonify({"message": "Paquete creado exitosamente"}), 201
-
-    except Exception as e:
-        print("Error al insertar paquete en la BD:", e)
-        return jsonify({"message": "Error al crear el paquete", "error": str(e)}), 500
-    
-@app.route('/api/paquetes', methods=['GET'])
-def obtener_paquetes():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id_paquete, nombre, descripcion, precio, cupos_disponibles, cupos_totales, fecha_inicio, fecha_fin, tipo FROM paquete")
-    paquetes = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    
-    resultado = [
-        {"id": p[0], "nombre": p[1], "descripcion": p[2], "precio": float(p[3]), "cupos_disponibles": p[4], "cupos_totales": p[5], "fecha_inicio": p[6], "fecha_fin": p[7], "tipo": p[8]}
-        for p in paquetes
-    ]
-    return jsonify(resultado)
-
-@app.route('/api/paquetes/<int:id>', methods=['DELETE'])
-def eliminar_paquete(id):
-    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "Error al conectar a la base de datos"}), 500
     cursor = conn.cursor()
 
-    cursor.execute("DELETE FROM paquete WHERE id_paquete = %s", (id,))
-    conn.commit()
-
-    cursor.close()
+    # Consulta para obtener detalles del paquete
+    cursor.execute("""
+        SELECT p.nombre AS paquete_nombre,
+               v.aerolinea, v.aeropuerto_o, v.aeropuerto_d,
+               veh.marca AS vehiculo_marca, veh.modelo AS vehiculo_modelo,
+               a.nombre AS alojamiento_nombre,
+               e.nombre AS excursion_nombre
+        FROM paquete p
+        LEFT JOIN vuelo v ON p.vuelo = v.id_vuelo
+        LEFT JOIN vehiculo_alquiler veh ON p.vehiculo = veh.id_vehiculo
+        LEFT JOIN alojamiento a ON p.alojamiento = a.id_alojamiento
+        LEFT JOIN excursion e ON p.excursion = e.id_excursion
+        WHERE p.id_paquete = %s
+    """, (id_paquete,))
+    detalles = cursor.fetchone()
     conn.close()
 
-    return jsonify({"message": "Paquete eliminado correctamente"}), 200
-#--- FIN DE PAQUETES ---
+    if not detalles:
+        return jsonify({"error": "Paquete no encontrado"}), 404
+
+    paquete_nombre, aerolinea, aeropuerto_o, aeropuerto_d, vehiculo_marca, vehiculo_modelo, alojamiento_nombre, excursion_nombre = detalles
+    descripcion_item = (
+        f"{paquete_nombre}. Vuelo: {aerolinea} ({aeropuerto_o} → {aeropuerto_d}), "
+        f"Vehículo: {vehiculo_marca} {vehiculo_modelo}, Alojamiento: {alojamiento_nombre}, "
+        f"Excursión: {excursion_nombre}"
+    )
+
+    # Crear la preferencia en MercadoPago
+    preference_data = {
+        "items": [
+            {
+                "title": paquete_nombre,
+                "description": descripcion_item,
+                "quantity": 1,
+                "unit_price": float(monto),
+                "currency_id": "ARS"
+            }
+        ],
+        "back_urls": {
+            "success": "https://www.google.com",
+        },
+        "auto_return": "approved"
+    }
+
+    try:
+        preference_response = sdk.preference().create(preference_data)
+        print("Respuesta de MP:", preference_response)
+
+        preference = preference_response.get("response", {})
+        if "init_point" not in preference:
+            return jsonify({"error": "No se pudo generar el link de pago", "detalle": preference}), 400
+
+        return jsonify({"init_point": preference["init_point"]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 

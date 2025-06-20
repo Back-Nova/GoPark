@@ -183,54 +183,58 @@
 
   // Cargar todas las opciones para los selects
   async function cargarOpciones() {
-    console.log("Cargando opciones para selects...");
+  console.log("Cargando opciones para selects...");
 
-    try {
-      const [vuelosRes, vehiculosRes, alojamientosRes, excursionesRes] = await Promise.all([
-        fetch("/api/vuelos"),
-        fetch("/api/vehiculos"),
-        fetch("/api/alojamientos"),
-        fetch("/api/excursiones")
-      ]);
+  try {
+    const [vuelosRes, vehiculosRes, alojamientosRes, excursionesRes] = await Promise.all([
+      fetch("/api/vuelos"),
+      fetch("/api/vehiculos"),
+      fetch("/api/alojamientos"),
+      fetch("/api/excursiones")
+    ]);
 
-      if (!vuelosRes.ok || !vehiculosRes.ok || !alojamientosRes.ok || !excursionesRes.ok) {
-        console.warn("Algún fetch de opciones falló:",
-          vuelosRes.status, vehiculosRes.status, alojamientosRes.status, excursionesRes.status);
-        alert("❌ Error al cargar datos para los selects.");
-        return;
-      }
-
-      const vuelos = await vuelosRes.json();
-      const vehiculos = await vehiculosRes.json();
-      const alojamientos = await alojamientosRes.json();
-      const excursiones = await excursionesRes.json();
-
-      console.log("Datos cargados:", { vuelos, vehiculos, alojamientos, excursiones });
-
-      cargarSelect("vuelo", vuelos, "id_vuelo", "aerolinea");
-      cargarSelect("vehiculo", vehiculos, "id_vehiculo", "modelo");
-      cargarSelect("alojamiento", alojamientos, "id_alojamiento", "nombre");
-      cargarSelect("excursion", excursiones, "id_excursion", "nombre");
-
-    } catch (error) {
-      console.error("Error al cargar opciones:", error);
-      alert("❌ Error inesperado al cargar datos.");
+    if (!vuelosRes.ok || !vehiculosRes.ok || !alojamientosRes.ok || !excursionesRes.ok) {
+      console.warn("Algún fetch de opciones falló:", vuelosRes.status, vehiculosRes.status, alojamientosRes.status, excursionesRes.status);
+      alert("❌ Error al cargar datos para los selects.");
+      return;
     }
+
+    const vuelos = await vuelosRes.json();
+    const vehiculos = await vehiculosRes.json();
+    const alojamientos = await alojamientosRes.json();
+    const excursiones = await excursionesRes.json();
+
+    console.log("Datos cargados:", { vuelos, vehiculos, alojamientos, excursiones });
+
+    // Ahora llamamos a la versión extendida para mostrar precio junto al nombre
+    cargarSelect("vuelo", vuelos, "id_vuelo", "aerolinea", "precio"); 
+    cargarSelect("vehiculo", vehiculos, "id_vehiculo", "modelo"); // no precio
+    cargarSelect("alojamiento", alojamientos, "id_alojamiento", "nombre", "precio"); 
+    cargarSelect("excursion", excursiones, "id_excursion", "nombre", "precio_adulto"); 
+
+  } catch (error) {
+    console.error("Error al cargar opciones:", error);
+    alert("❌ Error inesperado al cargar datos.");
   }
+}
 
-  // Llenar un select con opciones
-  function cargarSelect(selectId, datos, campoId, campoTexto) {
-    const select = document.getElementById(selectId);
-    select.innerHTML = '<option value="" style="color:#eafcff;">--Seleccione--</option>';
+// ✅ Ahora cargamos precio opcional
+function cargarSelect(selectId, datos, campoId, campoTexto, campoPrecio) {
+  const select = document.getElementById(selectId);
+  select.innerHTML = '<option value="" style="color:#eafcff;">--Seleccione--</option>';
 
-    datos.forEach(item => {
-      const option = document.createElement("option");
-      option.value = item[campoId];
+  datos.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item[campoId];
+    if (campoPrecio && item[campoPrecio] != null) {
+      option.textContent = `${item[campoTexto]} ($${parseFloat(item[campoPrecio]).toFixed(2)})`;
+    } else {
       option.textContent = item[campoTexto];
-      option.style.color = "#eafcff";
-      select.appendChild(option);
-    });
-  }
+    }
+    option.style.color = "#eafcff";
+    select.appendChild(option);
+  });
+}
 
   // Cargar y mostrar todos los paquetes existentes
   async function cargarPaquetes() {
