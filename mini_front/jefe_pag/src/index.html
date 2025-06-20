@@ -168,6 +168,8 @@
           <div id="lista-paquetes-contenedor" style="margin-top:20px; display: grid; gap: 20px;"></div>
         </section>
       </section>
+
+      
     </main>
 
     <footer class="admin-footer">
@@ -425,7 +427,6 @@ function cargarSelect(selectId, datos, campoId, campoTexto, campoPrecio) {
   usuarioBtn.addEventListener("click", () => {
     usuarioMenu.style.display = usuarioMenu.style.display === "none" ? "block" : "none";
   });
-
   // Ocultar menú al hacer clic fuera
   window.addEventListener("click", (e) => {
     if (!usuarioBtn.contains(e.target) && !usuarioMenu.contains(e.target)) {

@@ -56,6 +56,9 @@ def serve_jefe_pag():
 def serve_destino():
     return send_from_directory('static/destino/browser', 'index.html')
 
+@app.route('/documentos')
+def serve_documentos():
+    return send_from_directory('static/documentos/browser', 'index.html')
 
 
 
@@ -348,6 +351,46 @@ def crear_pago():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/api/reportes", methods=["GET"])
+def obtener_reportes():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT id_reporte, id_usuario, tipo_reporte, fecha_generacion, contenido, parametros FROM reporte")
+    registros = cur.fetchall()
+    cur.close()
+    conn.close()
+    reportes = [
+        {
+            "id_reporte": r[0],
+            "id_usuario": r[1],
+            "tipo_reporte": r[2],
+            "fecha_generacion": str(r[3]),
+            "contenido": r[4],
+            "parametros": r[5]
+        } for r in registros
+    ]
+    return jsonify(reportes)
+
+@app.route("/api/reservas", methods=["GET"])
+def obtener_reservas():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT id_reserva, id_paquete, fecha_reserva, cantidad_personas, id_usuario, estado, observaciones FROM reserva")
+    registros = cur.fetchall()
+    cur.close()
+    conn.close()
+    reservas = [
+        {
+            "id_reserva": r[0],
+            "id_paquete": r[1],
+            "fecha_reserva": str(r[2]),
+            "cantidad_personas": r[3],
+            "id_usuario": r[4],
+            "estado": r[5],
+            "observaciones": r[6]
+        } for r in registros
+    ]
+    return jsonify(reservas)
 
 
 # ------------------ ARRANCAR SERVIDOR -------------------

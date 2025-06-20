@@ -12,8 +12,10 @@
     <header class="admin-header">
       <h1 class="admin-title"><i class="fa-solid fa-user-shield"></i> Administración GoPark</h1>
       <nav class="admin-nav">
+        <a href="/login" class="nav-link active"><i class="fa-solid fa-box"></i> Volver</a>
         <a href="#paquetes" class="nav-link active"><i class="fa-solid fa-box"></i> Paquetes</a>
         <a href="#usuarios" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+        <a href="#reservas" class="nav-link"><i class="fa-solid fa-calendar-alt"></i> Reservas</a>
       </nav>
     </header>
 
@@ -32,6 +34,14 @@
           <h2><i class="fa-solid fa-users"></i> Usuarios (Jefes de Venta)</h2>
         </div>
         <div id="usuarios-lista" class="admin-lista"></div>
+      </section>
+
+      <!-- Reservas -->
+      <section id="reservas" class="admin-section">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-calendar-alt"></i> Reservas</h2>
+        </div>
+        <div id="reservas-lista" class="admin-lista"></div>
       </section>
     </main>
 
@@ -245,6 +255,62 @@ function eliminarUsuario(id) {
     });
   }
 }
+
+
+
+async function cargarReportes() {
+  const res = await fetch("/api/reportes");
+  const data = await res.json();
+  const contenedor = document.getElementById("reporte-contenido");
+  contenedor.innerHTML = ""; 
+  data.forEach(reporte => {
+    const div = document.createElement("div");
+    div.classList.add("reporte-item");
+    div.innerHTML = `
+      <p><strong>Usuario ID:</strong> ${reporte.id_usuario}</p>
+      <p><strong>Tipo:</strong> ${reporte.tipo_reporte}</p>
+      <p><strong>Fecha Generación:</strong> ${reporte.fecha_generacion}</p>
+      <p><strong>Contenido:</strong> ${reporte.contenido}</p>
+      <p><strong>Parámetros:</strong> ${reporte.parametros}</p>
+      <hr/>
+    `;
+    contenedor.appendChild(div);
+  });
+}
+
+async function cargarReservas() {
+  const res = await fetch("/api/reservas");
+  const data = await res.json();
+  const contenedor = document.getElementById("reservas-lista");
+  contenedor.innerHTML = ""; 
+  data.forEach(reserva => {
+    const div = document.createElement("div");
+    div.classList.add("reserva-item");
+    div.innerHTML = `
+      <div style="display: flex; align-items: flex-start; gap: 22px; margin-bottom: 10px; background: #232946; border-radius: 12px; box-shadow: 0 2px 10px #0003; padding: 18px 22px;">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 1.05rem; color: #fff;">
+        <div style="font-size: 1.18rem; color: #00f2ff; font-weight: 800; letter-spacing: 0.5px;">
+        <i class="fa-solid fa-calendar-alt"></i> Reserva #${reserva.id_reserva}
+        </div>
+        <div><b>ID Paquete:</b> <span style="color:#fff">${reserva.id_paquete}</span></div>
+        <div><b>Fecha:</b> <span style="color:#fff">${reserva.fecha_reserva}</span></div>
+        <div><b>Personas:</b> <span style="color:#fff">${reserva.cantidad_personas}</span></div>
+        <div><b>Usuario ID:</b> <span style="color:#fff">${reserva.id_usuario}</span></div>
+        <div><b>Estado:</b> <span style="color:#fff">${reserva.estado ? "Activo" : "Cancelado"}</span></div>
+        <div><b>Observaciones:</b> <span style="color:#fff">${reserva.observaciones || ""}</span></div>
+      </div>
+      </div>
+    
+    `;
+    contenedor.appendChild(div);
+  });
+}
+
+
+window.addEventListener("load", () => {
+  cargarReportes();
+  cargarReservas();
+});
 </script>
 <script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-43THKGSC.js" type="module"></script></body>
 </html>
